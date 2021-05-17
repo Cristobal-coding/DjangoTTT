@@ -31,6 +31,7 @@ class LoginForm(forms.Form):
         kwargs_new.update(kwargs)
         super(LoginForm, self).__init__(*args, **kwargs_new)
     def clean_rut(self):
-        if not validar_rut(self.cleaned_data.get("rut")):
-            self.add_error('rut', 'Rut no valido')
+        if self.cleaned_data.get("rut").isdigit():
+            if not validar_rut(self.cleaned_data.get("rut")):
+                self.add_error('rut', 'Rut no valido')
         return self.cleaned_data.get("rut")

@@ -29,6 +29,7 @@ class UserRegisterForm(forms.ModelForm):
         kwargs_new.update(kwargs)
         super(UserRegisterForm, self).__init__(*args, **kwargs_new)
 
+
     class Meta:
         model=User
         fields= ('username','rut','rol')
@@ -40,7 +41,8 @@ class UserRegisterForm(forms.ModelForm):
             ),
             'rut': forms.TextInput(
                 attrs={
-                    'class': 'form-control my-2'
+                    'class': 'form-control my-2',
+                    'placeholder': 'Sin puntos y con guión'
                 }
             ),
             'rol': forms.Select(
@@ -55,10 +57,13 @@ class UserRegisterForm(forms.ModelForm):
     def clean_password2(self):
         if self.cleaned_data['password1'] !=self.cleaned_data['password2']:
             self.add_error('password2', 'Las contraseñas deben coincidir')
+            self.fields['password2'].widget.attrs.update({'class': 'form-control my-2 is-invalid'})
+
 
     def clean_rut(self):
         if not validar_rut(self.cleaned_data.get("rut")):
             self.add_error('rut', 'Rut no valido')
+            self.fields['rut'].widget.attrs.update({'class': 'form-control my-2 is-invalid'})
         return self.cleaned_data.get("rut")
 
  
