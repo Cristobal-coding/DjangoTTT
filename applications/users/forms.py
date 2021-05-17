@@ -49,9 +49,7 @@ class UserRegisterForm(forms.ModelForm):
                 attrs={
                     'class': 'form-select my-2'
                 }
-            ),
-           
-            
+            ),   
         }
 
     def clean_password2(self):
