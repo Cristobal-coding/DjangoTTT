@@ -101,7 +101,7 @@ AUTH_USER_MODEL = 'users.user'
 
 LANGUAGE_CODE = 'es-mx'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Chile/EasterIsland'
 
 USE_I18N = True
 
