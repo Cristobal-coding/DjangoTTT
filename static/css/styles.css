@@ -9,6 +9,7 @@
 }
 .decoration-none{
     text-decoration: none;
+   
 }
 .active-now{
     background: #fff;
@@ -92,6 +93,9 @@
     padding: 0;
     overflow: hidden;
     
+}
+.abajo{
+    float:none;
 }
 
 .customnavbar li {
