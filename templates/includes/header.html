@@ -1,39 +1,27 @@
-<div class="row mx-0">
-    <div class="col px-0">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            
-              
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle {% if request.resolver_match.app_name == 'libro_app' %}active{% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Libros
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="#">Listar</a></li>
-                  <li><a class="dropdown-item" href="#">Añadir</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.app_name == 'lector_app' %}active{% endif %}" href="#">Lectores</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.app_name == 'autor_app' %}active{% endif %}" href="#" tabindex="-1" aria-disabled="true">Autores</a>
-              </li>
-            </ul>
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Búsqueda" aria-label="Search">
-              <button class="btn btn-success " type="submit">Buscar</button>
-            </form>
-          </div>
-        </div>
-      </nav>
+
+<div class="customnavbar">
+  <div class="row" style="height: 98px;">
+    <div class="col-9" style="background-color: #594f8d;">
+        <ul>
+          <li><a class="decoration-none" href="#">Liceo Tecnologico Mannheim</a></li>
+        </ul>
     </div>
+    <div class="col-3" style="background-color: #594f8d;">
+      <div class="container" style="background-color: #fff; height:98px">
+        <div class="col">
+          <img src="..\media\man-300x300.png"  style="
+          border-radius: 50%;
+          height:80px;
+          width:98px;
+        ">
+        </div>
+       
+        
+        
+        
+      </div>
+    </div>
+    
   </div>
+
+</div>
