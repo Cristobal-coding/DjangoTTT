@@ -2,6 +2,8 @@ from django import forms
 from applications.logicas import validar_rut
 from applications.users.models import User
 from applications.errors import DivErrorList
+from django.contrib.auth import authenticate, login
+
 class LoginForm(forms.Form):
     rut = forms.CharField(
         label='Rut:',
@@ -26,12 +28,20 @@ class LoginForm(forms.Form):
                 }
             ),
     )
+    def clean(self):
+       cleaned_data = super(LoginForm, self).clean()
+       rut = self.cleaned_data.get("rut")
+       password=self.cleaned_data.get("password")
+       if not authenticate(rut=rut, password=password):
+           raise forms.ValidationError('')
+       return self.cleaned_data
+
     def __init__(self, *args, **kwargs):
         kwargs_new = {'error_class': DivErrorList}
         kwargs_new.update(kwargs)
         super(LoginForm, self).__init__(*args, **kwargs_new)
+
     def clean_rut(self):
-        if self.cleaned_data.get("rut").isdigit():
-            if not validar_rut(self.cleaned_data.get("rut")):
-                self.add_error('rut', 'Rut no valido')
+        if not validar_rut(self.cleaned_data.get("rut")):
+            self.add_error('rut', 'Rut no valido')      
         return self.cleaned_data.get("rut")

@@ -66,31 +66,38 @@
                        </div>
                        <div class="row">
                            <div class="col m-2 mx-4">
-                            <div class="form-floating mb-3 ">
-                                <!-- <input type="text" class="form-control border-0 bg-light" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"> -->
-                                {{form.rut}}
-                                <label for="rut" class="text-primary"><i class="far fa-envelope mx-1"></i>Rut:</label>
-                                
-                                {% if form.rut.errors %}
-                                <div class="text-center">
-                                    <small class="text-danger">*El Rut no es válido*</small>
-                                </div>
-                                {% endif %}   
-                              </div>
-                             
+                                <div class="form-floating {% if not form.rut.errors %}mb-3 {% endif %}">
+                                    <!-- <input type="text" class="form-control border-0 bg-light" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"> -->
+                                    {{form.rut}}
+                                    <label for="rut" class="text-primary"><i class="far fa-envelope mx-1"></i>Rut:</label>
+                                    
+                                    {% if form.rut.errors %}
+                                    <div class="text-start my-0 px-4">
+                                        <small class="text-danger">*El Rut no es válido*</small>
+                                    </div>
+                                    {% endif %}   
+                                </div> 
                            </div>
                        </div>
                        <div class="row">
                            <div class="col m-2 mx-4">
                               <div class="form-floating">
                                 {{form.password}}
-                                <label for="password" class="text-primary"><i class="fas fa-key mx-1"></i>Password:</label>
-                              </div>
-                              <div class="text-end">
-                                  <button type="submit" class="btn btn-primary w-25 my-2"><i class="fas fa-fingerprint mx-1"></i>Acceder</button>            
+                                <label for="password" class="text-primary"><i class="fas fa-key mx-1"></i>Password:</label>            
                               </div>
                            </div>
                        </div>  
+                       <div class="row mx-0">
+                           <div class="col-6 d-flex flex-column align-items-center justify-content-center">
+                            {% if form.non_field_errors %}
+                            <small class="text-danger">*Credenciales Incorrectas*</small>
+                              
+                            {% endif %}
+                           </div>
+                           <div class="col-6 text-center">
+                               <button type="submit" class="btn btn-primary my-2"><i class="fas fa-fingerprint mx-1"></i>Acceder</button>            
+                          </div>
+                        </div>
                    </form>
                </div>
            </div>

@@ -3,6 +3,7 @@ from django.forms import fields, widgets
 from applications.errors import DivErrorList
 from .models import User
 from applications.logicas import validar_rut
+
 class UserRegisterForm(forms.ModelForm):
     password1 = forms.CharField(
         label='Contraseña',
