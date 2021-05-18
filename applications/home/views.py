@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.contrib.auth import authenticate, login
+from django.urls import reverse_lazy, reverse
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect
 # Create your views here.
 from django.views.generic.edit import FormView
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from applications.users.models import User
 from .forms import LoginForm
 
@@ -21,5 +22,13 @@ class LoginPage(FormView):
         login(self.request, usuario)
         return super(LoginPage,self).form_valid(form)
 
+class LogoutView(View):
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return HttpResponseRedirect(reverse('home_app:login'))
+
+
 class HomePage(TemplateView):
     template_name = "home/home.html"
+
