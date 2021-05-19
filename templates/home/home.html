@@ -9,7 +9,12 @@ Home
         <h2>Usuario: {{user.username}}</h2>
         <h2>RUT: {{user.rut}}</h2>
         <h2>Rol: {{user.rol}}</h2>
-        <h2>URL: {{user.image.url}}</h2>
+        {% if not user.image%}
+            <h2>URL: *No hay ninguna Imagen*</h2>
+        {%else%}
+            <h2>URL: {{user.image.url}}</h2>
+        {% endif %}  
+        
         <h2>Ultimo Login: {{user.last_login}}</h2>
     </div>
 </div>
