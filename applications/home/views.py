@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 # Create your views here.
 from django.views.generic.edit import FormView
@@ -29,6 +30,7 @@ class LogoutView(View):
         return HttpResponseRedirect(reverse('home_app:login'))
 
 
-class HomePage(TemplateView):
+class HomePage(LoginRequiredMixin,TemplateView):
     template_name = "home/home.html"
+    login_url = reverse_lazy('home_app:login')
 
