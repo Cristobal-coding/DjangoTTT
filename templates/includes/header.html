@@ -1,5 +1,5 @@
 
-<div class="customnavbar">
+<!-- <div class="customnavbar">
   <div class="row mx-0" style="height: 98px;">
     <div class="col-9" style="background-color: #594f8d;">
         <ul>
@@ -18,8 +18,7 @@
             width:98px;
           ">
           
-          </div></li>
-          
+          </div></li>     
           <li class="abajo">nombre</li>
           <li class="abajo">admin</li>
        </ul>
@@ -30,4 +29,33 @@
     
   </div>
 
+</div> -->
+
+<div class="row mx-0 shadow" style="height: 70px;">
+  <div class="col-1 d-flex flex-column justify-content-center align-items-center px-0">
+    <i class="fas fa-graduation-cap fa-3x"></i>
+  </div>
+  <div class="col-3 d-flex flex-column justify-content-center align-items-start px-0">
+    <h5 class="fw-bold">Liceo Tecnologico Mannheim</h5>
+  </div>
+  <div class="col-5"></div>
+  <div class="col-3 px-0">
+    <div class="row mx-0 h-100 w-100">
+      <div class="col-3  h-100 d-flex flex-column justify-content-center align-items-center">
+        <div class="rounded-circle bg-success " style="width: 56px;height:56px;">
+          <img src="{{user.image.url}}" alt="" class="img-fluid rounded-circle">
+        </div>
+      </div>
+      <div class="col-9  h-100">
+        <div class="row mx-0 h-100 w-100">
+          <div class="col d-flex flex-column justify-content-end">
+            <h5 class="my-0 fw-bold">{{user.username}}</h5>
+          </div>
+          <div class="col d-flex flex-column justify-content-start">
+            <small class="fw-light"><span class="fst-italic">{{user.rol}}</span> - {{user.rut}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

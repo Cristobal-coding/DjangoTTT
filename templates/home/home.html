@@ -4,12 +4,14 @@ Home
 {% endblock 'titulo' %}
 {% block 'content' %}
 
-<div class="col-12">
-    <h2>Usuario: {{user.username}}</h2>
-    <h2>RUT: {{user.rut}}</h2>
-    <h2>Rol: {{user.rol}}</h2>
-    <h2>URL: {{user.image.url}}</h2>
-    <h2>Ultimo Login: {{user.last_login}}</h2>
+<div class="row mx-0 vh-100">
+    <div class="col d-flex flex-column align-items-center justify-content-center">
+        <h2>Usuario: {{user.username}}</h2>
+        <h2>RUT: {{user.rut}}</h2>
+        <h2>Rol: {{user.rol}}</h2>
+        <h2>URL: {{user.image.url}}</h2>
+        <h2>Ultimo Login: {{user.last_login}}</h2>
+    </div>
 </div>
 
     
