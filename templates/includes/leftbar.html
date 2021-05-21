@@ -8,8 +8,8 @@
                 
             <li class="{% if request.resolver_match.app_name == 'home_app'%}active-now{% endif %}"><a class="decoration-none" href="{% url 'home_app:home' %}"><i class="fas fa-home"></i>Home</a></li>
             <li><a class="decoration-none" href="#"><i class="far fa-address-book"></i>Mi Perfil</a></li>
-            <li class=" {% if request.resolver_match.app_name == 'user_app'%}active-now{% endif %}"><a class="decoration-none" href="{% url 'user_app:registrar' %}"><i class="fas fa-users"></i>Usuarios</a></li>
-            <li><a class="decoration-none" href="#"><i class="fas fa-child"></i>Alumnos</a></li>
+            <li class="{% if request.resolver_match.app_name == 'user_app'%}active-now{% endif %}"><a class="decoration-none" href="{% url 'user_app:registrar' %}"><i class="fas fa-users"></i>Usuarios</a></li>
+            <li class="{% if request.resolver_match.app_name == 'alumnos_app'%}active-now{% endif %}"><a class="decoration-none" href="{% url 'alumnos_app:inicio'%}"><i class="fas fa-child"></i>Alumnos</a></li>
             <li><a class="decoration-none" href="#"><i class="fas fa-history"></i>Antecedentes</a></li>
             <li><a class="decoration-none" href="#"><i class="fas fa-clipboard"></i>Informes</a></li>
             <li><a class="decoration-none" href="#"><i class="fas fa-spell-check"></i>Calificaciones</a></li>
