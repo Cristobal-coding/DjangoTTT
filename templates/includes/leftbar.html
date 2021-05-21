@@ -1,11 +1,8 @@
 
 <div class="wrapper">
     <div class="sidebar">
-        <h2>LEFTBAR Renato</h2>
+        <h2>leftbar</h2>
         <ul>
-            
-           
-                
             <li class="{% if request.resolver_match.app_name == 'home_app'%}active-now{% endif %}"><a class="decoration-none" href="{% url 'home_app:home' %}"><i class="fas fa-home"></i>Home</a></li>
             <li><a class="decoration-none" href="#"><i class="far fa-address-book"></i>Mi Perfil</a></li>
             <li class="{% if request.resolver_match.app_name == 'user_app'%}active-now{% endif %}"><a class="decoration-none" href="{% url 'user_app:registrar' %}"><i class="fas fa-users"></i>Usuarios</a></li>
