@@ -1,7 +1,9 @@
 from django.db import models
 class Apoderado(models.Model):
     rut =models.CharField('Rut',max_length=13,unique=True,primary_key=True)    
-    nombre_apoderado=models.CharField('Nombre apoderado',max_length=30)
+    nombre_apoderado=models.CharField('Nombre apoderado',max_length=50)
+    apellido_paterno =models.CharField('Apellido paterno',max_length=20)
+    apellido_materno =models.CharField('Apellido materno',max_length=20)
     telefono_apoderado=models.CharField('Telefono apoderado',max_length=15)
     correo=models.CharField('Correo',max_length=20)
     def __str__(self):
@@ -17,9 +19,9 @@ class Alumno(models.Model):
         ('2','No especifica')
     )
     rut =models.CharField('Rut',max_length=13,unique=True,primary_key=True)
-    nombre = models.CharField('Nombre',max_length=15,unique=False)
-    apellido_paterno =models.CharField('Apellido paterno',max_length=15)
-    apellido_materno =models.CharField('Apellido materno',max_length=15)
+    nombre = models.CharField('Nombre',max_length=50,unique=False)
+    apellido_paterno =models.CharField('Apellido paterno',max_length=20)
+    apellido_materno =models.CharField('Apellido materno',max_length=20)
     fecha_nacimiento=models.DateField('Fecha de nacimiento')
     rut_apoderado=models.ForeignKey(Apoderado,on_delete=models.CASCADE,max_length=13,unique=False)
     sexo=models.CharField('Sexo',max_length=1,choices=SEX_CHOICES)
