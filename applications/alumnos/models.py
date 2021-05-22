@@ -32,7 +32,7 @@ class Alumno(models.Model):
     sexo=models.CharField('Sexo',max_length=1,choices=SEX_CHOICES)
     telefono=models.CharField('Telefono',max_length=15)
     direccion=models.CharField('Direccion',max_length=20)
-    estado=models.Charfield('estado',max_length=1,choices=ESTADO_CHOICES)
+    estado=models.CharField('estado',max_length=1,choices=ESTADO_CHOICES)
     class Meta:
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'
