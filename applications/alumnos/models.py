@@ -29,3 +29,5 @@ class Alumno(models.Model):
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'
         db_table= 'Alumnos'
+    def __str__(self):
+        return self.nombre + ' - ' + self.rut
