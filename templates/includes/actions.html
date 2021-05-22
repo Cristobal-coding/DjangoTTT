@@ -1,0 +1,7 @@
+<h4 class="fw-bold">Acciones</h4>
+<ul class="list-group list-group-flush">
+    <a href="{% url 'alumnos_app:filtrar'%}" class="list-group-item list-group-item-action rounded text-start {% if 'filtros' in request.path %}active{% endif %}"><i class="fas fa-filter px-3"></i>Filtros</a>
+    <a href="#" class="list-group-item list-group-item-action rounded text-start"><i class="fas fa-registered px-3"></i>Registrar Alumno</a>
+    <a href="#" class="list-group-item list-group-item-action rounded text-start disabled"><i class="fas fa-people-arrows px-3"></i>Apoderados</a>
+    <a href="#" class="list-group-item list-group-item-action rounded text-start disabled"><i class="fas fa-clipboard px-3"></i>Informes</a>
+</ul>
