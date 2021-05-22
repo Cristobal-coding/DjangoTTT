@@ -18,6 +18,11 @@ class Alumno(models.Model):
         ('1','Masculino'),
         ('2','No especifica')
     )
+    ESTADO_CHOICES=(
+        ('0','Regular'),
+        ('1','Se fué'),
+        ('2','Finalizado')
+    )
     rut =models.CharField('Rut',max_length=13,unique=True,primary_key=True)
     nombre = models.CharField('Nombre',max_length=50,unique=False)
     apellido_paterno =models.CharField('Apellido paterno',max_length=20)
@@ -27,6 +32,7 @@ class Alumno(models.Model):
     sexo=models.CharField('Sexo',max_length=1,choices=SEX_CHOICES)
     telefono=models.CharField('Telefono',max_length=15)
     direccion=models.CharField('Direccion',max_length=20)
+    estado=models.Charfield('estado',max_length=1,choices=ESTADO_CHOICES)
     class Meta:
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'
