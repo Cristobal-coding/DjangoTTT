@@ -1,5 +1,5 @@
 {% extends '../layouts/master.html' %}
-
+{% load formats %}
 
 {% block 'titulo' %}
 Filtrar Alumnos por Parametros
@@ -21,11 +21,11 @@ Filtrar Alumnos por Parametros
                                     <input type="text" class="form-control rounded-pill" id="kword" name="kword" placeholder="&#xF002; Nombre Alumno"  style="font-family:KoHo, FontAwesome">
                                 </div>
                                 <div class="col-4">
-                                    <label for="fecha1" class="form-label fw-bold">Fecha 1:</label>
+                                    <label for="fecha1" class="form-label fw-bold">Edad Miníma:</label>
                                     <input type="date" class="form-control rounded-pill" id="fecha1" name="fecha1" placeholder="Ingresa fecha 1">
                                 </div>
                                 <div class="col-4">
-                                    <label for="fecha2" class="form-label fw-bold">Fecha 2:</label>
+                                    <label for="fecha2" class="form-label fw-bold">Edad Máxima:</label>
                                     <input type="date" class="form-control rounded-pill" id="fecha2" name="fecha2" placeholder="Ingresa fecha 2">
                                 </div>
                             </div>     
@@ -37,13 +37,17 @@ Filtrar Alumnos por Parametros
                 </form>
             </div>
         </div>
+        
+        {% for alumno in alumnos  %}
+        {% date_to_age alumno.fecha_nacimiento as edad%}
+        
         <div class="row mx-0 w-100 shadow-sm my-3" style="height:80px;background-color:white;">
             <div class="col-2 h-100">
                 <div class="row mx-0 h-100">
                     <div class="col-12 d-flex flex-column align-items-center justify-content-center">
                         <div class="text-start">
-                            <h6 class="my-0 fw-bold">20440649-9</h6>
-                            <small class="my-0 fw-light">20 Años</small>
+                            <h6 class="my-0 fw-bold">{{alumno.rut}}</h6>
+                            <small class="my-0 fw-light">{{edad}} Años</small>
                         </div>
                     </div>
                 </div>
@@ -52,8 +56,8 @@ Filtrar Alumnos por Parametros
                 <div class="row mx-0 h-100">
                     <div class="col-12 d-flex flex-column align-items-center justify-content-center">
                         <div class="text-start">
-                            <h6 class="my-0 fw-bold">Cristóbal Herrera Rojas</h6>
-                            <small class="my-0 fw-light">Masculino</small>
+                            <h6 class="my-0 fw-bold">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</h6>
+                            <small class="my-0 fw-light">{{alumno.get_sexo_display}}</small>
                         </div>
                     </div>
                 </div>
@@ -62,8 +66,8 @@ Filtrar Alumnos por Parametros
                 <div class="row mx-0 h-100">
                     <div class="col-12 d-flex flex-column align-items-start justify-content-center">
                         <div class="text-start">
-                            <h6 class="my-0 fw-bold">+56 9 66919790</h6>
-                            <small class="my-0 fw-light">Michimalonco 301, La Calera</small>
+                            <h6 class="my-0 fw-bold">+56 9 {{alumno.telefono}}</h6>
+                            <small class="my-0 fw-light">{{alumno.direccion}}</small>
                         </div>
                     </div>
                 </div>
@@ -73,12 +77,40 @@ Filtrar Alumnos por Parametros
                     <div class="col-12 d-flex flex-column align-items-start justify-content-center">
                         <div class="text-start">
                             <h6 class="my-0 fw-bold">Apoderado:</h6>
-                            <small class="my-0 fw-light">Paola Alejandra Rojas<a href="#" class="badge bg-primary text-decoration-none mx-2">Ver Apod.</a></small>
+                            <small class="my-0 fw-light">{{alumno.rut_apoderado.nombre_apoderado}}<a href="#" class="badge bg-primary text-decoration-none mx-2">Ver Apod.</a></small>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        {% endfor %}
+        {% if is_paginated %}
+        <div class="col-8 offset-2">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{page_obj.previous_page_number}}" tabindex="-1" aria-disabled="true">Anterior</a>
+                    </li>
+                    {% endif %} 
+                    {% for pag in paginator.page_range %}
+    
+                    {% ifequal pag page_obj.number  %}
+                    <li class="page-item active"><a class="page-link" href="?page={{pag}}">{{pag}}</a></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{pag}}">{{pag}}</a></li>
+                    {% endifequal %}
+                        
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{page_obj.next_page_number}}" tabindex="-1" aria-disabled="true">Siguiente</a>
+                    </li>
+                    {% endif %}              
+                </ul>
+              </nav>
+        </div>
+        {% endif %}
     </div>
     <div class="col-3">
         {%include '../includes/actions.html'%}
