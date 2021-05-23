@@ -15,19 +15,19 @@
     <link rel="stylesheet" href="{% static 'css/theme.css' %}">
 </head>
 <body class="bg-light">
-    <div class="container-fluid p-0 ">
-        <div class="row mx-0 vh-100 overflow-hidden">
-            <div class="col-2 px-0">
+    <div class="container-fluid p-0 vh-100">
+        <div class="row mx-0  h-100">
+            <div class="col-2 px-0 h-100">
                 {%include '../includes/leftbar.html'%}
             </div>
-            <div class="col-10 px-0">
-                <div class="row mx-0">
-                    <div class="col-12 px-0">
+            <div class="col-10 px-0 h-100">
+                <div class="row mx-0" style="height: 10% !important;">
+                    <div class="col-12 px-0 h-100">
                         {%include '../includes/header.html'%}
                     </div>
                 </div>
-                <div class="row mx-0 overflow-auto h-100">
-                    <div class="col-12 px-0 h-100">
+                <div class="row mx-0 overflow-auto" style="height: 90% !important;">
+                    <div class="col-12 px-0 h-100 ">
                         {%block 'content'%}
                         {%endblock 'content'%}
                     </div>

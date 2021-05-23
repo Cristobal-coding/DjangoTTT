@@ -7,7 +7,7 @@ class DivErrorList(ErrorList):
     def as_divs(self):
         if not self:
             return ''
-        return '<div class="errorlist mt-0 pt-0 d-inline mx-2">%s</div>' % ''.join(['<small class="text-danger">*%s*</small>' % e for e in self])
+        return '<div class="errorlist mt-0 pt-0 d-inline mx-2">%s</div>' % ''.join(['<small class="text-danger fs-6">*%s*</small>' % e for e in self])
     # def as_divs(self):
     #     if not self:
     #         return ''

@@ -8,10 +8,10 @@ Filtrar Alumnos por Parametros
 
 {% block 'content' %}
 <div class="row mx-0 h-100 w-100">
-    <div class="col-9">
-        <div class="row mx-0 w-100 my-2">
-            <div class="col-12 h-100 px-0">
-                <form method="GET" class="w-100 h-100 d-flex">
+    <div class="col-9 h-100">
+        <div class="row mx-0 w-100 h-100">
+            <div class="col-12 py-2" style="height: 12% !important;">
+                <form method="GET" class="w-100 d-flex">
                     {% csrf_token %}
                     <div class="row mx-0 w-100">
                         <div class="col-10 px-0">
@@ -36,73 +36,75 @@ Filtrar Alumnos por Parametros
                     </div>                  
                 </form>
             </div>
-        </div>
-        <div class="row mx-0 h-75 w-100 ">
-            <div class="col-12 h-75">
-            {% for alumno in alumnos  %}
-            {% date_to_age alumno.fecha_nacimiento as edad%}           
-            <div class="row mx-0 w-100 shadow-sm my-3" style="height:80px;background-color:white;">
-                <div class="col-2 h-100 px-0">
-                    <div class="row mx-0 h-100">
-                        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
-                            <div class="text-start">
-                                <h6 class="my-0 fw-bold">{{alumno.rut}}</h6>
-                                <small class="my-0 fw-light">{{edad}} Años</small>
+            <div class="col-12" style="height: 75% !important;">
+                <div class="row mx-0 h-100 w-100 ">
+                    <div class="col-12 h-100">
+                    {% for alumno in alumnos  %}
+                    {% date_to_age alumno.fecha_nacimiento as edad%}           
+                    <div class="row mx-0 w-100 shadow-sm my-3" style="height:80px;background-color:white;">
+                        <div class="col-2 h-100 px-0">
+                            <div class="row mx-0 h-100">
+                                <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                                    <div class="text-start">
+                                        <h6 class="my-0 fw-bold">{{alumno.rut}}</h6>
+                                        <small class="my-0 fw-light">{{edad}} Años</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3 h-100 px-0">
+                            <div class="row mx-0 h-100">
+                                <div class="col-12 d-flex flex-column align-items-start justify-content-center">
+                                    <div class="text-start">
+                                        <h6 class="my-0 fw-bold">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</h6>
+                                        <small class="my-0 fw-light">{{alumno.get_sexo_display}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3 h-100 px-0">
+                            <div class="row mx-0 h-100">
+                                <div class="col-12 d-flex flex-column align-items-start justify-content-center">
+                                    <div class="text-start">
+                                        <h6 class="my-0 fw-bold">+56 9 {{alumno.telefono}}</h6>
+                                        <small class="my-0 fw-light">{{alumno.direccion}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2 h-100 px-0">
+                            <div class="row mx-0 h-100">
+                                <div class="col-12 d-flex flex-column align-items-start justify-content-center">
+                                    <div class="text-start">
+                                        <h6 class="my-0 fw-bold">Apoderado:</h6>
+                                        <small class="my-0 fw-light w-100">{{alumno.rut_apoderado.nombre_apoderado}}<a href="#" class="badge bg-primary text-decoration-none mx-1">Ver Apod.</a></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2 h-100 px-0">
+                            <div class="row mx-0 h-100 w-100">
+                                <div class="col-6 h-100 px-1">
+                                    <form class="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn fs-5"><i class="far fa-edit"></i></button>
+                                    </form>
+                                </div>
+                                <div class="col-6 h-100 px-1">
+                                    <form class="h-100 w-100 d-flex flex-column justify-content-center align-items-start">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-close text-danger"></button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
+                    </div>                
                 </div>
-                <div class="col-3 h-100 px-0">
-                    <div class="row mx-0 h-100">
-                        <div class="col-12 d-flex flex-column align-items-start justify-content-center">
-                            <div class="text-start">
-                                <h6 class="my-0 fw-bold">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</h6>
-                                <small class="my-0 fw-light">{{alumno.get_sexo_display}}</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-3 h-100 px-0">
-                    <div class="row mx-0 h-100">
-                        <div class="col-12 d-flex flex-column align-items-start justify-content-center">
-                            <div class="text-start">
-                                <h6 class="my-0 fw-bold">+56 9 {{alumno.telefono}}</h6>
-                                <small class="my-0 fw-light">{{alumno.direccion}}</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-2 h-100 px-0">
-                    <div class="row mx-0 h-100">
-                        <div class="col-12 d-flex flex-column align-items-start justify-content-center">
-                            <div class="text-start">
-                                <h6 class="my-0 fw-bold">Apoderado:</h6>
-                                <small class="my-0 fw-light w-100">{{alumno.rut_apoderado.nombre_apoderado}}<a href="#" class="badge bg-primary text-decoration-none mx-1">Ver Apod.</a></small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-2 h-100 px-0">
-                    <div class="row mx-0 h-100 w-100">
-                        <div class="col-6 h-100 px-1">
-                            <form class="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-                                {% csrf_token %}
-                                <button type="submit" class="btn fs-5"><i class="far fa-edit"></i></button>
-                            </form>
-                        </div>
-                        <div class="col-6 h-100 px-1">
-                            <form class="h-100 w-100 d-flex flex-column justify-content-center align-items-start">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-close text-danger"></button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
             </div>
             {% if is_paginated %}
-            <div class="col-12 h-25">
+            <div class="col-12" style="height: 13% !important;">
                 <div class="row mx-0 w-100 h-100">
                     <div class="col-12 d-flex flex-column justify-content-center align-items-center">
                         <nav aria-label="Page navigation example">
@@ -128,18 +130,13 @@ Filtrar Alumnos por Parametros
                                 {% endif %}              
                             </ul>
                           </nav>
-                    </div>
-                    <div class="col-12 d-flex flex-column justify-content-start align-items-center">
-                        <a href="{% url 'alumnos_app:inicio'%}" class="btn btn-primary">Menú Principal</a>
-                    </div>
+                    </div>                  
                 </div>   
             </div>
             {% endif %}
-        </div>
-        
-       
+        </div>     
     </div>
-    <div class="col-3">
+    <div class="col-3 h-100 text-center p-3">
         {%include '../includes/actions.html'%}
     </div>
 </div>

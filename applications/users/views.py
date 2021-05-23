@@ -6,6 +6,7 @@ from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import User
 from .forms import UserRegisterForm
+
 class UserRegisterView(LoginRequiredMixin,FormView):
     model = User
     template_name = "usuarios/registrar.html"
