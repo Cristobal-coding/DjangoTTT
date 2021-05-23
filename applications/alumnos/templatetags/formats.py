@@ -1,7 +1,6 @@
 from django import template
-from datetime import date, datetime
-from datetime import timedelta
-
+from datetime import date
+import math
 register = template.Library()
 
 @register.simple_tag
@@ -12,6 +11,6 @@ def date_to_age(nacimiento):
     result = result.split(" ",1)
     days = result[0]
     days = int(days)
-    print(type(days))
-    # age= days / 365
-    return days
+    age= days / 365
+    age=math.floor(age)
+    return age

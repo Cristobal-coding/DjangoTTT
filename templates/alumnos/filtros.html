@@ -37,80 +37,107 @@ Filtrar Alumnos por Parametros
                 </form>
             </div>
         </div>
-        
-        {% for alumno in alumnos  %}
-        {% date_to_age alumno.fecha_nacimiento as edad%}
-        
-        <div class="row mx-0 w-100 shadow-sm my-3" style="height:80px;background-color:white;">
-            <div class="col-2 h-100">
-                <div class="row mx-0 h-100">
-                    <div class="col-12 d-flex flex-column align-items-center justify-content-center">
-                        <div class="text-start">
-                            <h6 class="my-0 fw-bold">{{alumno.rut}}</h6>
-                            <small class="my-0 fw-light">{{edad}} Años</small>
+        <div class="row mx-0 h-75 w-100 ">
+            <div class="col-12 h-75">
+            {% for alumno in alumnos  %}
+            {% date_to_age alumno.fecha_nacimiento as edad%}           
+            <div class="row mx-0 w-100 shadow-sm my-3" style="height:80px;background-color:white;">
+                <div class="col-2 h-100 px-0">
+                    <div class="row mx-0 h-100">
+                        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                            <div class="text-start">
+                                <h6 class="my-0 fw-bold">{{alumno.rut}}</h6>
+                                <small class="my-0 fw-light">{{edad}} Años</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 h-100 px-0">
+                    <div class="row mx-0 h-100">
+                        <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                            <div class="text-start">
+                                <h6 class="my-0 fw-bold">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</h6>
+                                <small class="my-0 fw-light">{{alumno.get_sexo_display}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 h-100 px-0">
+                    <div class="row mx-0 h-100">
+                        <div class="col-12 d-flex flex-column align-items-start justify-content-center">
+                            <div class="text-start">
+                                <h6 class="my-0 fw-bold">+56 9 {{alumno.telefono}}</h6>
+                                <small class="my-0 fw-light">{{alumno.direccion}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 h-100 px-0">
+                    <div class="row mx-0 h-100">
+                        <div class="col-12 d-flex flex-column align-items-start justify-content-center">
+                            <div class="text-start">
+                                <h6 class="my-0 fw-bold">Apoderado:</h6>
+                                <small class="my-0 fw-light w-100">{{alumno.rut_apoderado.nombre_apoderado}}<a href="#" class="badge bg-primary text-decoration-none mx-1">Ver Apod.</a></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 h-100 px-0">
+                    <div class="row mx-0 h-100 w-100">
+                        <div class="col-6 h-100 px-1">
+                            <form class="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
+                                {% csrf_token %}
+                                <button class="btn btn-danger rounded-circle" style="height: 36.5px !important;width: 36.5px !important; "><i class="fas fa-times"></i></button>
+                            </form>
+                        </div>
+                        <div class="col-6 h-100 px-1">
+                            <form class="h-100 w-100 d-flex flex-column justify-content-center align-items-start">
+                                {% csrf_token %}
+                                <button class="btn btn-success rounded-circle" style="height: 36.5px !important;width: 36.5px !important; "><i class="fas fa-edit"></i></button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-3 h-100">
-                <div class="row mx-0 h-100">
-                    <div class="col-12 d-flex flex-column align-items-center justify-content-center">
-                        <div class="text-start">
-                            <h6 class="my-0 fw-bold">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</h6>
-                            <small class="my-0 fw-light">{{alumno.get_sexo_display}}</small>
-                        </div>
-                    </div>
-                </div>
+            {% endfor %}
             </div>
-            <div class="col-3 h-100">
-                <div class="row mx-0 h-100">
-                    <div class="col-12 d-flex flex-column align-items-start justify-content-center">
-                        <div class="text-start">
-                            <h6 class="my-0 fw-bold">+56 9 {{alumno.telefono}}</h6>
-                            <small class="my-0 fw-light">{{alumno.direccion}}</small>
-                        </div>
+            {% if is_paginated %}
+            <div class="col-12 h-25">
+                <div class="row mx-0 w-100 h-100">
+                    <div class="col-12 d-flex flex-column justify-content-center align-items-center">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                  <a class="page-link" href="?page={{page_obj.previous_page_number}}" tabindex="-1" aria-disabled="true">Anterior</a>
+                                </li>
+                                {% endif %} 
+                                {% for pag in paginator.page_range %}
+                
+                                {% ifequal pag page_obj.number  %}
+                                <li class="page-item active"><a class="page-link" href="?page={{pag}}">{{pag}}</a></li>
+                                {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{pag}}">{{pag}}</a></li>
+                                {% endifequal %}
+                                    
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                <li class="page-item">
+                                  <a class="page-link" href="?page={{page_obj.next_page_number}}" tabindex="-1" aria-disabled="true">Siguiente</a>
+                                </li>
+                                {% endif %}              
+                            </ul>
+                          </nav>
                     </div>
-                </div>
-            </div>
-            <div class="col-3 h-100">
-                <div class="row mx-0 h-100">
-                    <div class="col-12 d-flex flex-column align-items-start justify-content-center">
-                        <div class="text-start">
-                            <h6 class="my-0 fw-bold">Apoderado:</h6>
-                            <small class="my-0 fw-light">{{alumno.rut_apoderado.nombre_apoderado}}<a href="#" class="badge bg-primary text-decoration-none mx-2">Ver Apod.</a></small>
-                        </div>
+                    <div class="col-12 d-flex flex-column justify-content-start align-items-center">
+                        <a href="{% url 'alumnos_app:inicio'%}" class="btn btn-primary">Menú Principal</a>
                     </div>
-                </div>
+                </div>   
             </div>
+            {% endif %}
         </div>
-        {% endfor %}
-        {% if is_paginated %}
-        <div class="col-8 offset-2">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                    <li class="page-item">
-                      <a class="page-link" href="?page={{page_obj.previous_page_number}}" tabindex="-1" aria-disabled="true">Anterior</a>
-                    </li>
-                    {% endif %} 
-                    {% for pag in paginator.page_range %}
-    
-                    {% ifequal pag page_obj.number  %}
-                    <li class="page-item active"><a class="page-link" href="?page={{pag}}">{{pag}}</a></li>
-                    {% else %}
-                    <li class="page-item"><a class="page-link" href="?page={{pag}}">{{pag}}</a></li>
-                    {% endifequal %}
-                        
-                    {% endfor %}
-                    {% if page_obj.has_next %}
-                    <li class="page-item">
-                      <a class="page-link" href="?page={{page_obj.next_page_number}}" tabindex="-1" aria-disabled="true">Siguiente</a>
-                    </li>
-                    {% endif %}              
-                </ul>
-              </nav>
-        </div>
-        {% endif %}
+        
+       
     </div>
     <div class="col-3">
         {%include '../includes/actions.html'%}

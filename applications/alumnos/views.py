@@ -10,5 +10,5 @@ class AlumnosFiltros(ListView):
     template_name = 'alumnos/filtros.html'
     model = Alumno
     context_object_name = 'alumnos'
-    paginate_by=1
+    paginate_by=4
     
