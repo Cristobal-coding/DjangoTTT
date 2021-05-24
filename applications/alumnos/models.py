@@ -1,4 +1,6 @@
 from django.db import models
+from .managers import AlumnoManager
+
 class Apoderado(models.Model):
     rut =models.CharField('Rut',max_length=13,unique=True,primary_key=True)    
     nombre_apoderado=models.CharField('Nombre apoderado',max_length=50)
@@ -33,6 +35,9 @@ class Alumno(models.Model):
     telefono=models.CharField('Telefono',max_length=8)
     direccion=models.CharField('Direccion',max_length=50)
     estado=models.CharField('estado',max_length=1,choices=ESTADO_CHOICES)
+
+    objects = AlumnoManager()
+
     class Meta:
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'

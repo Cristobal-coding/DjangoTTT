@@ -16,7 +16,12 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
     context_object_name = 'alumnos'
     paginate_by=5
     login_url = reverse_lazy('home_app:login')
-    
+
+    def get_queryset(self):
+        palabra_clave=self.request.GET.get("kword",'')
+        return Alumno.objects.buscar_alumno(palabra_clave)
+
+
 class AlumnosRegister(LoginRequiredMixin,FormView):
     model = Alumno
     template_name = "alumnos/registrar.html"
