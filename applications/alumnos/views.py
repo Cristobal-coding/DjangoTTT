@@ -19,10 +19,13 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
 
     def get_queryset(self):
         palabra_clave=self.request.GET.get("kword",'')
-        return Alumno.objects.buscar_alumno(palabra_clave)
-
-
-
+        f1=self.request.GET.get("fecha1",'')
+        f2=self.request.GET.get("fecha2",'')
+        if f1 and f2:
+            return Alumno.objects.buscar_alumno_fecha(palabra_clave,f1,f2)
+        else:
+            return Alumno.objects.buscar_alumno(palabra_clave)
+            
 
 class AlumnosRegister(LoginRequiredMixin,FormView):
     model = Alumno
