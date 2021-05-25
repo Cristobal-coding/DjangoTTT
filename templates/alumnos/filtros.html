@@ -36,7 +36,7 @@ Filtrar Alumnos por Parametros
                     </div>                  
                 </form>
             </div>
-            <div class="col-12" style="height: 75% !important;">
+            <div class="col-12" {% if not is_paginated %}style="height: 88% !important;"{% endif %} style="height: 75% !important;">
                 <div class="row mx-0 h-100 w-100 ">
                     <div class="col-12 h-100">
                     {% for alumno in alumnos  %}
@@ -103,6 +103,7 @@ Filtrar Alumnos por Parametros
                     </div>                
                 </div>
             </div>
+
             {% if is_paginated %}
             <div class="col-12" style="height: 13% !important;">
                 <div class="row mx-0 w-100 h-100">
