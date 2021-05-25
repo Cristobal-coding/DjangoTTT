@@ -22,6 +22,8 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
         return Alumno.objects.buscar_alumno(palabra_clave)
 
 
+
+
 class AlumnosRegister(LoginRequiredMixin,FormView):
     model = Alumno
     template_name = "alumnos/registrar.html"
