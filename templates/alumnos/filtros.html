@@ -16,17 +16,26 @@ Filtrar Alumnos por Parametros
                     <div class="row mx-0 w-100">
                         <div class="col-10 px-0">
                             <div class="row mx-0 w-100">
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="kword" class="form-label fw-bold">Palabra Clave:</label>
-                                    <input type="text" class="form-control rounded-pill" id="kword" name="kword" placeholder="&#xF002; Nombre Alumno"  style="font-family:KoHo, FontAwesome">
+                                    <input type="text" class="form-control rounded-pill form-control-sm" id="kword" name="kword" placeholder="&#xF002; Nombre alumno"  style="font-family:KoHo, FontAwesome">
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="fecha1" class="form-label fw-bold">Edad Miníma:</label>
-                                    <input type="date" class="form-control rounded-pill" id="fecha1" name="fecha1" placeholder="Ingresa fecha 1">
+                                    <input type="date" class="form-control rounded-pill form-control-sm" id="fecha1" name="fecha1" placeholder="Ingresa fecha 1">
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="fecha2" class="form-label fw-bold">Edad Máxima:</label>
-                                    <input type="date"  class="form-control rounded-pill" id="fecha2" name="fecha2" placeholder="Ingresa fecha 2">
+                                    <input type="date"  class="form-control rounded-pill form-control-sm" id="fecha2" name="fecha2" placeholder="Ingresa fecha 2">
+                                </div>
+                                <div class="col-3">
+                                    <label for="sexo" class="form-label fw-bold">Género:</label>
+                                    <select  class="form-select rounded-pill form-control-sm" id="sexo" name="sexo">
+                                        <option value="" selected="">---------</option>
+                                        <option value="0">Femenino</option>
+                                        <option value="1">Masculino</option>
+                                        <option value="2">No Especificado</option>
+                                    </select>
                                 </div>
                             </div>     
                         </div>
