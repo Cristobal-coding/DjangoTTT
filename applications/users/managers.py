@@ -9,12 +9,13 @@ class UserManager(BaseUserManager, models.Manager):
             rut=rut,
             is_staff=is_staff,
             is_superuser=is_superuser,
+            activo=True,
             **extra_fields
         )
         user.set_password(password)
         user.save(using=self.db)
         return user
-    def create_user(self, username, rut,password=None, **extra_fields):
+    def create_user(self, username, rut,password=None,**extra_fields):
         return self._create_user(username,rut, password,False,False,**extra_fields)
 
     def create_superuser(self, username,rut,password=None, **extra_fields):
