@@ -9,7 +9,7 @@ Actualizar datos del alumno
 {% block 'content' %}
 <div class="row mx-0 h-100 w-100">
     <div class="col-9 d-flex align-items-center flex-column h-100">
-        <h1 class="my-3"><i class="fas fa-book-open fs-1 mx-2 text-primary"></i>Registro de un Alumno<i class="fas fa-book-open fs-1 mx-2 text-primary"></i></h1>                    
+        <h2 class="my-3"><i class="fas fa-book-open fs-2 mx-2 text-primary"></i>Actualizando al alumno {{form.nombre.value}} {{form.apellido_paterno.value}}<i class="fas fa-book-open fs-2 mx-2 text-primary"></i></h2>                    
         <form method="POST" class="w-100 h-100">
             {% csrf_token %}
             <div class="row mx-0 w-100 shadow-sm border rounded p-3">
