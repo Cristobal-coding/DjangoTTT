@@ -4,6 +4,8 @@ from .models import Alumno
 from applications.logicas import validar_rut
 
 class AlumnosRegisterForm(forms.ModelForm):
+    # created_date = forms.DateField(input_formats=['%d/%m/%Y',])
+
     def __init__(self, *args, **kwargs):
         kwargs_new = {'error_class': DivErrorList}
         kwargs_new.update(kwargs)
@@ -39,7 +41,8 @@ class AlumnosRegisterForm(forms.ModelForm):
                 attrs={
                     'class': 'form-control rounded-pill my-2',
                     'type': 'date'
-                }
+                },
+                format='%Y-%m-%d'
             ),   
             'rut_apoderado': forms.Select(
                 attrs={

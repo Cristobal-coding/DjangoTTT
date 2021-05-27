@@ -9,7 +9,7 @@ class Apoderado(models.Model):
     telefono_apoderado=models.CharField('Telefono apoderado',max_length=8)
     correo=models.CharField('Correo',max_length=20)
     def __str__(self):
-        return self.rut
+        return self.nombre_apoderado+ ' ' + self.apellido_paterno+ ' ' + self.apellido_materno+'('+self.rut+')'
     class Meta:
         verbose_name = 'Apoderado'
         verbose_name_plural = 'Apoderados'

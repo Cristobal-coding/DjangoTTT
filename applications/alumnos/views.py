@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import TemplateView , ListView
+from django.views.generic import TemplateView , ListView, UpdateView, View
+from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
 # Create your views here.
 from applications.alumnos.models import Alumno
@@ -49,3 +50,16 @@ class AlumnosRegister(LoginRequiredMixin,FormView):
 
         )
         return super(AlumnosRegister, self).form_valid(form)
+
+class AlumnoEdit(UpdateView):
+    template_name = "alumnos/edit.html"
+    form_class = AlumnosRegisterForm
+    model = Alumno
+    success_url = reverse_lazy('alumnos_app:filtrar')
+
+# class AlumnoDelete(View):
+    
+def delete_alumno(request, pk):
+    query = Alumno.objects.get(pk=pk)
+    query.delete()
+    return HttpResponseRedirect(reverse('alumnos_app:filtrar'))
