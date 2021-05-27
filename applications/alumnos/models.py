@@ -14,6 +14,7 @@ class Apoderado(models.Model):
         verbose_name = 'Apoderado'
         verbose_name_plural = 'Apoderados'
         db_table= 'Apoderados'
+        ordering = ['nombre_apoderado','apellido_paterno']
 class Alumno(models.Model):
     SEX_CHOICES = (
         ('0','Femenino'),
