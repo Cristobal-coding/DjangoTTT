@@ -39,6 +39,14 @@ Filtrar Alumnos por Parametros
             <div class="col-12" {% if not is_paginated %}style="height: 88% !important;"{% endif %} style="height: 75% !important;">
                 <div class="row mx-0 h-100 w-100 ">
                     <div class="col-12 h-100">
+                    
+                    {% if alumnos.count == 0 %}
+                    <div class="text-center my-3">
+                        <h5>No se han encontrado resultados</h5>
+                        <h6>O todabía no se han agregado alumnos...</h6>
+                    </div>
+                    {% endif %}
+                        
                     {% for alumno in alumnos  %}
                     {% date_to_age alumno.fecha_nacimiento as edad%}           
                     <div class="row mx-0 w-100 shadow-sm my-3" style="height:80px;background-color:white;">
