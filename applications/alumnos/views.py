@@ -4,13 +4,22 @@ from django.views.generic import TemplateView , ListView, UpdateView, View
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
 # Create your views here.
-from applications.alumnos.models import Alumno
+from applications.alumnos.models import Alumno, Apoderado
 from django.contrib.auth.mixins import LoginRequiredMixin
 #local
 from .forms import AlumnosRegisterForm
 class AlumnosHome(LoginRequiredMixin,TemplateView):
     template_name = 'alumnos/inicio.html'
     login_url = reverse_lazy('home_app:login')
+    
+    def get_context_data(self, **kwargs):
+        context = super(AlumnosHome, self).get_context_data(**kwargs)
+        context['alumnos'] = Alumno.objects.count()
+        context['apoderados'] = Apoderado.objects.count()
+        context['fem'] = Alumno.objects.filter(sexo__icontains='0')
+        context['masc'] = Alumno.objects.filter(sexo__icontains='1')
+        return context
+
 class AlumnosFiltros(LoginRequiredMixin,ListView):
     template_name = 'alumnos/filtros.html'
     model = Alumno
@@ -57,7 +66,6 @@ class AlumnoEdit(UpdateView):
     model = Alumno
     success_url = reverse_lazy('alumnos_app:filtrar')
 
-# class AlumnoDelete(View):
     
 def delete_alumno(request, pk):
     query = Alumno.objects.get(pk=pk)

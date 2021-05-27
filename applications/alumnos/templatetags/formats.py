@@ -14,3 +14,8 @@ def date_to_age(nacimiento):
     age= days / 365
     age=math.floor(age)
     return age
+
+@register.simple_tag
+def sin_especificar(total, m , f):
+    sin = int(total)-(int(m)+int(f))
+    return sin

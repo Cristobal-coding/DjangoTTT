@@ -1,24 +1,26 @@
 {% extends '../layouts/master.html' %}
-
+{% load formats %}
 
 {% block 'content' %}
+{% sin_especificar alumnos masc.count fem.count as otro%} 
     <div class="row mx-0 h-100 w-100">
         <div class="col-9 d-flex align-items-center flex-column p-3">
             <div class="row mx-0 w-100 shadow-sm">
-                <div class="col-6 w-100" style="height: 400px;background-color:white;">
+                <div class="col-6 w-100" style="height: 500px;background-color:white;">
                     <div class="text-center">
-                        <h3 class="my-3">Información General</h3>
+                        <h3 class="my-3"><i class="far fa-folder text-primary fs-3 mx-1"></i>Información General</h3>
                     </div>
                     <div class="row mx-0 h-25 w-100 border border-2 border-dark rounded my-3 p-2">
-                        <div class="col-6">
-                            <h6><span class="fw-bold">Total de Alumnos: </span>  4</h6>
-                            <h6><span class="fw-bold">Mujeres:</span>  26%</h6>
-                            <h6><span class="fw-bold">Hombres:</span> 74%</h6>
+                        <div class="col-6" style="border-right: 1px solid #343a40 ;">
+                            <h6><span class="fw-bold"><i class="fas fa-user-graduate mx-1 text-primary"></i>Total de Alumnos: </span>  {{alumnos}}</h6>
+                            <h6><span class="fw-bold"><i class="fas fa-venus mx-1 text-primary"></i>Mujeres:</span>{{fem.count}}</h6>
+                            <h6><span class="fw-bold"><i class="fas fa-mars mx-1 text-primary"></i>Hombres:</span>{{masc.count}}</h6>
+                            <h6><span class="fw-bold"><i class="fas fa-circle-notch mx-1 text-primary"></i>Sin especificar:</span>{{otro}}</h6>
                         </div>
                         <div class="col-6">
-                            <h6><span class="fw-bold">Total de Apoderados: </span>  3</h6>
-                            <h6><span class="fw-bold">Mujeres:</span>  26%</h6>
-                            <h6><span class="fw-bold">Hombres:</span> 74%</h6>
+                            <h6><span class="fw-bold"><i class="fas fa-people-arrows mx-1 text-primary"></i>Total de Apoderados: </span>  {{apoderados}}</h6>
+                            <!-- <h6><span class="fw-bold">Mujeres:</span>  26%</h6>
+                            <h6><span class="fw-bold">Hombres:</span> 74%</h6> -->
                         </div>
                     </div>       
                       
