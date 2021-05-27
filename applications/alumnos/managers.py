@@ -21,6 +21,12 @@ class AlumnoManager(models.Manager):
 
         #ORDENADOS POR SEXO
 
+        def buscar_por_sexo(self,sex):
+            resultado=self.filter(sexo=sex)
+            return resultado
+
+
+
         def buscar_alumno_s(self, kword,sex):
             resultado =self.filter(
                 (Q(nombre__icontains=kword) | Q(apellido_paterno__icontains=kword) | Q(apellido_materno__icontains=kword)), sexo=sex

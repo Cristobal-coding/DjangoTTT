@@ -32,12 +32,14 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
         palabra_clave=self.request.GET.get("kword",'')
         f1=self.request.GET.get("fecha1",'')
         f2=self.request.GET.get("fecha2",'')
-        sexo=self.request.GET.get("sex",'')
+        sexo=self.request.GET.get("sexo",'')
         if sexo:
-            if f1 and f2:
+            if f1 and f2 and palabra_clave:
                 return Alumno.objects.buscar_alumno_fecha_s(palabra_clave,f1,f2,sexo)
+            elif palabra_clave and f1==""and f2=="":
+                return Alumno.objects.buscar_alumno_s(palabra_clave,sexo)
             else:
-                return Alumno.objects.buscar_alumnos_s(palabra_clave,sexo)
+                return Alumno.objects.buscar_por_sexo(sexo)
         else:
             if f1 and f2:
                  return Alumno.objects.buscar_alumno_fecha(palabra_clave,f1,f2)
