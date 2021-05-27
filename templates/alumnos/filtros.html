@@ -140,6 +140,7 @@ Filtrar Alumnos por Parametros
 
 
             {% if is_paginated %}
+            {% path_with_filter request.get_full_path as filter%} 
             <div class="col-12" style="height: 13% !important;">
                 <div class="row mx-0 w-100 h-100">
                     <div class="col-12 d-flex flex-column justify-content-center align-items-center">
@@ -147,21 +148,21 @@ Filtrar Alumnos por Parametros
                             <ul class="pagination">
                                 {% if page_obj.has_previous %}
                                 <li class="page-item">
-                                  <a class="page-link" href="?page={{page_obj.previous_page_number}}" tabindex="-1" aria-disabled="true">Anterior</a>
+                                  <a class="page-link" href="?page={{page_obj.previous_page_number}}{{filter}}" tabindex="-1" aria-disabled="true">Anterior</a>
                                 </li>
                                 {% endif %} 
                                 {% for pag in paginator.page_range %}
                 
                                 {% ifequal pag page_obj.number  %}
-                                <li class="page-item active"><a class="page-link" href="?page={{pag}}">{{pag}}</a></li>
+                                <li class="page-item active"><a class="page-link" href="?page={{pag}}{{filter}}">{{pag}}</a></li>
                                 {% else %}
-                                <li class="page-item"><a class="page-link" href="?page={{pag}}">{{pag}}</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{pag}}{{filter}}">{{pag}}</a></li>
                                 {% endifequal %}
                                     
                                 {% endfor %}
                                 {% if page_obj.has_next %}
                                 <li class="page-item">
-                                  <a class="page-link" href="?page={{page_obj.next_page_number}}" tabindex="-1" aria-disabled="true">Siguiente</a>
+                                  <a class="page-link" href="?page={{page_obj.next_page_number}}{{filter}}" tabindex="-1" aria-disabled="true">Siguiente</a>
                                 </li>
                                 {% endif %}              
                             </ul>

@@ -19,3 +19,11 @@ def date_to_age(nacimiento):
 def sin_especificar(total, m , f):
     sin = int(total)-(int(m)+int(f))
     return sin
+
+@register.simple_tag
+def path_with_filter(path):
+    if 'csrf' in path:
+        path ='&'+path[path.index('csrf'):len(path)]
+    else:
+        path=''
+    return path
