@@ -1,5 +1,5 @@
 from django import template
-from datetime import date
+from datetime import date, datetime
 import math
 register = template.Library()
 
@@ -27,3 +27,17 @@ def path_with_filter(path):
     else:
         path=''
     return path
+
+# ?csrfmiddlewaretoken=rmStQ97R8EHreQY3yIjPbi7RTdxfTSVDW4zZ1ubFYlih75IwuyisXdhdNeQnCMZp&kword=F&fecha1=2006-05-12&fecha2=2021-05-11&sexo=1
+@register.simple_tag
+def keep_filters(path):
+    key=path[path.index('kword')+6:path.index('fecha1')-1]
+    minimo=path[path.index('fecha1')+7:path.index('fecha2')-1]
+    maximo=path[path.index('fecha2')+7:path.index('sexo')-1]
+    gender=path[len(path)-1:len(path)]
+    return {
+        'key': key,
+        'minimo': minimo,
+        'maximo': maximo,
+        'gender': gender,
+    }
