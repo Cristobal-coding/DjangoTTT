@@ -526,6 +526,7 @@ pre code {
 .table-hover tbody tr:hover {
   color: #212529;
   background-color: rgba(0, 0, 0, 0.075);
+  transition: 0.3s;
 }
 .table-primary,
 .table-primary > th,
@@ -540,10 +541,12 @@ pre code {
 }
 .table-hover .table-primary:hover {
   background-color: #c3bfd5;
+  transition: 0.3s;
 }
 .table-hover .table-primary:hover > td,
 .table-hover .table-primary:hover > th {
   background-color: #c3bfd5;
+  transition: 0.3s;
 }
 .table-secondary,
 .table-secondary > th,
@@ -558,10 +561,12 @@ pre code {
 }
 .table-hover .table-secondary:hover {
   background-color: #d0a8dc;
+  transition: 0.3s;
 }
 .table-hover .table-secondary:hover > td,
 .table-hover .table-secondary:hover > th {
   background-color: #d0a8dc;
+  transition: 0.3s;
 }
 .table-success,
 .table-success > th,
@@ -576,10 +581,12 @@ pre code {
 }
 .table-hover .table-success:hover {
   background-color: #b1dfbb;
+  transition: 0.3s;
 }
 .table-hover .table-success:hover > td,
 .table-hover .table-success:hover > th {
   background-color: #b1dfbb;
+  transition: 0.3s;
 }
 .table-info,
 .table-info > th,
@@ -594,10 +601,12 @@ pre code {
 }
 .table-hover .table-info:hover {
   background-color: #ffeead;
+   transition: 0.3s;
 }
 .table-hover .table-info:hover > td,
 .table-hover .table-info:hover > th {
   background-color: #ffeead;
+   transition: 0.3s;
 }
 .table-warning,
 .table-warning > th,
@@ -612,10 +621,12 @@ pre code {
 }
 .table-hover .table-warning:hover {
   background-color: #a5aee1;
+  transition: 0.3s;
 }
 .table-hover .table-warning:hover > td,
 .table-hover .table-warning:hover > th {
   background-color: #a5aee1;
+  transition: 0.3s;
 }
 .table-danger,
 .table-danger > th,
@@ -630,10 +641,12 @@ pre code {
 }
 .table-hover .table-danger:hover {
   background-color: #f0aab1;
+  transition: 0.3s;
 }
 .table-hover .table-danger:hover > td,
 .table-hover .table-danger:hover > th {
   background-color: #f0aab1;
+  transition: 0.3s;
 }
 .table-light,
 .table-light > th,
@@ -648,10 +661,12 @@ pre code {
 }
 .table-hover .table-light:hover {
   background-color: #ececf6;
+  transition: 0.3s;
 }
 .table-hover .table-light:hover > td,
 .table-hover .table-light:hover > th {
   background-color: #ececf6;
+  transition: 0.3s;
 }
 .table-dark,
 .table-dark > th,
@@ -666,10 +681,12 @@ pre code {
 }
 .table-hover .table-dark:hover {
   background-color: #b9bbbe;
+   transition: 0.3s;
 }
 .table-hover .table-dark:hover > td,
 .table-hover .table-dark:hover > th {
   background-color: #b9bbbe;
+   transition: 0.3s;
 }
 .table-active,
 .table-active > th,
@@ -678,10 +695,12 @@ pre code {
 }
 .table-hover .table-active:hover {
   background-color: rgba(0, 0, 0, 0.075);
+   transition: 0.3s;
 }
 .table-hover .table-active:hover > td,
 .table-hover .table-active:hover > th {
   background-color: rgba(0, 0, 0, 0.075);
+   transition: 0.3s;
 }
 .table .thead-dark th {
   color: #fff;

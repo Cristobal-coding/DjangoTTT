@@ -127,7 +127,16 @@
 .abajo{
     float:none;
 }
-
+.my-btn{
+    width: 152.84px !important;
+    transition: 0.2s !important;
+}
+.my-btn:hover{
+    width: 180px !important;
+    box-shadow: 0 0.125rem 0.25rem rgba(94, 16, 227, 0.4) !important;
+    font-weight: bold;
+    transition: 0.2s !important;
+}
 .customnavbar li {
     float: left;
 }

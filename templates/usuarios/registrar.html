@@ -1,42 +1,128 @@
 {% extends '../layouts/master.html' %}
-
+{% load static %}
 
 {% block 'titulo' %}
 Registrar Usuario
 {% endblock 'titulo' %}
-
-
 {% block 'content' %}
-<div class="row mx-0">
-    <div class="col-6 offset-3 d-flex align-items-center flex-column">
-        <h1>Registrar un usuario</h1>
-        <!-- {% if form.errors %}
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
+<div class="row mx-0 h-100 w-100"> 
+    <div class="col-12 h-100 d-flex flex-column align-items-center py-5">
+        <div class="card shadow-sm w-75">
+            <div class="card-header bg-white border-0">
+                <div class="row mx-0 w-100">
+                    <div class="col-6 d-flex flex-column justify-content-center align-items-start">
+                        <h5 class="title d-inline fw-bold">Usuarios Registrados</h5>
                     </div>
-                {% endfor %}
-            {% endfor %}
-
-            {% for error in form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
+                    <div class="col-6 text-end">
+                        <button type="button" class="btn btn-primary rounded-pill my-btn" data-bs-toggle="modal" data-bs-target="#addUser">
+                            Nuevo Usuario <i class="fas fa-plus mx-1"></i>
+                        </button>
+                    </div>
                 </div>
-            {% endfor %}
-
-        {% endif %} -->
-                     
-        <form method="POST" class="w-75">
-            {% csrf_token %}
-            {{form}}
+            </div>
+            <div class="card-body py-0">
+                <div class="table-responsive ps">
+                    <table class="table table-borderless">
+                        <thead class="text-primary" style="border-bottom: 1px solid #dee2e6 !important;;">
+                            <tr>
+                                <td>#</td>
+                                <td>Nombre</td>
+                                <td>Rol</td>
+                                <td>Rut</td>
+                                <td class="text-center">Estado</td>
+                                <td colspan="2" class="text-center">Acciones</td>
+                            </tr>
+                        </thead>
+                        <tbody>  
+                            {% for u in users %}
+                            <tr>
+                                <td>
+                                    <div class="rounded-circle" style="height: 40px;width:40px">      
+                                    {% if not u.image%}
+                                    <img src="{% static 'imgs/man-300x300.png' %}" alt="" class="img-fluid rounded-circle">
+                                    {%else%}
+                                    <img src="{{u.image.url}}" alt="" class="img-fluid rounded-circle">
+                                    {% endif %}      
+                                  </div>
+                                </td>
+                                <td>{{u.username}}</td>
+                                <td>{{u.rol}}</td>
+                                <td>{{u.rut}}</td>
+                                <td class="text-center">{% if u.activo %}<span class="badge rounded-pill bg-success">Activo</span>{%else%}<span class="badge rounded-pill bg-danger">Bloqueado</span>{% endif %}</td>      
+                                <td class="text-end">
+                                    {% if u.activo %}
+                                    <a href="#" class="text-decoration-none"> <i class="fas fa-user-lock text-danger fs-4"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Bloquear Usuario"></i></a>
+                                    {% else %}        
+                                    <a href="#" class="text-decoration-none"> <i class="fas fa-user-unlock text-success fs-4"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Desbloquear Usuario"></i></a>
+                                    {% endif %}
+                                </td>
+                                <td class="text-start"><i class="fas fa-trash-alt fs-4"></i></td>
+                            </tr>
+                            {% endfor %}      
+                        </tbody>
             
-            <!-- {% if form.password2.errors %}
-                is_invalid
-            {% endif %} -->
-                
-            <button class="btn btn-primary w-100" type="submit">Registrar</button>
-        </form>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- <ul class="list-group list-group-flush w-100 overflow-auto" style="height: 90%;" >       
+            {% if libros.count == 0 %}
+                <li class="list-group-item">No se encontraron resultados.</li>
+            {% endif %}   
+            {% for u in users  %}
+            <li class="row list-group-item d-flex justify-content-between align-items-start list-group-item-action shadow-sm">
+                <div class="col-2 px-0 h-100 d-flex justify-content-center align-items-center">
+                    <div class="rounded-circle w-100 h-100" >      
+                        {% if not u.image%}
+                        <img src="{% static 'imgs/man-300x300.png' %}" alt="" class="img-fluid rounded-circle">
+                        {%else%}
+                        <img src="{{u.image.url}}" alt="" class="img-fluid rounded-circle">
+                        {% endif %}      
+                      </div>
+                </div>
+                <div class="col-6">
+                    <div class="fw-bold">{{u.username}}</div>
+                    {{u.rut}}    
+                </div>
+                <div class="col-4 text-end">
+                    {% if u.activo%}
+                    <span class="badge bg-success rounded-pill">Activo</span>
+                    {%else%}
+                    <span class="badge bg-danger rounded-pill">Bloqueado</span>
+                    {% endif %}                
+                    <div class="d-block">
+                        <small>{{u.rol}}</small>                
+                    </div>
+                </div>
+                </li>
+            {% endfor %}            
+        </ul> -->
+        <!-- Modal -->
+        <div class="modal fade" id="addUser" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addUser" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-light">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Registro de Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" class="w-100">
+                            {% csrf_token %}
+                            {{form}} 
+                            <div class="row mx-0 w-100" style="border-top:1px solid #dee2e6 !important;">
+                                <div class="col-6 p-3">
+                                    <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                                <div class="col-6 p-3">
+                                    <button class="btn btn-primary w-100" type="submit">Registrar</button>
+                                </div>
+                            </div>   
+                        </form>
+                    </div> 
+                </div>
+            </div>
+        </div>         
     </div>
 </div>
 {% endblock 'content' %}

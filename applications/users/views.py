@@ -13,7 +13,12 @@ class UserRegisterView(LoginRequiredMixin,FormView):
     form_class= UserRegisterForm
     success_url='.'
     login_url = reverse_lazy('home_app:login')
-    
+
+    def get_context_data(self, **kwargs):
+        context = super(UserRegisterView, self).get_context_data(**kwargs)
+        context['users'] = User.objects.all()
+        return context
+
     def form_valid(self, form):
         User.objects.create_user(
             form.cleaned_data['username'],
