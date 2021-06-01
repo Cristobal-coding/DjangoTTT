@@ -59,7 +59,7 @@ Home
             </div>
             <div class="col-12 overflow-auto scrolled" style="height: 85%;">
                 <!-- Repeat this -->
-                <div class="row mx-0 w-100" style="height: 61px;">
+                <div class="row mx-0 my-1 w-100" style="height: 61px;">
                     <div class="col-2 px-0s h-100 d-flex flex-column align-items-center justify-content-center">
                         <div class="rounded-circle bg-success " style="width: 43px;height:43px;">      
                         {% if not user.image%}
@@ -86,7 +86,7 @@ Home
                 </div>
                  <!-- Repeat this -->
                 <!-- Repeat this -->
-                <div class="row mx-0 w-100" style="height: 61px;">
+                <div class="row mx-0 my-1 w-100" style="height: 61px;">
                     <div class="col-2 px-0s h-100 d-flex flex-column align-items-center justify-content-center">
                         <div class="rounded-circle bg-success " style="width: 43px;height:43px;">      
                         {% if not user.image%}
@@ -113,7 +113,7 @@ Home
                 </div>
                  <!-- Repeat this -->
                 <!-- Repeat this -->
-                <div class="row mx-0 w-100" style="height: 61px;">
+                <div class="row mx-0 my-1 w-100" style="height: 61px;">
                     <div class="col-2 px-0s h-100 d-flex flex-column align-items-center justify-content-center">
                         <div class="rounded-circle bg-success " style="width: 43px;height:43px;">      
                         {% if not user.image%}
@@ -140,7 +140,7 @@ Home
                 </div>
                  <!-- Repeat this -->
                 <!-- Repeat this -->
-                <div class="row mx-0 w-100" style="height: 61px;">
+                <div class="row mx-0 my-1 w-100" style="height: 61px;">
                     <div class="col-2 px-0s h-100 d-flex flex-column align-items-center justify-content-center">
                         <div class="rounded-circle bg-success " style="width: 43px;height:43px;">      
                         {% if not user.image%}
@@ -167,7 +167,7 @@ Home
                 </div>
                  <!-- Repeat this -->
                 <!-- Repeat this -->
-                <div class="row mx-0 w-100" style="height: 61px;">
+                <div class="row mx-0 my-1 w-100" style="height: 61px;">
                     <div class="col-2 px-0s h-100 d-flex flex-column align-items-center justify-content-center">
                         <div class="rounded-circle bg-success " style="width: 43px;height:43px;">      
                         {% if not user.image%}
@@ -193,168 +193,8 @@ Home
                     </div>
                 </div>
                  <!-- Repeat this -->
-                <!-- Repeat this -->
-                <div class="row mx-0 w-100" style="height: 61px;">
-                    <div class="col-2 px-0s h-100 d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle bg-success " style="width: 43px;height:43px;">      
-                        {% if not user.image%}
-                        <img src="{% static 'imgs/man-300x300.png' %}" alt="" class="img-fluid rounded-circle">
-                        {%else%}
-                        <img src="{{user.image.url}}" alt="" class="img-fluid rounded-circle">
-                        {% endif %}      
-                        </div>
-                    </div>
-                    <div class="col-8 px-0">
-                        <div class="row mx-0 h-100">
-                            <div class="col-12 h-50 d-flex flex-column justify-content-end">
-                                <h6 class="fw-bold my-0" style="color: var(--gray);">{{user.last_login}}</h6>
-                            </div>    
-                            <div class="col-12 h-50 d-flex flex-column justify-content-start">
-                                <small class="fw-bold" style="color: var(--purple);font-size:90% !important;"><span class="fst-italic">{{user.rol}}</span> - {{user.username}}</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2 px-0 d-flex flex-column align-items-center justify-content-center">
-                        <a href="#"><i class="fas fa-id-card-alt fa-2x" style="color: var(--purple);"></i></a>
-                        <small class="fw-bold" style="color: var(--purple);">Ver</small>
-                    </div>
-                </div>
-                 <!-- Repeat this -->
-                <!-- Repeat this -->
-                <div class="row mx-0 w-100" style="height: 61px;">
-                    <div class="col-2 px-0s h-100 d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle bg-success " style="width: 43px;height:43px;">      
-                        {% if not user.image%}
-                        <img src="{% static 'imgs/man-300x300.png' %}" alt="" class="img-fluid rounded-circle">
-                        {%else%}
-                        <img src="{{user.image.url}}" alt="" class="img-fluid rounded-circle">
-                        {% endif %}      
-                        </div>
-                    </div>
-                    <div class="col-8 px-0">
-                        <div class="row mx-0 h-100">
-                            <div class="col-12 h-50 d-flex flex-column justify-content-end">
-                                <h6 class="fw-bold my-0" style="color: var(--gray);">{{user.last_login}}</h6>
-                            </div>    
-                            <div class="col-12 h-50 d-flex flex-column justify-content-start">
-                                <small class="fw-bold" style="color: var(--purple);font-size:90% !important;"><span class="fst-italic">{{user.rol}}</span> - {{user.username}}</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2 px-0 d-flex flex-column align-items-center justify-content-center">
-                        <a href="#"><i class="fas fa-id-card-alt fa-2x" style="color: var(--purple);"></i></a>
-                        <small class="fw-bold" style="color: var(--purple);">Ver</small>
-                    </div>
-                </div>
-                 <!-- Repeat this -->
-                <!-- Repeat this -->
-                <div class="row mx-0 w-100" style="height: 61px;">
-                    <div class="col-2 px-0s h-100 d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle bg-success " style="width: 43px;height:43px;">      
-                        {% if not user.image%}
-                        <img src="{% static 'imgs/man-300x300.png' %}" alt="" class="img-fluid rounded-circle">
-                        {%else%}
-                        <img src="{{user.image.url}}" alt="" class="img-fluid rounded-circle">
-                        {% endif %}      
-                        </div>
-                    </div>
-                    <div class="col-8 px-0">
-                        <div class="row mx-0 h-100">
-                            <div class="col-12 h-50 d-flex flex-column justify-content-end">
-                                <h6 class="fw-bold my-0" style="color: var(--gray);">{{user.last_login}}</h6>
-                            </div>    
-                            <div class="col-12 h-50 d-flex flex-column justify-content-start">
-                                <small class="fw-bold" style="color: var(--purple);font-size:90% !important;"><span class="fst-italic">{{user.rol}}</span> - {{user.username}}</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2 px-0 d-flex flex-column align-items-center justify-content-center">
-                        <a href="#"><i class="fas fa-id-card-alt fa-2x" style="color: var(--purple);"></i></a>
-                        <small class="fw-bold" style="color: var(--purple);">Ver</small>
-                    </div>
-                </div>
-                 <!-- Repeat this -->
-                <!-- Repeat this -->
-                <div class="row mx-0 w-100" style="height: 61px;">
-                    <div class="col-2 px-0s h-100 d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle bg-success " style="width: 43px;height:43px;">      
-                        {% if not user.image%}
-                        <img src="{% static 'imgs/man-300x300.png' %}" alt="" class="img-fluid rounded-circle">
-                        {%else%}
-                        <img src="{{user.image.url}}" alt="" class="img-fluid rounded-circle">
-                        {% endif %}      
-                        </div>
-                    </div>
-                    <div class="col-8 px-0">
-                        <div class="row mx-0 h-100">
-                            <div class="col-12 h-50 d-flex flex-column justify-content-end">
-                                <h6 class="fw-bold my-0" style="color: var(--gray);">{{user.last_login}}</h6>
-                            </div>    
-                            <div class="col-12 h-50 d-flex flex-column justify-content-start">
-                                <small class="fw-bold" style="color: var(--purple);font-size:90% !important;"><span class="fst-italic">{{user.rol}}</span> - {{user.username}}</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2 px-0 d-flex flex-column align-items-center justify-content-center">
-                        <a href="#"><i class="fas fa-id-card-alt fa-2x" style="color: var(--purple);"></i></a>
-                        <small class="fw-bold" style="color: var(--purple);">Ver</small>
-                    </div>
-                </div>
-                 <!-- Repeat this -->
-                <!-- Repeat this -->
-                <div class="row mx-0 w-100" style="height: 61px;">
-                    <div class="col-2 px-0s h-100 d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle bg-success " style="width: 43px;height:43px;">      
-                        {% if not user.image%}
-                        <img src="{% static 'imgs/man-300x300.png' %}" alt="" class="img-fluid rounded-circle">
-                        {%else%}
-                        <img src="{{user.image.url}}" alt="" class="img-fluid rounded-circle">
-                        {% endif %}      
-                        </div>
-                    </div>
-                    <div class="col-8 px-0">
-                        <div class="row mx-0 h-100">
-                            <div class="col-12 h-50 d-flex flex-column justify-content-end">
-                                <h6 class="fw-bold my-0" style="color: var(--gray);">{{user.last_login}}</h6>
-                            </div>    
-                            <div class="col-12 h-50 d-flex flex-column justify-content-start">
-                                <small class="fw-bold" style="color: var(--purple);font-size:90% !important;"><span class="fst-italic">{{user.rol}}</span> - {{user.username}}</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2 px-0 d-flex flex-column align-items-center justify-content-center">
-                        <a href="#"><i class="fas fa-id-card-alt fa-2x" style="color: var(--purple);"></i></a>
-                        <small class="fw-bold" style="color: var(--purple);">Ver</small>
-                    </div>
-                </div>
-                 <!-- Repeat this -->
-                <!-- Repeat this -->
-                <div class="row mx-0 w-100" style="height: 61px;">
-                    <div class="col-2 px-0s h-100 d-flex flex-column align-items-center justify-content-center">
-                        <div class="rounded-circle bg-success " style="width: 43px;height:43px;">      
-                        {% if not user.image%}
-                        <img src="{% static 'imgs/man-300x300.png' %}" alt="" class="img-fluid rounded-circle">
-                        {%else%}
-                        <img src="{{user.image.url}}" alt="" class="img-fluid rounded-circle">
-                        {% endif %}      
-                        </div>
-                    </div>
-                    <div class="col-8 px-0">
-                        <div class="row mx-0 h-100">
-                            <div class="col-12 h-50 d-flex flex-column justify-content-end">
-                                <h6 class="fw-bold my-0" style="color: var(--gray);">{{user.last_login}}</h6>
-                            </div>    
-                            <div class="col-12 h-50 d-flex flex-column justify-content-start">
-                                <small class="fw-bold" style="color: var(--purple);font-size:90% !important;"><span class="fst-italic">{{user.rol}}</span> - {{user.username}}</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2 px-0 d-flex flex-column align-items-center justify-content-center">
-                        <a href="#"><i class="fas fa-id-card-alt fa-2x" style="color: var(--purple);"></i></a>
-                        <small class="fw-bold" style="color: var(--purple);">Ver</small>
-                    </div>
-                </div>
-                 <!-- Repeat this -->
+
+                
                     
             </div>
         </div>
