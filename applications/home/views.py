@@ -1,3 +1,4 @@
+from applications.alumnos.models import Alumno
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import authenticate, login, logout
@@ -34,3 +35,7 @@ class HomePage(LoginRequiredMixin,TemplateView):
     template_name = "home/home.html"
     login_url = reverse_lazy('home_app:login')
 
+    # def get_context_data(self, **kwargs):
+    #     context = super(HomePage, self).get_context_data(**kwargs)
+    #     context['alumnos'] = Alumno.objects.buscar_alumno('f')
+    #     return context
