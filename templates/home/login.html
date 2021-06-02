@@ -90,9 +90,13 @@
                        </div>  
                        <div class="row mx-0">
                            <div class="col-6 d-flex flex-column align-items-center justify-content-center">
+                            {% if messages %}
+                            {% for message in messages %}
+                            <small class="text-danger">*{{message}}*</small>
+                            {% endfor %}
+                            {% endif %}
                             {% if form.non_field_errors %}
                             <small class="text-danger">*Credenciales Incorrectas*</small>
-                              
                             {% endif %}
                            </div>
                            <div class="col-6 text-center">

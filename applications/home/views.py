@@ -1,5 +1,5 @@
 from applications.alumnos.models import Alumno
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,7 +9,7 @@ from django.views.generic.edit import FormView
 from django.views.generic import TemplateView, View
 from applications.users.models import User
 from .forms import LoginForm
-
+from django.contrib import messages
 class LoginPage(FormView):
     model = User
     template_name = "home/login.html"
@@ -17,11 +17,7 @@ class LoginPage(FormView):
     success_url=reverse_lazy('home_app:home')
 
     def form_valid(self, form) :
-        usuario = authenticate(
-            rut= form.cleaned_data['rut'],
-            password= form.cleaned_data['password'],
-        )
-        login(self.request, usuario)
+        logining(self.request)
         return super(LoginPage,self).form_valid(form)
 
 class LogoutView(View):
@@ -39,3 +35,16 @@ class HomePage(LoginRequiredMixin,TemplateView):
     #     context = super(HomePage, self).get_context_data(**kwargs)
     #     context['alumnos'] = Alumno.objects.buscar_alumno('f')
     #     return context
+
+def logining(request):
+    if request.method == 'POST':
+        username = request.POST['rut']
+        password = request.POST['password']
+        user = authenticate(username=username,password=password)
+        if user.activo:
+            login(request,user)
+            return redirect(reverse('home_app:home'))
+        else:
+            messages.add_message(request, messages.INFO, 'Usuario Bloqueado.')
+            return redirect(reverse('home_app:login'))
+           

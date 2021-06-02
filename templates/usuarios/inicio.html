@@ -10,10 +10,15 @@ Registrar Usuario
         <div class="card shadow-sm w-75">
             <div class="card-header bg-white border-0">
                 <div class="row mx-0 w-100">
-                    <div class="col-6 d-flex flex-column justify-content-center align-items-start">
+                    <div class="col-8">
                         <h5 class="title d-inline fw-bold">Usuarios Registrados</h5>
+                        {% if messages %}
+                            {% for message in messages %}
+                            <small class="text-danger d-inline">*{{message}}*</small>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                    <div class="col-6 text-end">
+                    <div class="col-4 text-end">
                         <button type="button" class="btn btn-primary rounded-pill my-btn" data-bs-toggle="modal" data-bs-target="#addUser">
                             Nuevo Usuario <i class="fas fa-plus mx-1"></i>
                         </button>
@@ -49,14 +54,19 @@ Registrar Usuario
                                 <td>{{u.rol}}</td>
                                 <td>{{u.rut}}</td>
                                 <td class="text-center">{% if u.activo %}<span class="badge rounded-pill bg-success">Activo</span>{%else%}<span class="badge rounded-pill bg-danger">Bloqueado</span>{% endif %}</td>      
-                                <td class="text-end">
+                                <td class="px-0 text-center">
                                     {% if u.activo %}
-                                    <a href="#" class="text-decoration-none"> <i class="fas fa-user-lock text-danger fs-4"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Bloquear Usuario"></i></a>
+                                    {% if user.rut == u.rut %}
+                                    <a href="#" class="text-decoration-none"> <i class="far fa-user-lock tex fs-4" style="color: var(--gray);cursor:auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Accion Denegada"></i></a>
+                                    {%else%}  
+                                    <a href="{% url 'user_app:bloquear' u.id%}" class="text-decoration-none"> <i class="fas fa-user-lock text-danger hover-ico"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Bloquear Usuario"></i></a>
+                                    {% endif %}
+                                        
                                     {% else %}        
-                                    <a href="#" class="text-decoration-none"> <i class="fas fa-user-unlock text-success fs-4"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Desbloquear Usuario"></i></a>
+                                    <a href="{% url 'user_app:desbloquear' u.id %}" class="text-decoration-none"> <i class="fas fa-user-unlock text-success hover-ico"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Desbloquear Usuario"></i></a>
                                     {% endif %}
                                 </td>
-                                <td class="text-start"><i class="fas fa-trash-alt fs-4"></i></td>
+                                <td class="px-0 text-center"><i class="fas fa-trash-alt hover-ico"></i></td>
                             </tr>
                             {% endfor %}      
                         </tbody>
