@@ -9,7 +9,7 @@ from django.views.generic.edit import FormView
 from django.views.generic import TemplateView, View
 from applications.users.models import User
 from .forms import LoginForm
-from django.contrib import messages
+
 class LoginPage(FormView):
     model = User
     template_name = "home/login.html"
@@ -17,16 +17,12 @@ class LoginPage(FormView):
     success_url=reverse_lazy('home_app:home')
 
     def form_valid(self, form) :
-        username = self.request.POST['rut']
+        rut = self.request.POST['rut']
         password = self.request.POST['password']
-        user = authenticate(username=username,password=password)
-        if user.activo:
-            login(self.request,user)
-            return redirect(reverse('home_app:home'))
-        else:
-            messages.add_message(self.request, messages.INFO, 'Usuario Bloqueado.')
-            return redirect(reverse('home_app:login'))
-        # return super(LoginPage,self).form_valid(form)
+        user = authenticate(rut=rut,password=password)
+        login(self.request,user)
+        return super(LoginPage,self).form_valid(form)
+
 
 class LogoutView(View):
 
