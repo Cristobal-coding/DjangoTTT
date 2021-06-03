@@ -17,8 +17,16 @@ class LoginPage(FormView):
     success_url=reverse_lazy('home_app:home')
 
     def form_valid(self, form) :
-        logining(self.request)
-        return super(LoginPage,self).form_valid(form)
+        username = self.request.POST['rut']
+        password = self.request.POST['password']
+        user = authenticate(username=username,password=password)
+        if user.activo:
+            login(self.request,user)
+            return redirect(reverse('home_app:home'))
+        else:
+            messages.add_message(self.request, messages.INFO, 'Usuario Bloqueado.')
+            return redirect(reverse('home_app:login'))
+        # return super(LoginPage,self).form_valid(form)
 
 class LogoutView(View):
 
@@ -36,15 +44,6 @@ class HomePage(LoginRequiredMixin,TemplateView):
     #     context['alumnos'] = Alumno.objects.buscar_alumno('f')
     #     return context
 
-def logining(request):
-    if request.method == 'POST':
-        username = request.POST['rut']
-        password = request.POST['password']
-        user = authenticate(username=username,password=password)
-        if user.activo:
-            login(request,user)
-            return redirect(reverse('home_app:home'))
-        else:
-            messages.add_message(request, messages.INFO, 'Usuario Bloqueado.')
-            return redirect(reverse('home_app:login'))
+
+        
            
