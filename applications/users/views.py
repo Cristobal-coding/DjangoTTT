@@ -23,14 +23,16 @@ class UserMainView(LoginRequiredMixin,FormView):
         return context
 
     def form_valid(self, form):
+        print(form)
         User.objects.create_user(
             form.cleaned_data['username'],
             form.cleaned_data['rut'],
             form.cleaned_data['password1'],
             rol=form.cleaned_data['rol'],
-
         )
         return super(UserMainView, self).form_valid(form)
+
+
 
 def unlock(request, pk):
     query = User.objects.get(pk=pk)

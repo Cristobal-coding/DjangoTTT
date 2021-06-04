@@ -95,7 +95,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+SESSION_COOKIE_AGE = 30*60
 AUTH_USER_MODEL = 'users.user'
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

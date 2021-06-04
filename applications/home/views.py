@@ -16,6 +16,7 @@ class LoginPage(FormView):
     form_class= LoginForm
     success_url=reverse_lazy('home_app:home')
 
+
     def form_valid(self, form) :
         rut = self.request.POST['rut']
         password = self.request.POST['password']
@@ -34,7 +35,6 @@ class LogoutView(View):
 class HomePage(LoginRequiredMixin,TemplateView):
     template_name = "home/home.html"
     login_url = reverse_lazy('home_app:login')
-
     # def get_context_data(self, **kwargs):
     #     context = super(HomePage, self).get_context_data(**kwargs)
     #     context['alumnos'] = Alumno.objects.buscar_alumno('f')
