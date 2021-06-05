@@ -5,9 +5,10 @@ def validar_rut(rut):
     rut = rut.replace("-","")
     rut = rut.replace(".","")
     aux = rut[:-1]
-    dv = rut[-1:]   
-    
-    if rut.isdigit():
+    dv = rut[-1:] 
+    rutAux = rut[0: len(rut)-1]  
+
+    if rutAux.isdigit():
         revertido = map(int, reversed(str(aux)))
         factors = cycle(range(2,8))
         s = sum(d * f for d, f in zip(revertido,factors))

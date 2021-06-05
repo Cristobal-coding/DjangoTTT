@@ -89,9 +89,11 @@
 }
 .wrapper .sidebar ul li:hover{
     background: #a999f8;
+    color: var(--white);
 }
 .wrapper .sidebar ul li:hover a{ 
     background: #a999f8;
+    color: var(--white);
 }
 .wrapper .sidebar ul li i{ 
     margin-right: 10px;
