@@ -2,18 +2,19 @@ from django import forms
 from applications.logicas import validar_rut
 from applications.users.models import User
 from applications.errors import DivErrorList
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
 from django.contrib import messages
 
-class LoginForm(forms.Form):
-    rut = forms.CharField(
+class LoginPathern(forms.Form):
+    username = forms.CharField(
         label='Rut:',
         required=True,
         widget=forms.TextInput(
                 attrs={
-                    'class': 'form-control border-0 bg-light',
-                    'id': 'rut',
-                    'placeholder': 'rut'
+                    'class': 'form-control border-0 bg-light w-100',
+                    'id': 'username',
+                    'placeholder': 'Sin puntos y con guión',
+                    'style': 'width:100%;'
                     
                 }
             ),
@@ -23,18 +24,20 @@ class LoginForm(forms.Form):
         required=True,
         widget=forms.PasswordInput(
                 attrs={
-                    'class': 'form-control form-control-sm text-primary bg-light border-0',
+                    'class': 'form-control form-control-sm text-primary bg-light border-0 w-100',
                     'id': 'password',
+                    'style': 'width:100%;',
                     'placeholder': 'password'
                 }
             ),
     )
+    def get_user(self):
+        return authenticate(
+            rut=self.cleaned_data.get('username', ''),
+            password=self.cleaned_data.get('password', ''),
+    ) 
     def clean(self):
-        cleaned_data = super(LoginForm, self).clean()
-        rut = self.cleaned_data.get("rut")
-        password=self.cleaned_data.get("password")
-        print(self.cleaned_data.get("username"))
-        user = authenticate(rut=rut,password=password)
+        user = self.get_user()
         if not user:
             # messages.add_message(self.request, messages.INFO, 'Credenciales Incorrectas.')
             raise forms.ValidationError('Credenciales Incorrectas.')
@@ -43,26 +46,23 @@ class LoginForm(forms.Form):
                 # messages.add_message(self.request, messages.INFO, 'Usuario Bloqueado.')
                 raise forms.ValidationError('Usuario Bloqueado.')
         return self.cleaned_data
+    def clean_rut(self):
+        if not validar_rut(self.cleaned_data.get("username")):
+            self.add_error('rut', 'Rut no valido')      
+        return self.cleaned_data.get("username")
 
+class LoginForm(LoginPathern): 
     def __init__(self, *args, **kwargs):
         kwargs_new = {'error_class': DivErrorList}
         kwargs_new.update(kwargs)
         super(LoginForm, self).__init__(*args, **kwargs_new)
+  
+class LoginAdmin(LoginPathern):   
 
-    def clean_rut(self):
-        if not validar_rut(self.cleaned_data.get("rut")):
-            self.add_error('rut', 'Rut no valido')      
-        return self.cleaned_data.get("rut")
+    def __init__(self, request, *args, **kwargs):
+        kwargs_new = {'error_class': DivErrorList}
+        kwargs_new.update(kwargs)
+        super(LoginAdmin, self).__init__(*args, **kwargs_new)
 
-class LoginAdmin(forms.Form):
-    def clean(self):
-        cleaned_data = super(LoginAdmin, self).clean()
-        rut = self.cleaned_data.get("username")
-        password=self.cleaned_data.get("password")
-        user = authenticate(rut=rut,password=password)
-        if not user:
-            raise forms.ValidationError('')
-        else:
-            if not user.activo:
-                raise forms.ValidationError('')
-        return self.cleaned_data
+   
+

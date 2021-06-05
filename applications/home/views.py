@@ -18,7 +18,7 @@ class LoginPage(FormView):
 
 
     def form_valid(self, form) :
-        rut = self.request.POST['rut']
+        rut = self.request.POST['username']
         password = self.request.POST['password']
         user = authenticate(rut=rut,password=password)
         login(self.request,user)

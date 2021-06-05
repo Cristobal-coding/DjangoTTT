@@ -17,11 +17,14 @@ from django.contrib import admin
 from django.urls import  path,re_path, include
 from django.conf import settings
 from django.conf.urls.static import static 
+# from applications.home import views
 from applications.home.forms import LoginAdmin
 admin.autodiscover()
-admin.site.login_form = LoginAdmin
+admin.site.login_form=LoginAdmin
+# admin.site.login_template='home/login_admin.html'
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # path('admin/login', views.LoginPage.as_view()),
     re_path('', include('applications.users.urls')),
     re_path('', include('applications.home.urls')),
     re_path('', include('applications.alumnos.urls')),
