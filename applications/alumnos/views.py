@@ -34,9 +34,9 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
         f2=self.request.GET.get("fecha2",'')
         sexo=self.request.GET.get("sexo",'')
         if sexo:
-            if f1 and f2 and palabra_clave:
+            if f1 and f2 and sexo:
                 return Alumno.objects.buscar_alumno_fecha_s(palabra_clave,f1,f2,sexo)
-            elif palabra_clave and f1==""and f2=="":
+            elif f1=="" and f2=="":
                 return Alumno.objects.buscar_alumno_s(palabra_clave,sexo)
             else:
                 return Alumno.objects.buscar_por_sexo(sexo)
