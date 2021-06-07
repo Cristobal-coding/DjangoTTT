@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import fields, widgets
 from applications.errors import DivErrorList
-from .models import User
+from .models import User, Rol
 from applications.logicas import validar_rut
 
 class UserRegisterForm(forms.ModelForm):
@@ -58,12 +58,35 @@ class UserRegisterForm(forms.ModelForm):
             self.add_error('password2', 'Las contraseñas deben coincidir')
             self.fields['password2'].widget.attrs.update({'class': 'form-control my-2 is-invalid'})
 
-
     def clean_rut(self):
         if not validar_rut(self.cleaned_data.get("rut")):
             self.add_error('rut', 'Rut no valido')
             self.fields['rut'].widget.attrs.update({'class': 'form-control my-2 is-invalid'})
         return self.cleaned_data.get("rut")
 
+class RolRegisterForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        kwargs_new = {'error_class': DivErrorList}
+        kwargs_new.update(kwargs)
+        super(RolRegisterForm, self).__init__(*args, **kwargs_new)
+
+
+    class Meta:
+        model=Rol
+        fields= ('nombre',)
+        widgets = {
+            'nombre': forms.TextInput(
+                attrs={
+                    'class': 'form-control my-2'
+                }
+            ),
+  
+        }
+    # def clean_nombre(self):
+    #     if self.cleaned_data.get("rut").unique:
+    #         self.add_error('rut', 'Rut no valido')
+    #         self.fields['rut'].widget.attrs.update({'class': 'form-control my-2 is-invalid'})
+    #     return self.cleaned_data.get("rut")
  
     

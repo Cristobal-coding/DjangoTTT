@@ -138,15 +138,25 @@
 .abajo{
     float:none;
 }
+.link{
+    color: var(--white) !important;
+    background-color: var(--primary) !important;
+    transition: 0.3s !important;
+}
+.link:hover{
+    color: var(--white) !important;
+    background-color: var(--purple) !important;
+    transition: 0.3s !important;
+}
 .my-btn{
-    width: 152.84px !important;
-    transition: 0.2s !important;
+    width: 154px !important;
+    transition: 0.3s !important;
 }
 .my-btn:hover{
-    width: 180px !important;
+    width: calc(100% + 5px) !important;
     box-shadow: 0 0.125rem 0.25rem rgba(94, 16, 227, 0.4) !important;
     font-weight: bold;
-    transition: 0.2s !important;
+    transition: 0.3s !important;
 }
 .customnavbar li {
     float: left;

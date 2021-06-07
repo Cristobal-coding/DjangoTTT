@@ -37,15 +37,15 @@ class LoginPathern(forms.Form):
             password=self.cleaned_data.get('password', ''),
     ) 
     def clean(self):
-        user = self.get_user()
-        if not user:
-            # messages.add_message(self.request, messages.INFO, 'Credenciales Incorrectas.')
-            raise forms.ValidationError('Credenciales Incorrectas.')
+        if  validar_rut(self.cleaned_data.get("username")):
+            user = self.get_user()
+            if not user:
+                # messages.add_message(self.request, messages.INFO, 'Credenciales Incorrectas.')
+                raise forms.ValidationError('Credenciales Incorrectas.')
         else:
-            if not user.activo:
-                # messages.add_message(self.request, messages.INFO, 'Usuario Bloqueado.')
-                raise forms.ValidationError('Usuario Bloqueado.')
+            raise forms.ValidationError('Rut no valido')
         return self.cleaned_data
+        
     def clean_rut(self):
         if not validar_rut(self.cleaned_data.get("username")):
             self.add_error('rut', 'Rut no valido')      

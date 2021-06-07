@@ -96,6 +96,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 SESSION_COOKIE_AGE = 30*60
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 AUTH_USER_MODEL = 'users.user'
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

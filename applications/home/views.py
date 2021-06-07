@@ -1,4 +1,3 @@
-from applications.alumnos.models import Alumno
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import authenticate, login, logout
@@ -16,19 +15,26 @@ class LoginPage(FormView):
     form_class= LoginForm
     success_url=reverse_lazy('home_app:home')
 
-
     def form_valid(self, form) :
+        path=self.request.get_full_path()
+        path = path.split("=",1)
         rut = self.request.POST['username']
         password = self.request.POST['password']
         user = authenticate(rut=rut,password=password)
         login(self.request,user)
-        return super(LoginPage,self).form_valid(form)
+
+        if len(path) !=2:
+            return super(LoginPage,self).form_valid(form)
+        else:
+            return HttpResponseRedirect(path[1])
+
 
 
 class LogoutView(View):
 
     def get(self, request, *args, **kwargs):
         logout(request)
+        print('Sesión expirada')
         return HttpResponseRedirect(reverse('home_app:login'))
 
 
