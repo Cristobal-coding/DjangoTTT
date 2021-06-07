@@ -66,10 +66,10 @@ Filtrar Alumnos por Parametros
                                 <div class="col-12 d-flex flex-column align-items-center justify-content-center">
                                     <div class="text-start">
                                         <h6 class="my-0 fw-bold">{{alumno.rut}}</h6>
-                                        <small class="my-0 fw-light">{{edad}} Años</small>
+                                        <small class="my-0 fw-light">{% if edad == '' %}Edad no ingresada{%else%}{{edad}} Años{% endif %}</small>
                                     </div>
                                 </div>
-                            </div>
+                            </div>                          
                         </div>
                         <div class="col-3 h-100 px-0">
                             <div class="row mx-0 h-100">
@@ -85,8 +85,8 @@ Filtrar Alumnos por Parametros
                             <div class="row mx-0 h-100">
                                 <div class="col-12 d-flex flex-column align-items-start justify-content-center">
                                     <div class="text-start">
-                                        <h6 class="my-0 fw-bold">+56 9 {{alumno.telefono}}</h6>
-                                        <small class="my-0 fw-light">{{alumno.direccion}}</small>
+                                        <h6 class="my-0 fw-bold">{% if alumno.telefono == None %}Telefóno no definido{%else%}+56 9 {{alumno.telefono}}{% endif %}</h6>
+                                        <small class="my-0 fw-light">{% if alumno.direccion == None %}Dirección no definida{%else%}{{alumno.direccion}}{% endif %}</small>
                                     </div>
                                 </div>
                             </div>

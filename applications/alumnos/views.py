@@ -68,7 +68,8 @@ class AlumnosRegister(LoginRequiredMixin,FormView):
             estado=form.cleaned_data['estado'],
 
         )
-        return super(AlumnosRegister, self).form_valid(form)
+        messages.add_message(self.request, messages.INFO, 'Alumno ingresado Correctamente.')
+        return HttpResponseRedirect(self.get_success_url())
 
 class AlumnoEdit(LoginRequiredMixin,UpdateView):
     template_name = "alumnos/edit_alumn.html"
