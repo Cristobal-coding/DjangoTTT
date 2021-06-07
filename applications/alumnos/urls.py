@@ -10,5 +10,6 @@ urlpatterns = [
     path('alumnos/registrar/', views.AlumnosRegister.as_view(), name='registrar'),
     path('alumnos/apoderados/', views.ApoderadosList.as_view(), name='apoderados'),
     path('alumnos/apoderados/register/', views.CreateApoderado.as_view(), name='addApoderado'),
+    path('alumnos/apoderados/edit/<pk>/', views.ApoderadoEdit.as_view(), name='editApoderado'),
     path('alumnos/delete/<pk>', views.delete_alumno, name='eliminar'),
 ]

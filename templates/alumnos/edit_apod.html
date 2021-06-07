@@ -1,10 +1,10 @@
 {% extends '../layouts/form1.html' %}
 {% block 'title' %}
-Registro de Apoderado
+Actual de Apoderado
 {% endblock 'title' %}
 
 {% block 'formtitle' %}
-Perfil de Apoderado
+Perfil del Apoderado: {{apoderado.nombre_apoderado}}
 {% endblock 'formtitle' %}
 
 {% block 'go_list' %}
@@ -12,9 +12,12 @@ Perfil de Apoderado
     <i class="far fa-undo-alt px-1"></i>Apoderados
 </a>
 {% endblock 'go_list' %}
+
+
 {% block 'accion' %}
-Registrar
-{% endblock 'accion' %}  
+Actualizar
+{% endblock 'accion' %}
+    
 
 {% block 'formulario' %}
 <div class="row mx-0">

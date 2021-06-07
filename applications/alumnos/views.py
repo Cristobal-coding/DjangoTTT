@@ -22,7 +22,7 @@ class AlumnosHome(LoginRequiredMixin,TemplateView):
         return context
 
 class AlumnosFiltros(LoginRequiredMixin,ListView):
-    template_name = 'alumnos/filtros.html'
+    template_name = 'alumnos/alumnos.html'
     model = Alumno
     context_object_name = 'alumnos'
     paginate_by=5
@@ -49,7 +49,7 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
             
 class AlumnosRegister(LoginRequiredMixin,FormView):
     model = Alumno
-    template_name = "alumnos/registrar.html"
+    template_name = "alumnos/regist_alumn.html"
     form_class= AlumnosRegisterForm
     success_url='.'
     login_url = reverse_lazy('home_app:login')
@@ -71,7 +71,7 @@ class AlumnosRegister(LoginRequiredMixin,FormView):
         return super(AlumnosRegister, self).form_valid(form)
 
 class AlumnoEdit(LoginRequiredMixin,UpdateView):
-    template_name = "alumnos/edit.html"
+    template_name = "alumnos/edit_alumn.html"
     form_class = AlumnosRegisterForm
     model = Alumno
     success_url = reverse_lazy('alumnos_app:filtrar')
@@ -101,8 +101,16 @@ class CreateApoderado(LoginRequiredMixin, FormView):
         )
         messages.add_message(self.request, messages.INFO, 'Apoderado ingresado Correctamente.')
         return HttpResponseRedirect(self.get_success_url())
+
+class ApoderadoEdit(LoginRequiredMixin,UpdateView):
+    template_name = "alumnos/edit_apod.html"
+    form_class = ApoderadosRegisterForm
+    model = Apoderado
+    success_url = reverse_lazy('alumnos_app:apoderados')
+    login_url = reverse_lazy('home_app:login')
     
 def delete_alumno(request, pk):
     query = Alumno.objects.get(pk=pk)
     query.delete()
+    messages.add_message(request, messages.INFO, 'Alumno elminado Satisfactoriamente.')
     return HttpResponseRedirect(reverse('alumnos_app:filtrar'))

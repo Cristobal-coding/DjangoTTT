@@ -13,7 +13,6 @@ Listado de Apoderados
             <div class="col-12 py-2" style="height: 12% !important;">
                 <form method="GET" class="w-100 d-flex">
                     {% csrf_token %}
-                    <!-- {% keep_filters request.get_full_path as filters %}  -->
                     <div class="row mx-0 w-100">
                         <div class="col-10 px-0">
                             <div class="row mx-0 w-100 ">
@@ -32,9 +31,6 @@ Listado de Apoderados
                                 <div class="col-12 px-0 text-end">
                                     <button type="submit" class="btn btn-primary rounded-pill w-100" ><i class="fas fa-sort mx-1"></i>Filtrar</button>
                                 </div>
-                                <!-- <div class="col-6 px-1">
-                                    <button type="button" class="btn btn-primary rounded-pill w-100" data-bs-toggle="modal" data-bs-target="#addApod"><i class="far fa-plus mx-1"></i>Agregar</button>
-                                </div> -->
                             </div>
                         </div>
                     </div>                  
@@ -96,10 +92,7 @@ Listado de Apoderados
                         <div class="col-2 h-100 px-0">
                             <div class="row mx-0 h-100 w-100">
                                 <div class="col-6 h-100 px-1 d-flex flex-column justify-content-center align-items-end">
-                                    <a href="#" class="btn fs-5"><i class="far fa-edit"></i></a>
-                                    <!-- <form class="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-                                        {% csrf_token %}
-                                    </form> -->
+                                    <a href="{% url 'alumnos_app:editApoderado' apod.rut %} " class="btn fs-5"><i class="far fa-edit"></i></a>
                                 </div>
                                 <div class="col-6 h-100 px-1  d-flex flex-column justify-content-center align-items-start">
                                     
@@ -129,32 +122,6 @@ Listado de Apoderados
                     </div>
                     {% endfor %}
                     </div>                
-                </div>
-            </div>
-
-            <!-- Modal Del Formulario-->
-            <div class="modal fade" id="addApod" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addApod" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content bg-light">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Registrar Nuevo Apoderado</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body bg-light">
-                            <form method="POST" class="w-100" action="{% url 'alumnos_app:addApoderado'%}">
-                                {% csrf_token %}
-                                {{apodform}} 
-                                <div class="row mx-0 w-100" style="border-top:1px solid #dee2e6 !important;">
-                                    <div class="col-6 p-3">
-                                        <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Cancelar</button>
-                                    </div>
-                                    <div class="col-6 p-3">
-                                        <button class="btn btn-primary w-100" type="submit">Registrar</button>
-                                    </div>
-                                </div>   
-                            </form>
-                        </div> 
-                    </div>
                 </div>
             </div>
             {% if is_paginated %}
