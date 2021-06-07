@@ -85,6 +85,18 @@ class ApoderadosList(LoginRequiredMixin,ListView):
     paginate_by=5
     login_url = reverse_lazy('home_app:login')
 
+    def get_queryset(self):
+        nombreclave=self.request.GET.get("nombre",'')   
+        rut_clave=self.request.GET.get("rut",'')
+
+        if rut_clave:
+            return Apoderado.objects.buscar_apoderado_rut(nombreclave,rut_clave)
+
+        else:
+            return Apoderado.objects.buscar_apoderado(nombreclave)
+
+           
+
 class CreateApoderado(LoginRequiredMixin, FormView):
     model = Apoderado
     template_name = "alumnos/regist_apod.html"
