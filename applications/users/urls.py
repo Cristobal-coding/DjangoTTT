@@ -5,6 +5,6 @@ app_name = 'user_app'
 
 urlpatterns = [
     path('usuarios/', views.UserMainView.as_view(), name='registrar'),
-    path('usuarios/lock/<pk>', views.lock, name='bloquear'),
-    path('usuarios/unlock/<pk>', views.unlock, name='desbloquear'),
+    path('usuarios/register/user', views.CreateUser.as_view(), name='usercreate'),
+    path('usuarios/register/rol', views.CreateRol.as_view(), name='rolcreate'),
 ]

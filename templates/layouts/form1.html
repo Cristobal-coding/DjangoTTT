@@ -1,0 +1,51 @@
+{% extends '../layouts/master.html' %}
+
+
+{% block 'titulo' %}
+    {% block 'title' %}
+    {% endblock 'title' %}
+{% endblock 'titulo' %}
+
+
+{% block 'content' %}
+<div class="row mx-0 h-100 w-100">
+    <div class="col-9 d-flex align-items-center flex-column h-100 py-5">
+        <div class="card shadow-sm w-100 border-0">
+            <div class="card-header bg-white border-0">
+                <div class="row mx-0 w-100">
+                    <div class="col-8">
+                        <h5 class="title d-inline fw-bold">{% block 'formtitle' %}{% endblock 'formtitle' %}</h5>
+                        {% if messages %}
+                            {% for message in messages %}
+                            <h6 class="text-success d-inline"> {{message}}</h6>
+                            {% endfor %}
+                        {% endif %}        
+                    </div>
+                    <div class="col-4 text-center">
+                        {% block 'go_list' %}
+                        {% endblock 'go_list' %}                     
+                    </div>
+                </div>
+            </div>
+            <div class="card-body py-0">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {% block 'formulario' %}
+                    {% endblock 'formulario' %}
+                    <div class="row mx-0 w-100 my-2">
+                        <div class="col-12 text-center">
+                            <button class="btn btn-outline-primary w-25">{% block 'accion' %}{% endblock 'accion' %}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+       
+    </div>
+    <div class="col-3 h-100 text-center p-3">
+        {%include '../includes/actions.html'%}
+    </div>
+</div>
+{% endblock 'content' %}
+    
+    

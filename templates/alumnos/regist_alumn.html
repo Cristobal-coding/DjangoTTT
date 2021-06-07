@@ -1,0 +1,73 @@
+{% extends '../layouts/form1.html' %}
+{% block 'title' %}
+Registro de Alumno
+{% endblock 'title' %}
+
+{% block 'formtitle' %}
+Perfil de Alumno
+{% endblock 'formtitle' %}
+
+{% block 'go_list' %}
+<a href="{%url 'alumnos_app:filtrar'%}"  class="btn btn-primary rounded-pill my-btn">
+    <i class="far fa-undo-alt px-1"></i>Alumnos
+</a>
+{% endblock 'go_list' %}
+{% block 'accion' %}
+Registrar
+{% endblock 'accion' %}   
+
+{% block 'formulario' %}
+<div class="row mx-0 w-100 p-3">
+    <div class="col-6  px-0">
+        <div class="row mx-0 w-100">
+            <div class="col-6">
+                <label for="" class="text-primary">Rut: {% for e in  form.rut.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+                {{form.rut}}   
+            </div>
+            <div class="col-6">
+                <label for="" class="text-primary">Nombre: {% for e in  form.nombre.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+                {{form.nombre}}
+            </div>
+            <div class="col-6">
+                <label for="" class="text-primary">Apellido Paterno: {% for e in  form.apellido_paterno.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+                {{form.apellido_paterno}}   
+            </div>
+            <div class="col-6">
+                <label for="" class="text-primary">Apellido Materno: {% for e in  form.apellido_materno.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+                {{form.apellido_materno}}
+            </div>
+            <div class="col-6" class="text-primary">
+                <label for="">Género: {% for e in  form.sexo.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+                {{form.sexo}}
+            </div>
+        </div>                    
+    </div>
+    <div class="col-6 px-0" style="border-left: 1px solid #dee2e6;" >
+        <div class="row mx-0 w-100">
+            <div class="col-6">
+                <label for="" class="text-primary">Apoderado: {% for e in  form.rut_apoderado.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+                {{form.rut_apoderado}}   
+            </div>
+            <div class="col-6">
+                <label for="" class="text-primary">Estado: {% for e in  form.estado.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+                {{form.estado}}
+            </div>
+            <div class="col-6">
+                <label for="" class="text-primary">Direccion:(Opcional) {% for e in  form.direccion.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+                {{form.direccion}}   
+            </div>
+            <div class="col-6">
+                <label for="" class="text-primary">Celular:(Opcional) {% for e in  form.telefono.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+                {{form.telefono}}
+            </div>
+            <div class="col-8">
+                <label for="" class="text-primary">Fecha Nacimiento:(Opcional) {% for e in  form.fecha_nacimiento.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+                {{form.fecha_nacimiento}}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock 'formulario' %}
+    
+    

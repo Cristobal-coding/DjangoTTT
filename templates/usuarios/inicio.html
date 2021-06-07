@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block 'titulo' %}
-Registrar Usuario
+Administracion de Usuarios
 {% endblock 'titulo' %}
 {% block 'content' %}
 <div class="row mx-0 h-100 w-100"> 
-    <div class="col-12 h-100 d-flex flex-column align-items-center py-5">
-        <div class="card shadow-sm w-75">
+    <div class="col-7 h-100 d-flex flex-column align-items-center py-5">
+        <div class="card shadow-sm w-100">
             <div class="card-header bg-white border-0">
                 <div class="row mx-0 w-100">
                     <div class="col-8">
@@ -16,10 +16,10 @@ Registrar Usuario
                             {% for message in messages %}
                             <small class="text-danger d-inline">*{{message}}*</small>
                             {% endfor %}
-                        {% endif %}
+                        {% endif %}        
                     </div>
-                    <div class="col-4 text-end">
-                        <button type="button" id="autoclick" class="btn btn-primary rounded-pill my-btn" data-bs-toggle="modal" data-bs-target="#addUser">
+                    <div class="col-4 text-center">
+                        <button type="button" id="autoclickuser" class="btn btn-primary rounded-pill my-btn" data-bs-toggle="modal" data-bs-target="#addUser">
                             Nuevo Usuario <i class="fas fa-plus mx-1"></i>
                         </button>
                     </div>
@@ -35,7 +35,7 @@ Registrar Usuario
                                 <td>Rol</td>
                                 <td>Rut</td>
                                 <td class="text-center">Estado</td>
-                                <td colspan="2" class="text-center">Acciones</td>
+                                <td class="text-center">Acciones</td>
                             </tr>
                         </thead>
                         <tbody>  
@@ -53,19 +53,8 @@ Registrar Usuario
                                 <td>{{u.username}}</td>
                                 <td>{{u.rol}}</td>
                                 <td>{{u.rut}}</td>
-                                <td class="text-center">{% if u.activo %}<span class="badge rounded-pill bg-success">Activo</span>{%else%}<span class="badge rounded-pill bg-danger">Bloqueado</span>{% endif %}</td>      
-                                <td class="px-0 text-center">
-                                    {% if u.activo %}
-                                    {% if user.rut == u.rut %}
-                                    <a href="#" class="text-decoration-none"> <i class="far fa-user-lock tex fs-4" style="color: var(--gray);cursor:auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Accion Denegada"></i></a>
-                                    {%else%}  
-                                    <a href="{% url 'user_app:bloquear' u.id%}" class="text-decoration-none"> <i class="fas fa-user-lock text-danger hover-ico"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Bloquear Usuario"></i></a>
-                                    {% endif %}
-                                        
-                                    {% else %}        
-                                    <a href="{% url 'user_app:desbloquear' u.id %}" class="text-decoration-none"> <i class="fas fa-user-unlock text-success hover-ico"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Desbloquear Usuario"></i></a>
-                                    {% endif %}
-                                </td>
+                                <!-- <td class="text-center">{% if u.activo%}<i class="fas fa-circle text-success"></i>{%else%}<i class="fas fa-circle text-danger"></i>{% endif %}</td>       -->
+                                <td class="text-center">{% if u.activo%}<span class="badge rounded-pill bg-success">Conectado</span>{%else%}<span class="badge rounded-pill bg-danger">Desconectado</span>{% endif %}</td>      
                                 <td class="px-0 text-center"><i class="fas fa-trash-alt hover-ico"></i></td>
                             </tr>
                             {% endfor %}      
@@ -85,9 +74,9 @@ Registrar Usuario
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" class="w-100" id="addUser">
+                        <form method="POST" class="w-100" id="addUser" action="{% url 'user_app:usercreate'%}">
                             {% csrf_token %}
-                            {{form}} 
+                            {{userform}} 
                             <div class="row mx-0 w-100" style="border-top:1px solid #dee2e6 !important;">
                                 <div class="col-6 p-3">
                                     <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Cancelar</button>
@@ -102,10 +91,84 @@ Registrar Usuario
             </div>
         </div>         
     </div>
+    <div class="col-5  h-100 d-flex flex-column align-items-center py-5">
+        <div class="card shadow-sm w-100">
+            <div class="card-header bg-white border-0">
+                <div class="row mx-0 w-100">
+                    <div class="col-7">
+                        <h5 class="title d-inline fw-bold">Roles Disponibles</h5>
+                        {% if messages %}
+                            {% for message in messages %}
+                            <small class="text-danger d-inline">*{{message}}*</small>
+                            {% endfor %}
+                        {% endif %}        
+                    </div>
+                    <div class="col-5 text-center">
+                        <button type="button" id="autoclickrol" class="btn btn-primary rounded-pill my-btn" data-bs-toggle="modal" data-bs-target="#addRol">
+                            Nuevo Rol <i class="fas fa-plus mx-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body py-0">
+                <div class="table-responsive ps">
+                    <table class="table table-borderless">
+                        <thead class="text-primary" style="border-bottom: 1px solid #dee2e6 !important;;">
+                            <tr>
+                                <td>Nombre</td>
+                                <td>Usuarios</td>
+                                <td colspan="2" class="text-center">Acciones</td>
+                            </tr>
+                        </thead>
+                        <tbody>  
+                            {% for r in roles %}
+                            <tr>
+                                <td>{{r.nombre}}</td>
+                                <td class="text-primary px-5">{{r.usuarios.count}}</td>
+                                <td class="py-3 h-100 text-end"><i class="far fa-comment-alt-edit fs-5 text-success"></i></td>
+                                <td class="py-3 h-100 text-start"><i class="fal fa-times hover-ico text-danger"></i></td>    
+                            </tr>
+                            {% endfor %}      
+                        </tbody>
+            
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addRol" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addRol" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-light">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Registrar Rol</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" class="w-100" action="{% url 'user_app:rolcreate'%}">
+                            {% csrf_token %}
+                            {{rolform}} 
+                            <div class="row mx-0 w-100" style="border-top:1px solid #dee2e6 !important;">
+                                <div class="col-6 p-3">
+                                    <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                                <div class="col-6 p-3">
+                                    <button class="btn btn-primary w-100" type="submit">Registrar</button>
+                                </div>
+                            </div>   
+                        </form>
+                    </div> 
+                </div>
+            </div>
+        </div>  
+    </div>
 </div>
 
-{% if form.errors %}
-<script src="{% static 'js/autoClick.js' %}"></script>
+{% if userform.errors %}
+<script src="{% static 'js/autoClickUser.js' %}"></script>
+{% endif %}
+{% if rolform.errors %}
+<script src="{% static 'js/autoClickRol.js' %}"></script>
 {% endif %}
     
 {% endblock 'content' %}

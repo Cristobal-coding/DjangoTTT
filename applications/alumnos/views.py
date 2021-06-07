@@ -1,13 +1,14 @@
-from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import TemplateView , ListView, UpdateView, View
+from django.views.generic import TemplateView , ListView, UpdateView
 from django.http import HttpResponseRedirect
-from django.views.generic.edit import FormView
+from django.views.generic.edit import  FormView
+from django.contrib import messages
 # Create your views here.
-from applications.alumnos.models import Alumno, Apoderado
 from django.contrib.auth.mixins import LoginRequiredMixin
+from applications.alumnos.models import Alumno, Apoderado
 #local
-from .forms import AlumnosRegisterForm
+from .forms import AlumnosRegisterForm, ApoderadosRegisterForm
+
 class AlumnosHome(LoginRequiredMixin,TemplateView):
     template_name = 'alumnos/inicio.html'
     login_url = reverse_lazy('home_app:login')
@@ -21,7 +22,7 @@ class AlumnosHome(LoginRequiredMixin,TemplateView):
         return context
 
 class AlumnosFiltros(LoginRequiredMixin,ListView):
-    template_name = 'alumnos/filtros.html'
+    template_name = 'alumnos/alumnos.html'
     model = Alumno
     context_object_name = 'alumnos'
     paginate_by=5
@@ -42,14 +43,13 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
                 return Alumno.objects.buscar_por_sexo(sexo)
         else:
             if f1 and f2:
-                 return Alumno.objects.buscar_alumno_fecha(palabra_clave,f1,f2)
+                return Alumno.objects.buscar_alumno_fecha(palabra_clave,f1,f2)
             else:
-                  return Alumno.objects.buscar_alumno(palabra_clave)
+                return Alumno.objects.buscar_alumno(palabra_clave)
             
-
 class AlumnosRegister(LoginRequiredMixin,FormView):
     model = Alumno
-    template_name = "alumnos/registrar.html"
+    template_name = "alumnos/regist_alumn.html"
     form_class= AlumnosRegisterForm
     success_url='.'
     login_url = reverse_lazy('home_app:login')
@@ -68,16 +68,50 @@ class AlumnosRegister(LoginRequiredMixin,FormView):
             estado=form.cleaned_data['estado'],
 
         )
-        return super(AlumnosRegister, self).form_valid(form)
+        messages.add_message(self.request, messages.INFO, 'Alumno ingresado Correctamente.')
+        return HttpResponseRedirect(self.get_success_url())
 
-class AlumnoEdit(UpdateView):
-    template_name = "alumnos/edit.html"
+class AlumnoEdit(LoginRequiredMixin,UpdateView):
+    template_name = "alumnos/edit_alumn.html"
     form_class = AlumnosRegisterForm
     model = Alumno
     success_url = reverse_lazy('alumnos_app:filtrar')
+    login_url = reverse_lazy('home_app:login')
+    
+class ApoderadosList(LoginRequiredMixin,ListView):
+    template_name= 'alumnos/apoderados.html'
+    model=Apoderado
+    context_object_name='apoderados'
+    paginate_by=5
+    login_url = reverse_lazy('home_app:login')
 
+class CreateApoderado(LoginRequiredMixin, FormView):
+    model = Apoderado
+    template_name = "alumnos/regist_apod.html"
+    form_class= ApoderadosRegisterForm
+    success_url='.'
+    login_url = reverse_lazy('home_app:login')
+    def form_valid(self, form):
+        Apoderado.objects.create(
+            rut=form.cleaned_data['rut'],
+            nombre_apoderado=form.cleaned_data['nombre_apoderado'],
+            apellido_paterno=form.cleaned_data['apellido_paterno'],
+            apellido_materno=form.cleaned_data['apellido_materno'],
+            telefono_apoderado=form.cleaned_data['telefono_apoderado'],
+            correo=form.cleaned_data['correo'],
+        )
+        messages.add_message(self.request, messages.INFO, 'Apoderado ingresado Correctamente.')
+        return HttpResponseRedirect(self.get_success_url())
+
+class ApoderadoEdit(LoginRequiredMixin,UpdateView):
+    template_name = "alumnos/edit_apod.html"
+    form_class = ApoderadosRegisterForm
+    model = Apoderado
+    success_url = reverse_lazy('alumnos_app:apoderados')
+    login_url = reverse_lazy('home_app:login')
     
 def delete_alumno(request, pk):
     query = Alumno.objects.get(pk=pk)
     query.delete()
+    messages.add_message(request, messages.INFO, 'Alumno elminado Satisfactoriamente.')
     return HttpResponseRedirect(reverse('alumnos_app:filtrar'))

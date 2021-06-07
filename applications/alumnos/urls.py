@@ -5,9 +5,11 @@ app_name = 'alumnos_app'
 
 urlpatterns = [
     path('alumnos/', views.AlumnosHome.as_view(), name='inicio'),
-    path('alumnos/filtros/', views.AlumnosFiltros.as_view(), name='filtrar'),
-    path('alumnos/filtros/edit/<pk>/', views.AlumnoEdit.as_view(), name='actualizar'),
+    path('alumnos/listado/', views.AlumnosFiltros.as_view(), name='filtrar'),
+    path('alumnos/listado/edit/<pk>/', views.AlumnoEdit.as_view(), name='actualizar'),
     path('alumnos/registrar/', views.AlumnosRegister.as_view(), name='registrar'),
-    # path('alumnos/filtros/delete/<pk>/', views.AlumnoDelete.as_view(), name='eliminar'),
+    path('alumnos/apoderados/', views.ApoderadosList.as_view(), name='apoderados'),
+    path('alumnos/apoderados/register/', views.CreateApoderado.as_view(), name='addApoderado'),
+    path('alumnos/apoderados/edit/<pk>/', views.ApoderadoEdit.as_view(), name='editApoderado'),
     path('alumnos/delete/<pk>', views.delete_alumno, name='eliminar'),
 ]
