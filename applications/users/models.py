@@ -19,7 +19,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     rut = models.CharField('Rut',max_length=13,blank=True, unique=True,error_messages={'unique':"Este Rut ya esta Registrado."})
     image = models.ImageField( upload_to='usuarios', blank=True, null=True)
     rol = models.ForeignKey(Rol, on_delete=models.CASCADE, blank=True , null=True ,related_name='usuarios')
-    activo = models.BooleanField(default=True)
+    activo = models.BooleanField(default=False)
 
     is_staff = models.BooleanField(default=False)
     USERNAME_FIELD = 'rut'
