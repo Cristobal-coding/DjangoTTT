@@ -48,3 +48,16 @@ def keep_filters(path):
         'maximo': maximo,
         'gender': gender,
     }
+#?csrfmiddlewaretoken=vrsLtK0JYQLobkcj0tAkrbD9kSYrex6p1ROGBJW6a9omyMAGoWTjYNywcIakXgQQ&nombre=a&rut=2    
+@register.simple_tag
+def keep_filters_apod(path):
+    rut=''
+    nombre=''
+    if 'csrf' in path:
+        nombre=path[path.index('nombre')+7:path.index('rut')-1]
+        rut=path[path.index('rut')+4:len(path)]
+    return {
+        'nombre': nombre,
+        'rut': rut
+
+    }

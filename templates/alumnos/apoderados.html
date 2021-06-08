@@ -13,16 +13,17 @@ Listado de Apoderados
             <div class="col-12 py-2" style="height: 12% !important;">
                 <form method="GET" class="w-100 d-flex">
                     {% csrf_token %}
+                    {% keep_filters_apod request.get_full_path as filters %}
                     <div class="row mx-0 w-100">
                         <div class="col-10 px-0">
                             <div class="row mx-0 w-100 ">
                                 <div class="col-6">
                                     <label for="nombre" class="form-label fw-bold">Por Nombre:</label>
-                                    <input type="text" class="form-control rounded-pill form-control-sm" id="nombre" name="nombre" value="{{filters.key}}" placeholder="&#xf00e; Nombre Apoderado"  style="font-family:KoHo, FontAwesome">
+                                    <input type="text" class="form-control rounded-pill form-control-sm" id="nombre" name="nombre" value="{{filters.nombre}}" placeholder="&#xf00e; Nombre Apoderado"  style="font-family:KoHo, FontAwesome">
                                 </div>
                                 <div class="col-6">
                                     <label for="rut" class="form-label fw-bold">Por Rut:</label>
-                                    <input type="text" class="form-control rounded-pill form-control-sm" id="rut" name="rut" value="{{filters.key}}" placeholder="Sin puntos y con guión"  style="font-family:KoHo, FontAwesome">
+                                    <input type="text" class="form-control rounded-pill form-control-sm" id="rut" name="rut" value="{{filters.rut}}" placeholder="Sin puntos y con guión"  style="font-family:KoHo, FontAwesome">
                                 </div>
                             </div>     
                         </div>
