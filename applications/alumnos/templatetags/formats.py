@@ -8,13 +8,14 @@ def date_to_age(nacimiento):
     age=''
     if nacimiento:
         current = date.today()
-        result = current - nacimiento
-        result= str(result)
-        result = result.split(" ",1)
-        days = result[0]
-        days = int(days)
-        age= days / 365
-        age=math.floor(age)
+        if current == nacimiento:
+            result = current - nacimiento
+            result= str(result)
+            result = result.split(" ",1)
+            days = result[0]
+            days = int(days)
+            age= days / 365
+            age=math.floor(age)
     return age
     
 @register.simple_tag
