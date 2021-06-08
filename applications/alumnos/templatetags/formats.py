@@ -12,10 +12,12 @@ def date_to_age(nacimiento):
         result= str(result)
         result = result.split(" ",1)
         days = result[0]
-        print(days)
-        days = int(days)
-        age= days / 365
-        age=math.floor(age)
+        if '0:00:00' != days:
+            days = int(days)
+            age= days / 365
+            age=math.floor(age)
+        else:
+            age='0'
     return age
     
 @register.simple_tag
