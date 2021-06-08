@@ -1,13 +1,12 @@
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 # Create your views here.
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import FormView 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import DeleteView
 from .models import User, Rol
 from .forms import RolRegisterForm, UserRegisterForm
 
@@ -23,10 +22,10 @@ class UserMainView(LoginRequiredMixin,TemplateView):
         context['roles'] = Rol.objects.all()
         return context
    
-class CreateUser(CreateView):
+class CreateUser(LoginRequiredMixin,CreateView):
     form_class= UserRegisterForm
     success_url = '.'
-
+    login_url = reverse_lazy('home_app:login')
     def render_to_response(self, context, **response_kwargs):
         context['users'] = User.objects.all()
         context['roles'] = Rol.objects.all()
@@ -51,10 +50,10 @@ class CreateUser(CreateView):
         )
         return HttpResponseRedirect(reverse('user_app:registrar'),)
         
-class CreateRol(CreateView):
+class CreateRol(LoginRequiredMixin,CreateView):
     form_class= RolRegisterForm
     success_url = '.'
-
+    login_url = reverse_lazy('home_app:login')
     def render_to_response(self, context, **response_kwargs):
         context['users'] = User.objects.all()
         context['roles'] = Rol.objects.all()
@@ -68,12 +67,43 @@ class CreateRol(CreateView):
             **response_kwargs
         )
     def form_invalid(self, form):
+        print('========')
+        print(form)
+        print('========')
         return self.render_to_response(self.get_context_data(rolform=form))
 
     def form_valid(self, form):
         Rol.objects.create(nombre=form.cleaned_data['nombre'])
         return HttpResponseRedirect(reverse('user_app:registrar'),)
 
+class EditRol(LoginRequiredMixin,UpdateView):
+    form_class = RolRegisterForm
+    model = Rol
+    success_url = reverse_lazy('user_app:registrar')
+    login_url = reverse_lazy('home_app:login')
+    def form_invalid(self, form):
+        self.object = self.get_object()
+        rol_id=self.object.id
+        formulario=str(form)
+        if 'nombre invalido' in formulario:
+            print('ERROES TITLE')
+
+            messages.add_message(self.request, messages.INFO, str(rol_id)+'*')
+        else:
+            print('ERROR UNIQUE')
+
+            messages.add_message(self.request, messages.INFO, rol_id)
+        return HttpResponseRedirect(reverse('user_app:registrar'),)
+    login_url = reverse_lazy('home_app:login')
+
+
+def DeleteRol(request, pk):
+    query = Rol.objects.get(pk=pk)
+    query.delete()
+    messages.add_message(request, messages.INFO, 'Rol elminado Satisfactoriamente.')
+    return HttpResponseRedirect(reverse('user_app:registrar'))
+    # def get_template_names(self):
+    #     return 'user_app:registrar'
 # def unlock(request, pk):
 #     query = User.objects.get(pk=pk)
 #     if(request.user.rut != query.rut):

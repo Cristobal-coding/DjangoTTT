@@ -13,6 +13,7 @@ class Rol(models.Model):
         verbose_name_plural = 'Roles'
         db_table= 'Roles'
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField('Username',max_length=20)
     rut = models.CharField('Rut',max_length=13,blank=True, unique=True,error_messages={'unique':"Este Rut ya esta Registrado."})

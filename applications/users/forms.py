@@ -78,11 +78,17 @@ class RolRegisterForm(forms.ModelForm):
         widgets = {
             'nombre': forms.TextInput(
                 attrs={
-                    'class': 'form-control my-2'
+                    'class': 'form-control my-2',
                 }
             ),
   
         }
+    def clean_nombre(self):
+        name =self.cleaned_data.get("nombre")
+        if not name.istitle(): 
+            self.add_error('nombre', 'Formato de nombre invalido')    
+            # raise forms.ValidationError('Formato de nombre invalido')
+        return self.cleaned_data.get("nombre")
     # def clean_nombre(self):
     #     if self.cleaned_data.get("rut").unique:
     #         self.add_error('rut', 'Rut no valido')

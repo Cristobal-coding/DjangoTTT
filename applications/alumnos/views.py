@@ -109,7 +109,9 @@ class ApoderadoEdit(LoginRequiredMixin,UpdateView):
     model = Apoderado
     success_url = reverse_lazy('alumnos_app:apoderados')
     login_url = reverse_lazy('home_app:login')
-    
+
+
+   
 def delete_alumno(request, pk):
     query = Alumno.objects.get(pk=pk)
     query.delete()
