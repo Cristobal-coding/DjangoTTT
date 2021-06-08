@@ -41,7 +41,7 @@ Administracion de Usuarios
                                     {% if not u.image%}
                                     <img src="{% static 'imgs/man-300x300.png' %}" alt="" class="h-100 w-100 img-fluid rounded-circle">
                                     {%else%}
-                                    <img src="{{u.image.url}}" alt="" class="img-fluid rounded-circle">
+                                    <img src="{{u.image.url}}" alt="" class="img-fluid rounded-circle h-100 w-100">
                                     {% endif %}      
                                   </div>
                                 </td>
