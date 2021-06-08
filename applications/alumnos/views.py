@@ -35,9 +35,9 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
         f2=self.request.GET.get("fecha2",'')
         sexo=self.request.GET.get("sexo",'')
         if sexo:
-            if f1 and f2 and palabra_clave:
+            if f1 and f2 and sexo:
                 return Alumno.objects.buscar_alumno_fecha_s(palabra_clave,f1,f2,sexo)
-            elif palabra_clave and f1==""and f2=="":
+            elif f1=="" and f2=="":
                 return Alumno.objects.buscar_alumno_s(palabra_clave,sexo)
             else:
                 return Alumno.objects.buscar_por_sexo(sexo)
@@ -84,6 +84,18 @@ class ApoderadosList(LoginRequiredMixin,ListView):
     context_object_name='apoderados'
     paginate_by=5
     login_url = reverse_lazy('home_app:login')
+
+    def get_queryset(self):
+        nombreclave=self.request.GET.get("nombre",'')   
+        rut_clave=self.request.GET.get("rut",'')
+
+        if rut_clave:
+            return Apoderado.objects.buscar_apoderado_rut(nombreclave,rut_clave)
+
+        else:
+            return Apoderado.objects.buscar_apoderado(nombreclave)
+
+           
 
 class CreateApoderado(LoginRequiredMixin, FormView):
     model = Apoderado

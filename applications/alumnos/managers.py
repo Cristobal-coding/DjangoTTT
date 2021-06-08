@@ -43,6 +43,18 @@ class AlumnoManager(models.Manager):
             ).order_by('apellido_paterno')
         return resultado
 
+class ApoderadoManager(models.Manager):
+    def buscar_apoderado(self, nombre):
+        resultado =self.filter(
+            Q(nombre_apoderado__icontains=nombre) | Q(apellido_paterno__icontains=nombre) | Q(apellido_materno__icontains=nombre)
+            ).order_by('apellido_paterno')
+        return resultado
+
+    def buscar_apoderado_rut(self, nombre,rut):
+        resultado =self.filter(
+            (Q(nombre_apoderado__icontains=nombre) | Q(apellido_paterno__icontains=nombre) | Q(apellido_materno__icontains=nombre)), rut__icontains=rut
+            ).order_by('apellido_paterno')
+        return resultado
 
         
 

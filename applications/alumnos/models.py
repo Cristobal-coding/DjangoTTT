@@ -1,5 +1,5 @@
 from django.db import models
-from .managers import AlumnoManager
+from .managers import AlumnoManager, ApoderadoManager
 
 class Apoderado(models.Model):
     rut =models.CharField('Rut',max_length=13,unique=True,primary_key=True)    
@@ -8,6 +8,9 @@ class Apoderado(models.Model):
     apellido_materno =models.CharField('Apellido materno',max_length=25)
     telefono_apoderado=models.CharField('Telefono apoderado',max_length=8)
     correo=models.CharField('Correo',max_length=20, unique=True)
+
+    objects = ApoderadoManager()
+
     def __str__(self):
         return self.nombre_apoderado+ ' ' + self.apellido_paterno+ ' ' + self.apellido_materno+'('+self.rut+')'
     class Meta:
@@ -39,7 +42,6 @@ class Alumno(models.Model):
     estado=models.CharField('estado',max_length=1,choices=ESTADO_CHOICES)
 
     objects = AlumnoManager()
-
     class Meta:
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'
