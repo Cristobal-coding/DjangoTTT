@@ -1,6 +1,6 @@
-from django import template
-from datetime import date, datetime
 import math
+from datetime import date
+from django import template
 register = template.Library()
 
 @register.simple_tag
@@ -12,7 +12,7 @@ def date_to_age(nacimiento):
         result= str(result)
         result = result.split(" ",1)
         days = result[0]
-        if '0:00:00' != days:
+        if days != '0:00:00':
             days = int(days)
             age= days / 365
             age=math.floor(age)
@@ -40,7 +40,7 @@ def keep_filters(path):
     minimo=''
     maximo=''
     gender=''
-    if 'csrf' in path:
+    if '?' in path:
         key=path[path.index('kword')+6:path.index('fecha1')-1]
         minimo=path[path.index('fecha1')+7:path.index('fecha2')-1]
         maximo=path[path.index('fecha2')+7:path.index('sexo')-1]
@@ -56,7 +56,7 @@ def keep_filters(path):
 def keep_filters_apod(path):
     rut=''
     nombre=''
-    if 'csrf' in path:
+    if '?' in path:
         nombre=path[path.index('nombre')+7:path.index('rut')-1]
         rut=path[path.index('rut')+4:len(path)]
     return {

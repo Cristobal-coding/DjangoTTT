@@ -31,6 +31,7 @@ DJANGO_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'crispy_forms',
 
 )
 LOCAL_APPS = (
@@ -38,10 +39,12 @@ LOCAL_APPS = (
     'applications.home',
     'applications.alumnos',
 )
-THIRD_PARTY_APPS =()
+THIRD_PARTY_APPS =(
+    'crispy_forms',
+)
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

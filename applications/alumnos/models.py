@@ -31,7 +31,7 @@ class Alumno(models.Model):
         ('2','Finalizado')
     )
     rut =models.CharField('Rut',max_length=13,unique=True,primary_key=True)
-    nombre = models.CharField('Nombre',max_length=50,unique=False)
+    nombre = models.CharField('Nombre',max_length=50,unique=False, null=True)
     apellido_paterno =models.CharField('Apellido paterno',max_length=25)
     apellido_materno =models.CharField('Apellido materno',max_length=25)
     fecha_nacimiento=models.DateField('Fecha de nacimiento',null=True,blank=True)

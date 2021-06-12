@@ -68,7 +68,7 @@ class AlumnosRegister(LoginRequiredMixin,FormView):
             estado=form.cleaned_data['estado'],
 
         )
-        messages.add_message(self.request, messages.INFO, 'Alumno ingresado Correctamente.')
+        messages.success(self.request, 'Alumno ingresado Correctamente.')
         return HttpResponseRedirect(self.get_success_url())
 
 class AlumnoEdit(LoginRequiredMixin,UpdateView):
@@ -77,6 +77,9 @@ class AlumnoEdit(LoginRequiredMixin,UpdateView):
     model = Alumno
     success_url = reverse_lazy('alumnos_app:filtrar')
     login_url = reverse_lazy('home_app:login')
+    def form_valid(self, form):
+        messages.success(self.request, 'Alumno actualizado Satisfactoriamente.')
+        return HttpResponseRedirect(self.get_success_url())
     
 class ApoderadosList(LoginRequiredMixin,ListView):
     template_name= 'alumnos/apoderados.html'
@@ -112,7 +115,7 @@ class CreateApoderado(LoginRequiredMixin, FormView):
             telefono_apoderado=form.cleaned_data['telefono_apoderado'],
             correo=form.cleaned_data['correo'],
         )
-        messages.add_message(self.request, messages.INFO, 'Apoderado ingresado Correctamente.')
+        messages.success(self.request, 'Apoderado ingresado Correctamente.')
         return HttpResponseRedirect(self.get_success_url())
 
 class ApoderadoEdit(LoginRequiredMixin,UpdateView):
@@ -121,6 +124,9 @@ class ApoderadoEdit(LoginRequiredMixin,UpdateView):
     model = Apoderado
     success_url = reverse_lazy('alumnos_app:apoderados')
     login_url = reverse_lazy('home_app:login')
+    def form_valid(self, form):
+        messages.success(self.request, 'Apoderado actualizado Satisfactoriamente.')
+        return HttpResponseRedirect(self.get_success_url())
 
 
    

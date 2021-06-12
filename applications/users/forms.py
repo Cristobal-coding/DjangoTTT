@@ -2,7 +2,7 @@ from django import forms
 from django.forms import fields, widgets
 from applications.errors import DivErrorList
 from .models import User, Rol
-from applications.logicas import validar_rut
+from applications.validators import validar_rut
 
 class UserRegisterForm(forms.ModelForm):
     password1 = forms.CharField(

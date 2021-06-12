@@ -12,7 +12,6 @@ Listado de Apoderados
         <div class="row mx-0 w-100 h-100">
             <div class="col-12 py-2" style="height: 12% !important;">
                 <form method="GET" class="w-100 d-flex">
-                    {% csrf_token %}
                     {% keep_filters_apod request.get_full_path as filters %}
                     <div class="row mx-0 w-100">
                         <div class="col-10 px-0">
@@ -163,5 +162,18 @@ Listado de Apoderados
         {%include '../includes/actions.html'%}
     </div>
 </div>
+{% if messages %}
+    {% for m in messages %}
+    <script>
+        Swal.fire({
+            'timer':'1500',
+            title: 'Éxito!',
+            text: '{{m}}',
+            icon: 'success',
+            showConfirmButton: false,
+          })
+    </script>
+    {% endfor %}
+{% endif %} 
 {% endblock 'content' %}
     

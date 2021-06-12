@@ -1,5 +1,5 @@
 from django import forms
-from applications.logicas import validar_rut
+from applications.validators import validar_rut
 from applications.users.models import User
 from applications.errors import DivErrorList
 from django.contrib.auth import authenticate
