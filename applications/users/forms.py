@@ -85,9 +85,10 @@ class RolRegisterForm(forms.ModelForm):
         }
     def clean_nombre(self):
         name =self.cleaned_data.get("nombre")
-        if not name.istitle(): 
-            self.add_error('nombre', 'Formato de nombre invalido')    
-            # raise forms.ValidationError('Formato de nombre invalido')
+        existe = Rol.objects.filter(nombre__iexact=name).exists()
+        if existe: 
+            # self.add_error('nombre', 'Formato de nombre invalido')    
+            raise forms.ValidationError('Este nombre ya esta Ingresado.')
         return self.cleaned_data.get("nombre")
     # def clean_nombre(self):
     #     if self.cleaned_data.get("rut").unique:
