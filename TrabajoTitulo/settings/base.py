@@ -38,6 +38,8 @@ LOCAL_APPS = (
     'applications.users',
     'applications.home',
     'applications.alumnos',
+    'applications.cursos',
+    'applications.asignaturas',
 )
 THIRD_PARTY_APPS =(
     'crispy_forms',
