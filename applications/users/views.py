@@ -88,12 +88,15 @@ class EditRol(LoginRequiredMixin,UpdateView):
         if 'nombre invalido' in formulario:
             print('ERROES TITLE')
 
-            messages.add_message(self.request, messages.INFO, str(rol_id)+'*')
+            messages.error(self.request,str(rol_id)+'*')
         else:
             print('ERROR UNIQUE')
 
-            messages.add_message(self.request, messages.INFO, rol_id)
+            messages.error(self.request,rol_id)
         return HttpResponseRedirect(reverse('user_app:registrar'),)
+    def form_valid(self, form):
+        messages.success(self.request,'Rol actualizado Correctamente.')
+        return HttpResponseRedirect(self.get_success_url())
     login_url = reverse_lazy('home_app:login')
 
 

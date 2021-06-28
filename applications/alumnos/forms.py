@@ -1,8 +1,9 @@
 from django import forms
 from applications.errors import DivErrorList
 from .models import Alumno, Apoderado
-from applications.logicas import validar_rut
-
+from applications.validators import validar_rut
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Row, Column
 class AlumnosPathern(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         kwargs_new = {'error_class': DivErrorList}
@@ -17,6 +18,9 @@ class AlumnosPathern(forms.ModelForm):
 
 class AlumnosRegisterForm(AlumnosPathern):
 
+    def __init__(self, *args, **kwargs):
+        super(AlumnosRegisterForm, self).__init__(*args, **kwargs)
+        self.fields['rut'].required = False
     class Meta:
         model=Alumno
         fields= ('__all__')
@@ -25,7 +29,7 @@ class AlumnosRegisterForm(AlumnosPathern):
                 attrs={
                     'class': 'form-control rounded-pill my-2 fw-bold',
                     'placeholder': 'Sin puntos y con guión'
-                }
+                },
             ),
             'nombre': forms.TextInput(
                 attrs={
@@ -78,7 +82,6 @@ class AlumnosRegisterForm(AlumnosPathern):
         }
 
 class ApoderadosRegisterForm(AlumnosPathern):
-    
     class Meta:
         model=Apoderado
         fields= ('__all__')

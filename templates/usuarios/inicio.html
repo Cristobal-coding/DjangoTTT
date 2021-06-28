@@ -224,7 +224,22 @@ Administracion de Usuarios
         </div>  
     </div>
 </div>
-
+{% if messages %}
+    {% for m in messages %}
+    {% if m.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+    <script>
+        Swal.fire({
+            'timer':'2000',
+            title: 'Éxito!',
+            text: '{{m}}',
+            icon: 'success',
+            showConfirmButton: false,
+          })
+    </script>
+    
+    {% endif %}
+    {% endfor %}
+{% endif %} 
 {% if rolform.errors %}
 <script src="{% static 'js/autoClickRol.js' %}"></script>
 {% endif %}

@@ -14,12 +14,7 @@
             <div class="card-header bg-white border-0">
                 <div class="row mx-0 w-100">
                     <div class="col-8">
-                        <h5 class="title d-inline fw-bold">{% block 'formtitle' %}{% endblock 'formtitle' %}</h5>
-                        {% if messages %}
-                            {% for message in messages %}
-                            <h6 class="text-success d-inline"> {{message}}</h6>
-                            {% endfor %}
-                        {% endif %}        
+                        <h5 class="title d-inline fw-bold">{% block 'formtitle' %}{% endblock 'formtitle' %}</h5>                             
                     </div>
                     <div class="col-4 text-center">
                         {% block 'go_list' %}
@@ -46,6 +41,20 @@
         {%include '../includes/actions.html'%}
     </div>
 </div>
+
+{% if messages %}
+    {% for m in messages %}
+    <script>
+        Swal.fire({
+            'timer':'2000',
+            title: 'Éxito!',
+            text: '{{m}}',
+            icon: 'success',
+            showConfirmButton: false,
+          })
+    </script>
+    {% endfor %}
+{% endif %} 
 {% endblock 'content' %}
     
     
