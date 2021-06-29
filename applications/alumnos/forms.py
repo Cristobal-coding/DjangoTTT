@@ -2,8 +2,7 @@ from django import forms
 from applications.errors import DivErrorList
 from .models import Alumno, Apoderado
 from applications.validators import validar_rut
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+
 class AlumnosPathern(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         kwargs_new = {'error_class': DivErrorList}
@@ -21,6 +20,19 @@ class AlumnosRegisterForm(AlumnosPathern):
     def __init__(self, *args, **kwargs):
         super(AlumnosRegisterForm, self).__init__(*args, **kwargs)
         self.fields['rut'].required = False
+        # self.fields['nombre'].required = False
+        # self.fields['apellido_paterno'].required = False
+        # self.fields['apellido_materno'].required = False
+        # self.fields['fecha_nacimiento'].required = False
+        # self.fields['rut_apoderado'].required = False
+        # self.fields['sexo'].required = False
+        # self.fields['telefono'].required = False
+        # self.fields['rut_apoderado'].required = False
+        # self.fields['direccion'].required = False
+        # self.fields['estado'].required = False
+
+
+
     class Meta:
         model=Alumno
         fields= ('__all__')
@@ -28,7 +40,8 @@ class AlumnosRegisterForm(AlumnosPathern):
             'rut': forms.TextInput(
                 attrs={
                     'class': 'form-control rounded-pill my-2 fw-bold',
-                    'placeholder': 'Sin puntos y con guión'
+                    'placeholder': 'Sin puntos y con guión',
+                
                 },
             ),
             'nombre': forms.TextInput(
@@ -76,7 +89,7 @@ class AlumnosRegisterForm(AlumnosPathern):
             ),   
             'estado': forms.Select(
                 attrs={
-                    'class': 'form-select rounded-pill my-2'
+                    'class': 'form-select rounded-pill my-2',   
                 }
             ),   
         }

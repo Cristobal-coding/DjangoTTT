@@ -41,10 +41,11 @@ def keep_filters(path):
     maximo=''
     gender=''
     if '?' in path:
-        key=path[path.index('kword')+6:path.index('fecha1')-1]
-        minimo=path[path.index('fecha1')+7:path.index('fecha2')-1]
-        maximo=path[path.index('fecha2')+7:path.index('sexo')-1]
-        gender=path[len(path)-1:len(path)]
+        
+            key=path[path.index('kword')+6:path.index('fecha1')-1]
+            minimo=path[path.index('fecha1')+7:path.index('fecha2')-1]
+            maximo=path[path.index('fecha2')+7:path.index('sexo')-1]
+            gender=path[len(path)-1:len(path)]
     return {
         'key': key,
         'minimo': minimo,

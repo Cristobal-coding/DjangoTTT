@@ -1,4 +1,6 @@
 {% extends '../layouts/master.html' %}
+{% load  static %}
+
 
 
 {% block 'titulo' %}
@@ -23,7 +25,7 @@
                 </div>
             </div>
             <div class="card-body py-0">
-                <form action="" method="POST">
+                <form action="" method="POST" class="" id="formalumno">
                     {% csrf_token %}
                     {% block 'formulario' %}
                     {% endblock 'formulario' %}
@@ -57,4 +59,9 @@
 {% endif %} 
 {% endblock 'content' %}
     
-    
+
+
+
+
+
+

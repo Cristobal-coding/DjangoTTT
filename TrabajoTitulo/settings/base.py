@@ -42,10 +42,10 @@ LOCAL_APPS = (
     'applications.asignaturas',
 )
 THIRD_PARTY_APPS =(
-    'crispy_forms',
+    
 )
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

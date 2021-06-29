@@ -39,7 +39,7 @@ class Alumno(models.Model):
     sexo=models.CharField('Sexo',max_length=1,choices=SEX_CHOICES)
     telefono=models.CharField('Telefono',max_length=8,null=True,blank=True)
     direccion=models.CharField('Direccion',max_length=50,null=True,blank=True)
-    estado=models.CharField('estado',max_length=1,choices=ESTADO_CHOICES)
+    estado=models.CharField('estado',max_length=1,choices=ESTADO_CHOICES,blank=False)
 
     objects = AlumnoManager()
     class Meta:
