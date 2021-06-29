@@ -1,6 +1,16 @@
 {% extends '../layouts/master.html' %}
 {% load  static %}
 
+{% block 'css-select2' %}
+    <!-- Jquery -->
+    <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
+    <!-- Select2 css y js-->
+    <link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
+    <script src="{% static 'js/select2.min.js' %}"></script>
+    <!-- Select2 theme con Bootstrap4 -->
+    <link rel="stylesheet" href="{% static 'css/select2-bootstrap4.min.css' %}">
+{% endblock 'css-select2' %}
+    
 
 
 {% block 'titulo' %}
@@ -44,6 +54,32 @@
     </div>
 </div>
 
+{% block 'js-select2' %}
+<script>
+    $(document).ready(function() {
+        $('#id_estado').select2({
+            theme: 'bootstrap4',
+            placeholder:'Seleccione Estado',
+            allowClear: true,
+            
+        });
+        $('#id_rut_apoderado').select2({
+            theme: 'bootstrap4',
+            placeholder:'Seleccione Apoderado',
+            allowClear: true,
+
+        });
+        $('#id_sexo').select2({
+            theme: 'bootstrap4',
+            placeholder:'Seleccione Género',
+            allowClear: true,
+            //closeOnSelect: false
+
+        });
+    });
+ </script>
+{% endblock 'js-select2' %}
+    
 {% if messages %}
     {% for m in messages %}
     <script>

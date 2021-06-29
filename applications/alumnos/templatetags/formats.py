@@ -27,8 +27,15 @@ def sin_especificar(total, m , f):
 
 @register.simple_tag
 def path_with_filter(path):
-    if 'csrf' in path:
-        path ='&'+path[path.index('csrf'):len(path)]
+    # if 'csrf' in path:
+    #     path ='&'+path[path.index('csrf'):len(path)]
+    # else:
+    #     path=''
+    # return path
+    if '?' in path and not 'page' in path:
+        path = '&'+path[path.index('?')+1:len(path)]
+    elif 'page' in path and 'kword' in path and 'fecha1' in path and 'fecha2' in path and 'sexo' in path :
+        path =path[path.index('&'):len(path)]
     else:
         path=''
     return path
@@ -40,12 +47,11 @@ def keep_filters(path):
     minimo=''
     maximo=''
     gender=''
-    if '?' in path:
-        
-            key=path[path.index('kword')+6:path.index('fecha1')-1]
-            minimo=path[path.index('fecha1')+7:path.index('fecha2')-1]
-            maximo=path[path.index('fecha2')+7:path.index('sexo')-1]
-            gender=path[len(path)-1:len(path)]
+    if 'kword' in path and 'fecha1' in path and 'fecha2' in path and 'sexo' in path :
+        key=path[path.index('kword')+6:path.index('fecha1')-1]
+        minimo=path[path.index('fecha1')+7:path.index('fecha2')-1]
+        maximo=path[path.index('fecha2')+7:path.index('sexo')-1]
+        gender=path[len(path)-1:len(path)]
     return {
         'key': key,
         'minimo': minimo,
