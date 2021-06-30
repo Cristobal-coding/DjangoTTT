@@ -28,17 +28,21 @@
                 {%include '../includes/leftbar.html'%}
             </div>
             <div class="col-10 px-0 h-100">
+                <!-- Parte de arriba -->
                 <div class="row mx-0" style="height: 10% !important;">
                     <div class="col-12 px-0 h-100">
                         {%include '../includes/header.html'%}
                     </div>
                 </div>
+                <!-- end Parte de arriba -->
+                <!-- Todo el contenido -->
                 <div class="row mx-0 overflow-auto" style="height: 90% !important;">
                     <div class="col-12 px-0 h-100 ">
                         {%block 'content'%}
                         {%endblock 'content'%}
                     </div>
                 </div>
+                 <!-- end Todo el contenido -->
             </div>
         </div>
     </div>
