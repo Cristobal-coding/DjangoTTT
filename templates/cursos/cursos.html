@@ -8,51 +8,65 @@ Cursos del Establecimiento Manheim
 {% block 'content' %}
 
 <div class="row mx-0 h-100 w-100">
-    <div class="col-9 h-100">
-        <div class="row mx-0 w-100 h-100">
-            <h2>Bienvenido a Cursos</h2>
-            <!-- <div class="col-12" {% if not is_paginated %}style="height: 88% !important;"{% endif %} style="height: 75% !important;">
-                <div class="row mx-0 h-100 w-100 ">
-                    <div class="col-12 h-100">
+    <div class="h-100 py-4 px-2" style="width: 70%;">
+        <table class="table caption-top table-hover">
+            <caption>Cursos actuales del año 2021</caption>
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">Identificador</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Paralelo</th>
+                <th scope="col">Electivo</th>
+                <th scope="col">Alumnos</th>
+                <th scope="col">Prof. Jefe</th>
+                <th scope="col">Semestre</th>
+                <th scope="col">Año</th>
+                <th scope="col">Ver</th>
+              </tr>
+            </thead>
+            <tbody>        
+                {% for c in cursos  %}
+                    <tr>
+                      <th scope="row">{{c.id_curso}}</th>
+                      <td>{{c.nombre}}</td>
+                      <td>{{c.letra}}</td>
+                      <td>
+                      {% if c.electivo %}
+                      {{c.get_electivo_display}}
+                      {%else%}
+                      Sin electivo
+                      {% endif %}
+                          </td>
+                      <td>{{c.alumnos.count}}</td>
+                      <td>{{c.id_prof_jefe.nombres}}</td>
+                      <td>{{c.cod_fecha.get_semestres_display}}</td>
+                      <td>{{c.cod_fecha.get_año_display}}</td>
+                      <td><a href="{% url 'cursos_app:detalleCurso' c.id_curso %}"><i class="far fa-bars"></i></a></td>
+                    </tr>
+                {% endfor %}
                     
-                    {% if alumnos.count == 0 %}
-                    <div class="text-center my-3">
-                        <h5>No se han encontrado resultados</h5>
-                        <h6>O todabía no se han agregado alumnos...</h6>
-                    </div>
-                    {% endif %}
-            {% if is_paginated %}
-            {% path_with_filter request.get_full_path as filter%} 
-            <div class="col-12" style="height: 13% !important;">
-                <div class="row mx-0 w-100 h-100">
-                    <div class="col-12 d-flex flex-column justify-content-center align-items-center">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                {% if page_obj.has_previous %}
-                                <li class="page-item">
-                                  <a class="page-link" href="?page={{page_obj.previous_page_number}}{{filter}}" tabindex="-1" aria-disabled="true">Anterior</a>
-                                </li>
-                                {% endif %} 
-                                {% for pag in paginator.page_range %}
-                
-                                {% ifequal pag page_obj.number  %}
-                                <li class="page-item active"><a class="page-link" href="?page={{pag}}{{filter}}">{{pag}}</a></li>
-                                {% else %}
-                                <li class="page-item"><a class="page-link" href="?page={{pag}}{{filter}}">{{pag}}</a></li>
-                                {% endifequal %}
-                                    
-                                {% endfor %}
-                                {% if page_obj.has_next %}
-                                <li class="page-item">
-                                  <a class="page-link" href="?page={{page_obj.next_page_number}}{{filter}}" tabindex="-1" aria-disabled="true">Siguiente</a>
-                                </li>
-                                {% endif %}              
-                            </ul>
-                          </nav>
-                    </div>                  
-                </div>   
+            </tbody>
+          </table>
+    </div>
+    <div class="py-4 px-1" style="width: 30%;">
+        <div class="card shadow-sm">
+            <div class="card-header">
+              Gestionar Cursos 2021
             </div>
-            {% endif %} -->
-        </div>     
+            <div class="card-body">
+              <h5 class="card-title text-decoration-underline">Para personas Autorizadas</h5>
+              <p class="card-text">Estas acciones permiten finalizar un periodo o el año de escolaridad.</p>
+              <p class="card-text text-danger d-inline"><i class="far fa-siren-on"></i>Advertencia:</p><p class="d-inline">Los cambios realizados no podrán deshacerse.</p>
+              <div class="row mx-0 w-100 my-2">
+                  <div class="col-6 py-0 px-1">
+                    <a href="#" class="btn btn-primary w-100">Finalizar Semestre</a>
+                </div>
+                <div class="col-6 p-0">
+                    <a href="#" class="btn btn-primary w-100">Finalizar Año</a>
+                  </div>
+              </div>
+            </div>
+          </div>
     </div>
 </div>
+{% endblock 'content' %}

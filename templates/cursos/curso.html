@@ -1,0 +1,147 @@
+{% extends '../layouts/master.html' %}
+{% load static %}
+{% block 'titulo' %}
+Cursos del Establecimiento Manheim
+{% endblock 'titulo' %}
+
+
+{% block 'content' %}
+
+<div class="row mx-0 h-100 w-100">
+    <div class="col-12 h-100">
+        <div class="row mx-0 h-100">
+            <div class="col-4 h-100 p-3">
+                <div class="card shadow" style="height: 30%;">
+                    <div class="text-center">
+                        <div class="card-header">
+                          {{curso.cod_fecha.get_año_display}} - {{curso.cod_fecha.get_semestres_display}}
+                        </div>
+                        <div class="card-body">
+                          <h5 class="card-title">{{curso.nombre}}</h5>
+                          <p class="card-text">Liceo Tecnólogico Manheim</p>
+                        </div>
+                      </div>
+                </div>
+                <div class="card shadow w-100 my-2" style="height: 70%;">
+                    <div class="text-center h-100">
+                        <div class="card-body h-100">
+                            <h5 class="card-title fw-bold">Alumnos del Curso</h5>
+                            <div class="w-100" style="height: 90%;">
+                                {% if curso.alumnos.all.count > 0 %}
+                                <ul class="list-group list-group-flush shadow-sm">
+                                    <li class="list-group-item list-group-item-action rounded text-start">
+                                        <span class="text-decoration-underline">Apellidos Nombre</span>
+                                        <span class="text-decoration-underline float-right">Rut</span>
+                                    </li>
+                                    {% for a in curso.alumnos.all %}
+                                    <a href="#" class="list-group-item list-group-item-action rounded text-start">
+                                        {{a.apellido_paterno}}
+                                        {{a.apellido_materno}}
+                                        {{a.nombre}}
+                                        <span class="float-right">
+                                            {{a.rut}}
+                                        </span>
+                                    </a>
+                                    {% endfor %}                   
+                                </ul>
+                                {%else%}
+                                <h6>Curso vacío</h6>
+                                {% endif %}
+                            </div>               
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8 h-100 p-3">
+                <div class="card shadow h-100">
+                    <div class="row mx-0 w-100">
+                        <div class="col-4 d-flex flex-column align-items-end justify-content-center p-3">
+                            <div class="rounded-circle bg-success " style="width: 76px;height:85px;">      
+                                <img src="{% static 'imgs/MANNHEIM.png' %}" alt="" class="img-fluid w-100 h-100">
+                            </div>
+                        </div>
+                        <div class="col-8 d-flex flex-column align-items-start justify-content-center p-3">
+                            <h1 class="fw-bold">{{curso.nombre}}</h1>
+                            <h5 class="fst-italic float-right text-muted">Identificador: {{curso.id_curso}}</h5>
+                        </div>
+                    </div>
+                    <div class="row mx-0 w-100 h-100">
+                        <div class="col-5">
+                            <div class="card shadow w-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Información General</h5>
+                                    <div class="row mx-0 w-100">
+                                        <div class="col-6 px-0">
+                                            <p class="card-text my-0">Electivo</p>
+                                            <h6>{% if curso.electivo %}{{curso.get_electivo_display}}{%else%}Sin electivo{% endif %}</h6> 
+                                        </div>
+                                        <div class="col-6 px-0">
+                                            <p class="card-text my-0">Total Alumnos</p>
+                                            <h6>{{curso.alumnos.all.count}}</h6> 
+                                        </div>
+                                    </div>
+                                                
+                                    <p class="card-text my-0">Paralelo</p>
+                                    <h6>Curso {{curso.letra}}</h6>               
+                                    <p class="card-text my-0">Profesor Jefe</p>
+                                    <h6>{{curso.id_prof_jefe.nombres}} {{curso.id_prof_jefe.apellido_paterno}} {{curso.id_prof_jefe.apellido_materno}}</h6>               
+                                  </div>
+                            </div>
+                            <div class="card shadow w-100 my-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Información sobre el Curso</h5>
+                                    <p class="card-text my-0">Fecha de inicio de clases</p>
+                                    <h6>{{curso.cod_fecha.fecha_inicio}}</h6>            
+                                    <p class="card-text my-0">Fecha fin de clases</p>
+                                    <h6>               
+                                    {% if curso.cod_fecha.fecha_termino %}
+                                    {{curso.cod_fecha.fecha_termino}}
+                                    {%else%}
+                                    En curso
+                                    {% endif %}
+                                    </h6> 
+                                    <div class="row mx-0 w-100">
+                                        <div class="col-6 px-0">
+                                            <p class="card-text my-0">Año</p>
+                                            <h6>{{curso.cod_fecha.get_año_display}}</h6> 
+                                        </div>
+                                        <div class="col-6 px-0">
+                                            <p class="card-text my-0">Semestre</p>
+                                            <h6>{{curso.cod_fecha.semestres}}</h6> 
+                                        </div>
+                                    </div>               
+                                                 
+                                  </div>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div class="card shadow w-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Asignaturas Tomadas</h5>
+                                    <p class="card-text my-0">Plan de estudio</p>
+                                    <h6>Educación General</h6>            
+                                    <p class="card-text my-0">Asignaturas</p>
+                                    <div style="height: 180px;" class="w-100 overflow-auto">
+                                        
+                                        {% if curso.asignaturas.all.count > 0 %}
+                                        <ul class="list-group list-group-flush">
+                                            {% for a in curso.asignaturas.all %}
+                                            <a href="#" class="list-group-item list-group-item-action rounded text-start">{{a.nombre}}</a>
+                                            {% endfor %}       
+                                                  
+                                        </ul>
+                                        {%else%}
+                                        <h6>Sin asignaturas</h6>
+                                        {% endif %}
+                                            
+                                    </div>               
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock 'content' %}

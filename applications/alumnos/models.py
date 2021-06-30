@@ -46,5 +46,6 @@ class Alumno(models.Model):
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'
         db_table= 'Alumnos'
+        ordering=['apellido_paterno','apellido_materno']
     def __str__(self):
         return self.nombre + ' - ' + self.rut

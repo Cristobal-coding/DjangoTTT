@@ -28,4 +28,5 @@ urlpatterns = [
     re_path('', include('applications.users.urls')),
     re_path('', include('applications.home.urls')),
     re_path('', include('applications.alumnos.urls')),
+    re_path('', include('applications.cursos.urls')),
 ]+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
