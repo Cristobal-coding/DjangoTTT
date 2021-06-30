@@ -8,7 +8,7 @@
             <li class="{% if request.resolver_match.app_name == 'alumnos_app'%}active-now{% endif %}"><a class="text-decoration-none" href="{% url 'alumnos_app:inicio'%}"><i class="fas fa-child"></i>Alumnos</a></li>
             <li><a class="text-decoration-none" href="#"><i class="fas fa-history"></i>Antecedentes</a></li>
             <li><a class="text-decoration-none" href="#"><i class="fas fa-brain"></i>Psicologia</a></li>
-            <li><a class="text-decoration-none" href="#"><i class="fas fa-spell-check"></i>Cursos</a></li>
+            <li class="{% if request.resolver_match.app_name == 'cursos_app'%}active-now{% endif %}"><a class="text-decoration-none" href="{% url 'cursos_app:all'%}"><i class="fas fa-spell-check"></i>Cursos</a></li>
             <li><a class="text-decoration-none" href="#"><i class="fas fa-books"></i>Asignaturas</a></li>
             <li><a class="text-decoration-none" href="{% url 'home_app:logout' %}"><i class="fas fa-sign-out-alt"></i>Cerrar Sesión</a></li>
         </ul>
