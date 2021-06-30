@@ -63,7 +63,7 @@ def keep_filters(path):
 def keep_filters_apod(path):
     rut=''
     nombre=''
-    if '?' in path:
+    if 'nombre' in path and 'rut' in path:
         nombre=path[path.index('nombre')+7:path.index('rut')-1]
         rut=path[path.index('rut')+4:len(path)]
     return {
