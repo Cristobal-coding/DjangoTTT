@@ -51,10 +51,30 @@ class Alumno(models.Model):
     def __str__(self):
         return self.nombre + ' - ' + self.rut
 
-    # def get_current_curso(self):
-    #     alumno = list(Alumno.objects.filter(rut=self.rut))
-    #     cursos = alumno[0].cursos.all()
-    #     for c in cursos:
-    #         print(c.pivot.is_current)
+    def get_current_curso(self):
+        # alumno = Alumno.objects.get(rut=self.rut)
+        # cursos1 = self.cursos.all()
+        cursos = self.curso_alumno_set.all()
+        # cursos = alumno.curso_alumno_set.all()
+        cursando = False
+        if len(cursos) > 0 :
+            for c in cursos:
+                if c.is_current :
+                    cursando = True
+        if cursando :
+            return c.curso.nombre
+        else:
+            return 'No Cursando'
+
+                                       
+                                       
+    #  {% for c in  alumno.curso_alumno_set.all %}
+                                        
+    #     {% if c.is_current %}
+    #         <small>{{c.curso.nombre}}</small>
+    #     {% endif %}
+        
+    # {% endfor %}
+        
 
 
