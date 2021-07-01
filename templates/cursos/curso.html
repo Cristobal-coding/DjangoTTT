@@ -40,6 +40,7 @@ Cursos del Establecimiento Manheim
                                         {{a.nombre}}
                                         <span class="float-right">
                                             {{a.rut}}
+                                            {{a.is_current}}
                                         </span>
                                     </a>
                                     {% endfor %}                   
@@ -119,13 +120,13 @@ Cursos del Establecimiento Manheim
                                 <div class="card-body">
                                     <h5 class="card-title">Asignaturas Tomadas</h5>
                                     <p class="card-text my-0">Plan de estudio</p>
-                                    <h6>Educación General</h6>            
+                                    <h6>{{curso.plan_estudio.nombre}}</h6>            
                                     <p class="card-text my-0">Asignaturas</p>
                                     <div style="height: 180px;" class="w-100 overflow-auto">
                                         
-                                        {% if curso.asignaturas.all.count > 0 %}
+                                        {% if curso.plan_estudio.asignaturas.all.count > 0 %}
                                         <ul class="list-group list-group-flush">
-                                            {% for a in curso.asignaturas.all %}
+                                            {% for a in curso.plan_estudio.asignaturas.all %}
                                             <a href="#" class="list-group-item list-group-item-action rounded text-start">{{a.nombre}}</a>
                                             {% endfor %}       
                                                   

@@ -43,6 +43,13 @@ class Profesor(models.Model):
     apellido_materno=models.CharField('A.Materno',max_length=30)
     asig_impartir=models.ForeignKey(Asignatura,on_delete=models.CASCADE, related_name='asignatura')
 
+class PlanEstudio(models.Model):
+    nombre = models.CharField('Nombre', max_length=50)
+    detalle_url = models.CharField('Url', max_length=255)
+    asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Plan')
+    def __str__(self):
+        return self.nombre
+
 class Curso(models.Model):
     electivos_choices=(
         ('EL','Electricidad'),
@@ -55,25 +62,42 @@ class Curso(models.Model):
         verbose_name_plural = 'Cursos'
         db_table= 'Cursos'
         ordering = ['nombre']
+    def __str__(self):
+        return self.nombre +'('+self.id_curso + ')'
     id_curso =models.CharField('ID_Curso',max_length=20,unique=True,primary_key=True)
     cod_fecha=models.ForeignKey(Fecha,on_delete=models.CASCADE, related_name='fecha')   
     nombre = models.CharField('Nombre', max_length=50)
     letra = models.CharField('Letra', max_length=1)
     electivo=models.CharField('Electivos',max_length=5,choices=electivos_choices, blank=True, null=True)
+
     id_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='jefe')
-    asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Curso')
-    alumnos = models.ManyToManyField(Alumno)
+    plan_estudio=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE, related_name='plan')
+    alumnos = models.ManyToManyField(Alumno,through='Curso_Alumno', related_name='cursos')
 
-class Asignatura_Curso(models.Model):
-
+class Asignatura_Plan(models.Model):
+    
     class Meta:
-        db_table= 'Asignatura_Curso'
-        unique_together = (('curso', 'asignatura'),)
+        db_table= 'Asignatura_Plan'
+        unique_together = (('plan', 'asignatura'),)
     def __str__(self):
-        return self.curso.id_curso + ' '+self.asignatura.cod_asign
+        return self.plan.nombre + ' '+self.asignatura.cod_asign
     #Clave primaria de m2m
-    curso=models.ForeignKey(Curso,on_delete=models.CASCADE)
+    plan=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE)
     asignatura=models.ForeignKey(Asignatura,on_delete=models.CASCADE)
 
     #foranea hacia profesores
     id_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='profesor')
+
+class Curso_Alumno(models.Model):
+
+    class Meta:
+        db_table= 'Curso_Alumno'
+        unique_together = (('curso', 'alumno'),)
+    def __str__(self):
+        return self.alumno.nombre + ' '+ self.curso.id_curso
+    #Clave primaria de m2m
+    curso=models.ForeignKey(Curso,on_delete=models.CASCADE)
+    alumno=models.ForeignKey(Alumno,on_delete=models.CASCADE)
+
+    #atributo si es curso actual
+    is_current = models.BooleanField(default=False)
