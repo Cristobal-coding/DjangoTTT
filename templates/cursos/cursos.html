@@ -10,7 +10,7 @@ Cursos del Establecimiento Manheim
 <div class="row mx-0 h-100 w-100">
     <div class="h-100 py-4 px-2" style="width: 70%;">
         <table class="table caption-top table-hover">
-            <caption>Cursos actuales del año 2021</caption>
+            <caption>Cursos actuales del year 2021</caption>
             <thead class="table-dark">
               <tr>
                 <th scope="col">Identificador</th>
@@ -25,7 +25,7 @@ Cursos del Establecimiento Manheim
               </tr>
             </thead>
             <tbody>        
-                {% for c in cursos  %}
+                {% for c in current_cursos  %}
                     <tr>
                       <th scope="row">{{c.id_curso}}</th>
                       <td>{{c.nombre}}</td>
@@ -40,7 +40,7 @@ Cursos del Establecimiento Manheim
                       <td>{{c.alumnos.count}}</td>
                       <td>{{c.id_prof_jefe.nombres}}</td>
                       <td>{{c.cod_fecha.get_semestres_display}}</td>
-                      <td>{{c.cod_fecha.get_año_display}}</td>
+                      <td>{{c.cod_fecha.get_year_display}}</td>
                       <td><a href="{% url 'cursos_app:detalleCurso' c.id_curso %}"><i class="far fa-bars"></i></a></td>
                     </tr>
                 {% endfor %}
@@ -55,14 +55,14 @@ Cursos del Establecimiento Manheim
             </div>
             <div class="card-body">
               <h5 class="card-title text-decoration-underline">Para personas Autorizadas</h5>
-              <p class="card-text">Estas acciones permiten finalizar un periodo o el año de escolaridad.</p>
+              <p class="card-text">Estas acciones permiten finalizar un periodo o el year de escolaridad.</p>
               <p class="card-text text-danger d-inline"><i class="far fa-siren-on"></i>Advertencia:</p><p class="d-inline">Los cambios realizados no podrán deshacerse.</p>
               <div class="row mx-0 w-100 my-2">
                   <div class="col-6 py-0 px-1">
                     <a href="#" class="btn btn-primary w-100">Finalizar Semestre</a>
                 </div>
                 <div class="col-6 p-0">
-                    <a href="#" class="btn btn-primary w-100">Finalizar Año</a>
+                    <a href="#" class="btn btn-primary w-100">Finalizar year</a>
                   </div>
               </div>
             </div>

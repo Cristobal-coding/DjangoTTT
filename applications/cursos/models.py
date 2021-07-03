@@ -1,31 +1,32 @@
 from django.db import models
 from applications.asignaturas.models import Asignatura
 from applications.alumnos.models import Alumno
+from .managers import CursoManager
 # Create your models here.
 class Fecha(models.Model):
     semestres=(
         ('1','Primer semestre'),
         ('2','Segundo semestre'),
     )
-    años=(
-        ('0','2021'),('1','2020'),('2','2019'),
-        ('3','2018'),('4','2017'),('5','2016'),
-        ('6','2015'),('7','2014'),('8','2013'),
-        ('9','2012'),('10','2011'),('11','2010'),
-        ('12','2009'),('13','2008'),('14','2007'),
-        ('15','2006'),('16','2005'),('17','2004'),
-        ('18','2003'),('19','2002'),('20','2001'),
-        ('21','2000'),     
+    years=(
+        ('2021','2021'),('2020','2020'),('2019','2019'),
+        ('2018','2018'),('2017','2017'),('2016','2016'),
+        ('2015','2015'),('2014','2014'),('2013','2013'),
+        ('2012','2012'),('2011','2011'),('2010','2010'),
+        ('2009','2009'),('2008','2008'),('2007','2007'),
+        ('2006','2006'),('2005','2005'),('2004','2004'),
+        ('2003','2003'),('2002','2002'),('2001','2001'),
+        ('2000','2000'),     
     )
     cod_fecha =models.CharField('Cod_fecha',max_length=5,unique=True,primary_key=True)    
     fecha_inicio=models.DateField('Fecha de inicio')
     fecha_termino=models.DateField('Fecha de Termino',null=True,blank=True)
     semestres=models.CharField('Semestre',max_length=3,choices=semestres)
-    año=models.CharField('Año',max_length=4,choices=años)
+    year=models.CharField('Año',max_length=4,choices=years)
     def __str__(self):
-        return self.get_año_display()+ ' Semestre ' + self.semestres
+        return self.get_year_display()+ ' Semestre ' + self.semestres
     class Meta:
-        unique_together = (('semestres', 'año'),)
+        unique_together = (('semestres', 'year'),)
         verbose_name = 'Fecha'
         verbose_name_plural = 'Fechas'
         db_table= 'Fechas'
@@ -65,10 +66,12 @@ class Curso(models.Model):
     def __str__(self):
         return self.nombre +'('+self.id_curso + ')'
     id_curso =models.CharField('ID_Curso',max_length=20,unique=True,primary_key=True)
-    cod_fecha=models.ForeignKey(Fecha,on_delete=models.CASCADE, related_name='fecha')   
+    cod_fecha=models.ForeignKey(Fecha,on_delete=models.CASCADE, related_name='curso')   
     nombre = models.CharField('Nombre', max_length=50)
     letra = models.CharField('Letra', max_length=1)
     electivo=models.CharField('Electivos',max_length=5,choices=electivos_choices, blank=True, null=True)
+
+    objects = CursoManager()
 
     id_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='jefe')
     plan_estudio=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE, related_name='plan')
