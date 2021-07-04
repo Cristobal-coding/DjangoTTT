@@ -4,12 +4,7 @@ Actualizar de Alumno
 {% endblock 'title' %}
 
 {% block 'formtitle' %}
-<<<<<<< HEAD
-Perfil del alumno: {{alumno.nombre}}
-
-=======
 Perfil del alumno: {{alumno.nombre}} - {{alumno.get_current_curso}}
->>>>>>> a2a1b39e540e49de95f7e41e9a87de0ee22866b2
 {% endblock 'formtitle' %}
 
 {% block 'go_list' %}
@@ -29,7 +24,7 @@ Actualizar
                 <label for="" class="text-primary">Rut: {% for e in  form.rut.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
                 {{form.rut}}   
             </div>
-            <div class="col-6">
+            <div class="col-6">*-
                 <label for="" class="text-primary">Nombre: {% for e in  form.nombre.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
                 {{form.nombre}}
             </div>
