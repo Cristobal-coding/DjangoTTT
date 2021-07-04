@@ -4,7 +4,7 @@ Actualizar de Alumno
 {% endblock 'title' %}
 
 {% block 'formtitle' %}
-Perfil del alumno: {{alumno.nombre}}
+Perfil del alumno: {{alumno.nombre}} - {{alumno.get_current_curso}}
 {% endblock 'formtitle' %}
 
 {% block 'go_list' %}

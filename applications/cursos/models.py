@@ -2,7 +2,6 @@ from django.db import models
 from applications.asignaturas.models import Asignatura
 from applications.alumnos.models import Alumno
 from .managers import CursoManager
-from .logicas import generate_years
 # Create your models here.
 
 class Fecha(models.Model):
@@ -77,8 +76,8 @@ class Curso(models.Model):
 
     objects = CursoManager()
 
-    id_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='jefe')
-    plan_estudio=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE, related_name='plan')
+    id_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='jefe' ,null=True,blank=True)
+    plan_estudio=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE, related_name='plan' ,null=True,blank=True)
     alumnos = models.ManyToManyField(Alumno,through='Curso_Alumno', related_name='cursos')
 
 class Asignatura_Plan(models.Model):

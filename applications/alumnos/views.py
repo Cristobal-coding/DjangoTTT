@@ -133,5 +133,5 @@ class ApoderadoEdit(LoginRequiredMixin,UpdateView):
 def delete_alumno(request, pk):
     query = Alumno.objects.get(pk=pk)
     query.delete()
-    messages.add_message(request, messages.INFO, 'Alumno elminado Satisfactoriamente.')
+    messages.success(request,'Alumno elminado Satisfactoriamente.')
     return HttpResponseRedirect(reverse('alumnos_app:filtrar'))
