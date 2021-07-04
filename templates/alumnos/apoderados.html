@@ -8,159 +8,115 @@ Listado de Apoderados
 
 {% block 'content' %}
 <div class="row mx-0 h-100 w-100">
-    <div class="col-9 h-100">
+    <div class="col-12 h-100">
+        <div class="col-12  text-center ">
+            {%include '../includes/actions.html'%}
+        </div>
         <div class="row mx-0 w-100 h-100">
-            <div class="col-12 py-2" style="height: 12% !important;">
-                <form method="GET" class="w-100 d-flex">
-                    {% keep_filters_apod request.get_full_path as filters %}
-                    <div class="row mx-0 w-100">
-                        <div class="col-10 px-0">
-                            <div class="row mx-0 w-100 ">
-                                <div class="col-6">
-                                    <label for="nombre" class="form-label fw-bold">Por Nombre:</label>
-                                    <input type="text" class="form-control rounded-pill form-control-sm" id="nombre" name="nombre" value="{{filters.nombre}}" placeholder="&#xf00e; Nombre Apoderado"  style="font-family:KoHo, FontAwesome">
-                                </div>
-                                <div class="col-6">
-                                    <label for="rut" class="form-label fw-bold">Por Rut:</label>
-                                    <input type="text" class="form-control rounded-pill form-control-sm" id="rut" name="rut" value="{{filters.rut}}" placeholder="Sin puntos y con guión"  style="font-family:KoHo, FontAwesome">
-                                </div>
-                            </div>     
-                        </div>
-                        <div class="col-2 px-0 d-flex flex-column align-items-center justify-content-end">
-                            <div class="row mx-0 px-0 w-100">
-                                <div class="col-12 px-0 text-end">
-                                    <button type="submit" class="btn btn-primary rounded-pill w-100" ><i class="fas fa-sort mx-1"></i>Filtrar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                  
-                </form>
-            </div>
-            <div class="col-12" {% if not is_paginated %}style="height: 88% !important;"{% endif %} style="height: 75% !important;">
-                <div class="row mx-0 h-100 w-100 ">
-                    <div class="col-12 h-100">
-                    
-                    {% if alumnos.count == 0 %}
-                    <div class="text-center my-3">
-                        <h5>No se han encontrado resultados</h5>
-                        <h6>O todabía no se han agregado apoderados...</h6>
-                    </div>
-                    {% endif %}
-                        
+            <div class="col-8 py-4" {% if not is_paginated %}style="height: 88% !important;"{% endif %} style="height: 88% !important;">
+                <table class="table caption-top table-hover">     
+                <thead class="table-dark">
+                  <tr>
+                    <th scope="col">Rut</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Contacto</th>
+                    <th scope="col">Pupilos</th>
+                    <th scope="col">Gestionar</th>      
+                  </tr>
+                  <tbody>        
                     {% for apod in apoderados  %}
-                    <div class="row mx-0 w-100 shadow-sm my-3" style="height:80px;background-color:white;">
-                        <div class="col-2 h-100 px-0">
-                            <div class="row mx-0 h-100">
-                                <div class="col-12 d-flex flex-column align-items-center justify-content-center">
-                                    <div class="text-start">
-                                        <h6 class="my-0 fw-bold">{{apod.rut}}</h6>
-                                        <small class="my-0 fw-light">{{apod.correo}}</small>
+                        <tr>
+                          <th scope="row"><h6 class="my-0 fw-bold">{{apod.rut}}</h6><small class="my-0 fw-light">{{apod.correo}}</small></th>
+                          <td><h6 class="my-0 fw-bold">{{apod.nombre_apoderado}} {{apod.apellido_paterno}} {{apod.apellido_materno}}</h6><small class="my-0 fw-light">{{apod.get_sexo_display}}</small></td>
+
+                          <td><h6 class="my-0 fw-bold"> +56 9 {{apod.telefono_apoderado}} </h6><small class="my-0 fw-light">{{apod.direccion}}</small></td>
+                          <td>
+
+                            <h6 class="my-0 fw-light w-100">{{apod.rut_apoderado.nombre_apoderado}}<a href="#" class="badge text-decoration-none mx-1 w-50 link">{{apod.alumnos.count}}</a></h6></td>
+
+                          <td>btones                                 
+                            <!-- <div class="modal fade" id="rut{{apod.rut}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fs-4 fw-bold" id="staticBackdropLabel"><i class="fas fa-exclamation-triangle mx-1 text-danger fs-4"></i>!Cuidado!</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6>¿Estas de acuerdo con eliminar al apoderado <span class="fw-bold">{{apod.nombre}} {{apod.apellido_paterno}} {{apod.apellido_materno}}</span>?</h6>      
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <a href="#" type="submit" class="btn btn-primary">Si, de acuerdo</a>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-3 h-100 px-0">
-                            <div class="row mx-0 h-100">
-                                <div class="col-12 d-flex flex-column align-items-start justify-content-center">
-                                    <div class="text-start">
-                                        <h6 class="my-0 fw-bold">{{apod.nombre_apoderado}} {{apod.apellido_paterno}} {{apod.apellido_materno}}</h6>
-                                        <small class="my-0 fw-light">{{apod.get_sexo_display}}</small>
-                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-3 h-100 px-0">
-                            <div class="row mx-0 h-100">
-                                <div class="col-12 d-flex flex-column align-items-start justify-content-center">
-                                    <div class="text-start">
-                                        <h6 class="my-0 fw-bold">+56 9 {{apod.telefono_apoderado}}</h6>
-                                        <small class="my-0 fw-light">{{apod.direccion}}</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2 h-100 px-0">
-                            <div class="row mx-0 h-100">
-                                <div class="col-12 d-flex flex-column align-items-start justify-content-center">
-                                    <div class="text-start">
-                                        <h6 class="my-0 fw-bold">Alumnos:</h6>
-                                        <small class="my-0 fw-light w-100">{{apod.rut_apoderado.nombre_apoderado}}<a href="#" class="badge text-decoration-none mx-1 w-50 link">{{apod.alumnos.count}}</a></small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2 h-100 px-0">
-                            <div class="row mx-0 h-100 w-100">
-                                <div class="col-6 h-100 px-1 d-flex flex-column justify-content-center align-items-end">
-                                    <a href="{% url 'alumnos_app:editApoderado' apod.rut %} " class="btn fs-5"><i class="far fa-edit"></i></a>
-                                </div>
-                                <div class="col-6 h-100 px-1  d-flex flex-column justify-content-center align-items-start">
-                                    
-                                    <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#rut{{apod.rut}}"></button> 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Button trigger modal -->
-                    <!-- Modal -->
-                    <div class="modal fade" id="rut{{apod.rut}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title fs-4 fw-bold" id="staticBackdropLabel"><i class="fas fa-exclamation-triangle mx-1 text-danger fs-4"></i>!Cuidado!</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <h6>¿Estas de acuerdo con eliminar al apoderado <span class="fw-bold">{{apod.nombre}} {{apod.apellido_paterno}} {{apod.apellido_materno}}</span>?</h6>      
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <a href="#" type="submit" class="btn btn-primary">Si, de acuerdo</a>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
+                            </div> -->
+                        </td>
+                      </tr>       
+                   
                     {% endfor %}
-                    </div>                
+                </tbody>
+             </table>   
+             {% if is_paginated %}
+                {% path_with_filter request.get_full_path as filter%} 
+                <div class="col-12" style="height: 13% !important;">
+                    <div class="row mx-0 w-100 h-100">
+                        <div class="col-12 d-flex flex-column justify-content-center align-items-center">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                    <a class="page-link" href="?page={{page_obj.previous_page_number}}{{filter}}" tabindex="-1" aria-disabled="true">Anterior</a>
+                                    </li>
+                                    {% endif %} 
+                                    {% for pag in paginator.page_range %}
+                    
+                                    {% ifequal pag page_obj.number  %}
+                                    <li class="page-item active"><a class="page-link" href="?page={{pag}}{{filter}}">{{pag}}</a></li>
+                                    {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{pag}}{{filter}}">{{pag}}</a></li>
+                                    {% endifequal %}
+                                        
+                                    {% endfor %}
+                                    {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                    <a class="page-link" href="?page={{page_obj.next_page_number}}{{filter}}" tabindex="-1" aria-disabled="true">Siguiente</a>
+                                    </li>
+                                    {% endif %}              
+                                </ul>
+                            </nav>
+                        </div>                  
+                    </div>   
                 </div>
-            </div>
-            {% if is_paginated %}
-            {% path_with_filter request.get_full_path as filter%} 
-            <div class="col-12" style="height: 13% !important;">
-                <div class="row mx-0 w-100 h-100">
-                    <div class="col-12 d-flex flex-column justify-content-center align-items-center">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                {% if page_obj.has_previous %}
-                                <li class="page-item">
-                                  <a class="page-link" href="?page={{page_obj.previous_page_number}}{{filter}}" tabindex="-1" aria-disabled="true">Anterior</a>
-                                </li>
-                                {% endif %} 
-                                {% for pag in paginator.page_range %}
-                
-                                {% ifequal pag page_obj.number  %}
-                                <li class="page-item active"><a class="page-link" href="?page={{pag}}{{filter}}">{{pag}}</a></li>
-                                {% else %}
-                                <li class="page-item"><a class="page-link" href="?page={{pag}}{{filter}}">{{pag}}</a></li>
-                                {% endifequal %}
-                                    
-                                {% endfor %}
-                                {% if page_obj.has_next %}
-                                <li class="page-item">
-                                  <a class="page-link" href="?page={{page_obj.next_page_number}}{{filter}}" tabindex="-1" aria-disabled="true">Siguiente</a>
-                                </li>
-                                {% endif %}              
-                            </ul>
-                          </nav>
-                    </div>                  
-                </div>   
-            </div>
-            {% endif %}
-        </div>     
+             {% endif %}
+             
+            
+        </div>  
+           <div class="col-4 py-5 " style="height: 12% !important;">
+            <form method="GET" class=" d-flex">
+                {% keep_filters_apod request.get_full_path as filters %}
+                <div class="row w-100 mx-0 ">
+                    <div class="col-12 px-0">
+                        <div class="row mx-0  ">
+                            <div class="col-12 py-3">
+                                <label for="nombre" class="form-label fw-bold">Por Nombre:</label>
+                                <input type="text" class="form-control rounded-pill form-control-sm" id="nombre" name="nombre" value="{{filters.nombre}}" placeholder="&#xf00e; Nombre Apoderado"  style="font-family:KoHo, FontAwesome">
+                            </div>
+                            <div class="col-12 py-3">
+                                <label for="rut" class="form-label fw-bold">Por Rut:</label>
+                                <input type="text" class="form-control rounded-pill form-control-sm" id="rut" name="rut" value="{{filters.rut}}" placeholder="Sin puntos y con guión"  style="font-family:KoHo, FontAwesome">
+                            </div>
+                        </div>     
+                    </div>
+                    <div class="col-12 py-5 d-flex flex-column align-items-center justify-content-end">
+                        <button type="submit" class="btn btn-primary rounded-pill w-100"><i class="fas fa-sort mx-1"></i>Filtrar</button>
+                    </div>
+                </div>                  
+            </form>
+        </div>
     </div>
-    <div class="col-3 h-100 text-center p-3">
-        {%include '../includes/actions.html'%}
-    </div>
+  
 </div>
 {% if messages %}
     {% for m in messages %}

@@ -10,8 +10,6 @@
     <!-- Select2 theme con Bootstrap4 -->
     <link rel="stylesheet" href="{% static 'css/select2-bootstrap4.min.css' %}">
 {% endblock 'css-select2' %}
-    
-
 
 {% block 'titulo' %}
     {% block 'title' %}
@@ -20,9 +18,13 @@
 
 
 {% block 'content' %}
+
 <div class="row mx-0 h-100 w-100">
-    <div class="col-9 d-flex align-items-center flex-column h-100 py-5">
-        <div class="card shadow-sm w-100 border-0">
+    <div class="col-12 d-flex align-items-center flex-column h-100 ">
+        <div class="col-12  text-center ">
+            {%include '../includes/actions.html'%}
+        </div>
+        <div class="card shadow-sm w-75 border-0 my-5">
             <div class="card-header bg-white border-0">
                 <div class="row mx-0 w-100">
                     <div class="col-8">
@@ -49,9 +51,7 @@
         </div>
        
     </div>
-    <div class="col-3 h-100 text-center p-3">
-        {%include '../includes/actions.html'%}
-    </div>
+   
 </div>
 
 {% block 'js-select2' %}
