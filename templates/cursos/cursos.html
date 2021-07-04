@@ -40,7 +40,7 @@ Cursos del Establecimiento Manheim
                       <td>{{c.alumnos.count}}</td>
                       <td>{{c.id_prof_jefe.nombres}}</td>
                       <td>{{c.cod_fecha.get_semestres_display}}</td>
-                      <td>{{c.cod_fecha.get_year_display}}</td>
+                      <td>{{c.cod_fecha.year}}</td>
                       <td><a href="{% url 'cursos_app:detalleCurso' c.id_curso %}"><i class="far fa-bars"></i></a></td>
                     </tr>
                 {% endfor %}
@@ -59,7 +59,13 @@ Cursos del Establecimiento Manheim
               <p class="card-text text-danger d-inline"><i class="far fa-siren-on"></i>Advertencia:</p><p class="d-inline">Los cambios realizados no podrán deshacerse.</p>
               <div class="row mx-0 w-100 my-2">
                   <div class="col-6 py-0 px-1">
-                    <a href="#" class="btn btn-primary w-100">Finalizar Semestre</a>
+                    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#finishS">
+                      Finalizar Semestre 
+                    </button>
+                    <form action="{% url 'cursos_app:finishS' %}" method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" value="{{user.id}}" name="user">
+                    </form>
                 </div>
                 <div class="col-6 p-0">
                     <a href="#" class="btn btn-primary w-100">Finalizar year</a>
@@ -67,6 +73,38 @@ Cursos del Establecimiento Manheim
               </div>
             </div>
           </div>
+          <!-- Modal -->
+        <div class="modal fade" id="finishS" tabindex="-1" aria-labelledby="finishS" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="finishS">Finalizar Semestre</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="{% url 'cursos_app:finishS' %}" method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" value="{{user.id}}" name="user">
+                  <div class="my-2">
+                    <label for="">Fecha de término del semestre Actual:</label>
+                    <input type="date" class="form-control" name="semestre_old">
+                  </div>
+                  <div class="my-2">
+                    <label for="">Fecha de inicio del próximo semestre:</label>
+                    <input type="date" class="form-control" name="semestre_new">
+                  </div>
+                  <div>
+                    <h6>El siguiente año, se tomará como el <span>{{current_año_new}}</span></h6>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
 </div>
 {% endblock 'content' %}

@@ -14,5 +14,16 @@ class CursoManager(models.Manager):
             Q(cod_fecha__year =current_año ) & Q(cod_fecha__semestres =current_semestre )
         )
         return current_cursos
-        # from applications.cursos.models import Curso
-        # año = Curso.objects.get_current_cursos()
+        
+    def get_all_data(self):
+        total = self.all()
+        current_año = total.aggregate(Max('cod_fecha__year'))['cod_fecha__year__max']
+        current_semestre = total.filter(
+            cod_fecha__year = current_año
+        ).aggregate(Max('cod_fecha__semestres'))['cod_fecha__semestres__max']
+        current_cursos = total.filter(
+            Q(cod_fecha__year =current_año ) & Q(cod_fecha__semestres =current_semestre )
+        )
+        return current_cursos, current_año, current_semestre
+
+    

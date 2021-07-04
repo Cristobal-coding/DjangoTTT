@@ -2,29 +2,33 @@ from django.db import models
 from applications.asignaturas.models import Asignatura
 from applications.alumnos.models import Alumno
 from .managers import CursoManager
+from .logicas import generate_years
 # Create your models here.
+
 class Fecha(models.Model):
     semestres=(
         ('1','Primer semestre'),
         ('2','Segundo semestre'),
     )
-    years=(
-        ('2021','2021'),('2020','2020'),('2019','2019'),
-        ('2018','2018'),('2017','2017'),('2016','2016'),
-        ('2015','2015'),('2014','2014'),('2013','2013'),
-        ('2012','2012'),('2011','2011'),('2010','2010'),
-        ('2009','2009'),('2008','2008'),('2007','2007'),
-        ('2006','2006'),('2005','2005'),('2004','2004'),
-        ('2003','2003'),('2002','2002'),('2001','2001'),
-        ('2000','2000'),     
-    )
+    # years = generate_years(2022)
+    # years=(
+    #     ('2021','2021'),('2020','2020'),('2019','2019'),
+    #     ('2018','2018'),('2017','2017'),('2016','2016'),
+    #     ('2015','2015'),('2014','2014'),('2013','2013'),
+    #     ('2012','2012'),('2011','2011'),('2010','2010'),
+    #     ('2009','2009'),('2008','2008'),('2007','2007'),
+    #     ('2006','2006'),('2005','2005'),('2004','2004'),
+    #     ('2003','2003'),('2002','2002'),('2001','2001'),
+    #     ('2000','2000'),     
+    # )
     cod_fecha =models.CharField('Cod_fecha',max_length=5,unique=True,primary_key=True)    
     fecha_inicio=models.DateField('Fecha de inicio')
     fecha_termino=models.DateField('Fecha de Termino',null=True,blank=True)
     semestres=models.CharField('Semestre',max_length=3,choices=semestres)
-    year=models.CharField('Año',max_length=4,choices=years)
+    year= models.IntegerField('Año')
+   
     def __str__(self):
-        return self.get_year_display()+ ' Semestre ' + self.semestres
+        return str(self.year)+ ' Semestre ' + self.semestres
     class Meta:
         unique_together = (('semestres', 'year'),)
         verbose_name = 'Fecha'
@@ -104,3 +108,5 @@ class Curso_Alumno(models.Model):
 
     #atributo si es curso actual
     is_current = models.BooleanField(default=False)
+
+
