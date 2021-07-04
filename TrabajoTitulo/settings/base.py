@@ -23,7 +23,6 @@ SECRET_KEY = get_secret('SECRET_KEY')
 
 
 # Application definition
-
 DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',

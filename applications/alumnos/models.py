@@ -57,12 +57,14 @@ class Alumno(models.Model):
         cursos = self.curso_alumno_set.all()
         # cursos = alumno.curso_alumno_set.all()
         cursando = False
+        
         if len(cursos) > 0 :
             for c in cursos:
                 if c.is_current :
                     cursando = True
+                    nombre=c.curso.nombre
         if cursando :
-            return c.curso.nombre
+            return nombre
         else:
             return 'No Cursando'
 

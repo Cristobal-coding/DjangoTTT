@@ -1,21 +1,20 @@
 {% extends '../layouts/master.html' %}
-
+{% load static %}
 {% block 'titulo' %}
 Cursos del Establecimiento Manheim
 {% endblock 'titulo' %}
 
 
 {% block 'content' %}
-
+<a href=""></a>
 <div class="row mx-0 h-100 w-100">
-    <div class="h-100 py-4 px-2" style="width: 70%;">
+    <div class="h-100 py-3 px-2" style="width: 70%;">
         <table class="table caption-top table-hover">
-            <caption>Cursos actuales del year 2021</caption>
+            <caption>Cursos actuales del año <span>{{current_año}}</span></caption>
             <thead class="table-dark">
               <tr>
                 <th scope="col">Identificador</th>
                 <th scope="col">Nombre</th>
-                <th scope="col">Paralelo</th>
                 <th scope="col">Electivo</th>
                 <th scope="col">Alumnos</th>
                 <th scope="col">Prof. Jefe</th>
@@ -29,7 +28,6 @@ Cursos del Establecimiento Manheim
                     <tr>
                       <th scope="row">{{c.id_curso}}</th>
                       <td>{{c.nombre}}</td>
-                      <td>{{c.letra}}</td>
                       <td>
                       {% if c.electivo %}
                       {{c.get_electivo_display}}
@@ -48,63 +46,116 @@ Cursos del Establecimiento Manheim
             </tbody>
           </table>
     </div>
-    <div class="py-4 px-1" style="width: 30%;">
+    <div class="py-3 px-1" style="width: 30%;">
         <div class="card shadow-sm">
             <div class="card-header">
               Gestionar Cursos 2021
             </div>
             <div class="card-body">
               <h5 class="card-title text-decoration-underline">Para personas Autorizadas</h5>
-              <p class="card-text">Estas acciones permiten finalizar un periodo o el year de escolaridad.</p>
+              <p class="card-text">Estas acciones permiten finalizar un periodo o el año de escolaridad.</p>
               <p class="card-text text-danger d-inline"><i class="far fa-siren-on"></i>Advertencia:</p><p class="d-inline">Los cambios realizados no podrán deshacerse.</p>
               <div class="row mx-0 w-100 my-2">
-                  <div class="col-6 py-0 px-1">
-                    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#finishS">
-                      Finalizar Semestre 
-                    </button>
-                    <form action="{% url 'cursos_app:finishS' %}" method="POST">
-                      {% csrf_token %}
-                      <input type="hidden" value="{{user.id}}" name="user">
-                    </form>
-                </div>
                 <div class="col-6 p-0">
-                    <a href="#" class="btn btn-primary w-100">Finalizar year</a>
-                  </div>
+                  {% if current_semestre == 1 %}
+                  <a href="#" class="btn btn-primary w-100">Finalizar Semestre</a>
+                  {% else%} 
+                  <button type="button" class="btn btn-primary w-100" disabled>Finalizar Semestre</button>
+                  {% endif %}
+                  
+                </div>
+                <div class="col-6 py-0 px-1">
+                  
+                  {% if current_semestre == 2 %}
+                  <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#finishA">
+                    Finalizar Año 
+                  </button>
+                  {% else%} 
+                  <button type="button" class="btn btn-primary w-100" disabled>Finalizar Año</button>
+                  {% endif %}
+                    
+              </div>
               </div>
             </div>
           </div>
+        
+        {% if messages %}
+          {% for m in messages %} 
+            {% if m.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="card shadow-sm my-2">
+              <div class="card-header">
+                <i class="far fa-comment-alt-exclamation mx-1 text-danger fs-5"></i>Informacion con respecto al año {{current_año}}
+              </div>
+              <div class="card-body p-0">
+                <div class="text-center">
+                  <h5 class="card-title text-decoration-underline text-danger m-1">En este nuevo año usted debe:</h5>
+                </div>
+                <ul class="list-group list-group-flush list-group-numbered">
+                  <li class="list-group-item my-0">Añadir nuevos profesores jefes a los cursos</li>
+                  <li class="list-group-item my-0">Actualizar el listado de alumnos en cada curso</li>
+                  <li class="list-group-item my-0">Actualizar electivo del nuevo 3ro Medio</li>
+                  <li class="list-group-item my-0">Actualizar datos del nuevo 1ro Basico</li>
+                  
+                </ul>
+              </div>
+            </div>  
+            {% endif %}
+            
+          {% endfor%}
+        {% endif %}
+          
+        
           <!-- Modal -->
-        <div class="modal fade" id="finishS" tabindex="-1" aria-labelledby="finishS" aria-hidden="true">
-          <div class="modal-dialog">
+        <div class="modal fade" id="finishA" data-bs-backdrop="static" tabindex="-1" aria-labelledby="finishA" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="finishS">Finalizar Semestre</h5>
+                <h5 class="modal-title" id="finishA">Finalizar Año</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <form action="{% url 'cursos_app:finishS' %}" method="POST">
+                <form action="{% url 'cursos_app:finishA' %}" method="POST" id="finishA">
                   {% csrf_token %}
-                  <input type="hidden" value="{{user.id}}" name="user">
+                  
                   <div class="my-2">
                     <label for="">Fecha de término del semestre Actual:</label>
-                    <input type="date" class="form-control" name="semestre_old">
+                    <input type="date" class="form-control" name="semestre_old" id="semestre_old">
                   </div>
                   <div class="my-2">
                     <label for="">Fecha de inicio del próximo semestre:</label>
-                    <input type="date" class="form-control" name="semestre_new">
+                    <input type="date" class="form-control" name="semestre_new" id="semestre_new">
                   </div>
-                  <div>
-                    <h6>El siguiente año, se tomará como el <span>{{current_año_new}}</span></h6>
+                  <div class="m-2">
+                    <h6><span class="text-decoration-underline">Información:</span> El siguiente año, se tomará como el <span>{{current_año_new}}</span></h6>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Comenzar Finalización</button>
                   </div>
                 </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
               </div>
             </div>
           </div>
         </div>
     </div>
 </div>
+{% if messages %}
+    {% for m in messages %}
+    <script>
+        Swal.fire({
+            'timer':'2000',
+            title: 'Éxito!',
+            text: '{{m}}',
+            icon: 'success',
+            showConfirmButton: false,
+          })
+    </script>
+    {% endfor %}
+{% endif %} 
 {% endblock 'content' %}
+
+
+{% block 'js-select2' %}
+<script src="{% static 'js/formulario_cursos.js' %}"></script> 
+{% endblock 'js-select2' %}
+

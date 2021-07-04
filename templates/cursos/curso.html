@@ -34,7 +34,7 @@ Cursos del Establecimiento Manheim
                                         <span class="text-decoration-underline float-right">Rut</span>
                                     </li>
                                     {% for a in curso.alumnos.all %}
-                                    <a href="#" class="list-group-item list-group-item-action rounded text-start">
+                                    <a href="{% url 'alumnos_app:actualizar' a.rut%}" class="list-group-item list-group-item-action rounded text-start">
                                         {{a.apellido_paterno}}
                                         {{a.apellido_materno}}
                                         {{a.nombre}}

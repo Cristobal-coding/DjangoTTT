@@ -79,6 +79,7 @@ class AlumnoEdit(LoginRequiredMixin,UpdateView):
     login_url = reverse_lazy('home_app:login')
     def form_valid(self, form):
         messages.success(self.request, 'Alumno actualizado Satisfactoriamente.')
+        form.save()
         return HttpResponseRedirect(self.get_success_url())
     
 class ApoderadosList(LoginRequiredMixin,ListView):
@@ -126,6 +127,7 @@ class ApoderadoEdit(LoginRequiredMixin,UpdateView):
     login_url = reverse_lazy('home_app:login')
     def form_valid(self, form):
         messages.success(self.request, 'Apoderado actualizado Satisfactoriamente.')
+        form.save()
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -133,5 +135,5 @@ class ApoderadoEdit(LoginRequiredMixin,UpdateView):
 def delete_alumno(request, pk):
     query = Alumno.objects.get(pk=pk)
     query.delete()
-    messages.add_message(request, messages.INFO, 'Alumno elminado Satisfactoriamente.')
+    messages.success(request,'Alumno elminado Satisfactoriamente.')
     return HttpResponseRedirect(reverse('alumnos_app:filtrar'))
