@@ -33,7 +33,7 @@ class Fecha(models.Model):
         verbose_name = 'Fecha'
         verbose_name_plural = 'Fechas'
         db_table= 'Fechas'
-        # ordering = ['nombre_apoderado','apellido_paterno']
+        ordering = ['-year','-semestres']
 class Profesor(models.Model):
     class Meta:
         verbose_name = 'Profesor'
@@ -65,15 +65,14 @@ class Curso(models.Model):
         verbose_name = 'Curso'
         verbose_name_plural = 'Cursos'
         db_table= 'Cursos'
-        ordering = ['nombre']
+        ordering = ['numero']
     def __str__(self):
         return self.nombre +'('+self.id_curso + ')'
     id_curso =models.CharField('ID_Curso',max_length=20,unique=True,primary_key=True)
     cod_fecha=models.ForeignKey(Fecha,on_delete=models.CASCADE, related_name='curso')   
     nombre = models.CharField('Nombre', max_length=50)
-    letra = models.CharField('Letra', max_length=1)
     electivo=models.CharField('Electivos',max_length=5,choices=electivos_choices, blank=True, null=True)
-
+    numero = models.FloatField('Numero')
     objects = CursoManager()
 
     id_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='jefe' ,null=True,blank=True)
