@@ -52,7 +52,7 @@ class PlanEstudio(models.Model):
     detalle_url = models.CharField('Url', max_length=255)
     asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Plan')
     def __str__(self):
-        return self.nombre
+        return self.nombre + ' ' + str(self.id)
 
 class Curso(models.Model):
     electivos_choices=(

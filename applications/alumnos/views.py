@@ -25,7 +25,7 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
     template_name = 'alumnos/alumnos.html'
     model = Alumno
     context_object_name = 'alumnos'
-    paginate_by=7
+    paginate_by=6
     login_url = reverse_lazy('home_app:login')
     
 

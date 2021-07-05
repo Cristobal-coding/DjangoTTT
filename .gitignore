@@ -1,3 +1,8 @@
 /secret.json
 .vscode/
 .vscode/settings.json
+market/applications/alumnos/migrations/*
+market/applications/asignaturas/migrations/*
+market/applications/cursos/migrations/*
+market/applications/home/migrations/*
+market/applications/users/migrations/*
