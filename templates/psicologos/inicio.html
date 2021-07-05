@@ -1,0 +1,61 @@
+{% extends '../layouts/master.html' %}
+{% block 'content' %}
+<div class="row mx-0 h-100 w-100"> 
+    <div class="col-12 h-100">
+        <ul class="list-group list-group-horizontal list-group-flush shadow-sm ">
+            <div class=" col-3 list-group list-group-horizontal list-group-flush shadow-sm " style="border:#594F8D;border-style:solid;border-radius: 10px;">
+            
+            <a href="#" class="list-group-item px-4 list-group-item-action rounded text-start "><i class="far fa-users px-3"></i>Psicologos Menu</a>
+        
+            </div>
+            <div class=" col-3 list-group list-group-horizontal list-group-flush shadow-sm " style="border:#594F8D;border-style:solid;border-radius: 10px;">
+                <a href="#" class="list-group-item  px-4 list-group-item-action rounded text-start"><i class="fas fa-registered px-3"></i>Otra Cosa</a>
+            </div>
+            <div class=" col-3 list-group list-group-horizontal list-group-flush shadow-sm " style="border:#594F8D;border-style:solid;border-radius: 10px;">
+                <a href="#" class="list-group-item px-4 list-group-item-action rounded text-start "><i class="fas fa-people-arrows px-3"></i>Redactar Informe</a>
+        
+            </div>
+            <div class=" col-3 list-group list-group-horizontal list-group-flush shadow-sm " style="border:#594F8D;border-style:solid;border-radius: 10px;">
+                <a href="#" class="list-group-item px-4 list-group-item-action rounded text-start "><i class="fas fa-user-tie px-3"></i>Antecedentes</a>
+            </div>
+        </ul>
+        <div class="col-12 h-25 my-5" style="background-color: red;">
+            <div class="col-6 p-3">
+                <h1>NOMBRE DEL PSICOLOGO</h1>
+            </div>
+
+        </div>
+        <div class="col-8 h-50 my-5" style="background-color: red;">
+            <div class="col-12 p-3">
+                <h1>Informes realizados.</h1>
+                <table style="width:100%">
+                    <tr>
+                      <th>ID Informes</th>
+                      <th>Rut Alumno</th>
+                      <th>Age</th>
+                    </tr>
+                    <tr>
+                      <td>Jill</td>
+                      <td>Smith</td>
+                      <td>50</td>
+                    </tr>
+                    <tr>
+                      <td>Eve</td>
+                      <td>Jackson</td>
+                      <td>94</td>
+                    </tr>
+                  </table>
+            </div>
+
+        </div>
+        <!-- {% if 'filtros' in request.path or 'registrar' in request.path %}
+        <div class="col-12 d-flex flex-column justify-content-start align-items-center my-2">
+            <a href="{% url 'alumnos_app:inicio'%}" class="btn btn-primary"><i class="fas fa-undo-alt mx-2"></i>Menú Principal</a>
+        </div>
+        {% endif %} -->
+
+    </div>
+</div>
+
+    
+{% endblock 'content' %}
