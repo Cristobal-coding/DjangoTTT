@@ -39,6 +39,7 @@ LOCAL_APPS = (
     'applications.alumnos',
     'applications.cursos',
     'applications.asignaturas',
+    'applications.psicologos',
 )
 THIRD_PARTY_APPS =(
     
