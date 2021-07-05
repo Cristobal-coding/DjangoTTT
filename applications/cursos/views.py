@@ -67,11 +67,12 @@ def finalizar_año(request,):
                         numero=base[2]
                     )
                 else:
-                    base = cursos_base[i-1]
                     #Acciones para Cuarto medio
-                    if i in [10,11,12]:
+                    if i in [13,14,15]:
+                        base = cursos_base[i-3]
                         anteriores = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
                         base = cursos_base[i]
+                        print('==================')
                         for c in anteriores:
                             #Crea el nuevo curso, traspasando
                             key = base[0]+str(new_year)+'1'
@@ -81,11 +82,14 @@ def finalizar_año(request,):
                                 nombre=base[1],
                                 numero=base[2]
                             )
+                            print(c.nombre)
                             #Añade los alumnos del curso anterior al nuevo
-                            this_curso = Curso.objects.get(id_curso=key)  
+                            this_curso = Curso.objects.get(id_curso=key)
+                            print('Pasar de curso a 4to los alumnos: ')  
                             for alumno in c.curso_alumno_set.all():
                                 alumno.is_current=False
                                 alumno.save()
+                                print(alumno.alumno.nombre)  
                                 this_curso.alumnos.add(alumno.alumno.rut)
                             #Este curso es el actual de los alumnos
                             for a in this_curso.curso_alumno_set.all():
@@ -93,15 +97,15 @@ def finalizar_año(request,):
                                 a.save()
                         #Finalizar estado de los alumnos del cuarto medio actual
                         cuarto_actual = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
+                        print('Graduar alumnos de 4to medio : ')
                         for c in cuarto_actual:
                             for alumno in c.curso_alumno_set.all():
-                                alumno.is_current=False
-                                alumno.save()
-                            for a in c.curso_alumno_set.all():
-                                a.alumno.rut = '2'
+                                a.alumno.rut = 2
                                 a.alumno.save()
+                                print(a.alumno.nombre)
+                        print('==================')
                     #Acciones para Tercero medio
-                    elif i in [13,14,15]:
+                    elif i in [10,11,12]:
                         base = cursos_base[i]
                         key = base[0]+str(new_year)+'1'
                         Curso.objects.create(
@@ -112,6 +116,7 @@ def finalizar_año(request,):
                         )
                     #Acciones de Segundo medio hasta segundo basico
                     else:
+                        base = cursos_base[i-1]
                         anteriores = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
                         base = cursos_base[i]
                         for c in anteriores:
