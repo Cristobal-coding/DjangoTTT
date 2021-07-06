@@ -1,58 +1,92 @@
 {% extends '../layouts/master.html' %}
 {% block 'content' %}
+
 <div class="row mx-0 h-100 w-100"> 
-    <div class="col-12 h-100">
-        <ul class="list-group list-group-horizontal list-group-flush shadow-sm ">
-            <div class=" col-3 list-group list-group-horizontal list-group-flush shadow-sm " style="border:#594F8D;border-style:solid;border-radius: 10px;">
-            
-            <a href="#" class="list-group-item px-4 list-group-item-action rounded text-start "><i class="far fa-users px-3"></i>Psicologos Menu</a>
-        
-            </div>
-            <div class=" col-3 list-group list-group-horizontal list-group-flush shadow-sm " style="border:#594F8D;border-style:solid;border-radius: 10px;">
-                <a href="#" class="list-group-item  px-4 list-group-item-action rounded text-start"><i class="fas fa-registered px-3"></i>Otra Cosa</a>
-            </div>
-            <div class=" col-3 list-group list-group-horizontal list-group-flush shadow-sm " style="border:#594F8D;border-style:solid;border-radius: 10px;">
-                <a href="#" class="list-group-item px-4 list-group-item-action rounded text-start "><i class="fas fa-people-arrows px-3"></i>Redactar Informe</a>
-        
-            </div>
-            <div class=" col-3 list-group list-group-horizontal list-group-flush shadow-sm " style="border:#594F8D;border-style:solid;border-radius: 10px;">
-                <a href="#" class="list-group-item px-4 list-group-item-action rounded text-start "><i class="fas fa-user-tie px-3"></i>Antecedentes</a>
-            </div>
-        </ul>
-        <div class="col-12 h-25 my-5" style="background-color: red;">
-            <div class="col-6 p-3">
-                <h1>NOMBRE DEL PSICOLOGO</h1>
-            </div>
-
-        </div>
-        <div class="col-8 h-50 my-5" style="background-color: red;">
-            <div class="col-12 p-3">
-                <h1>Informes realizados.</h1>
-                <table style="width:100%">
-                    <tr>
-                      <th>ID Informes</th>
-                      <th>Rut Alumno</th>
-                      <th>Age</th>
-                    </tr>
-                    <tr>
-                      <td>Jill</td>
-                      <td>Smith</td>
-                      <td>50</td>
-                    </tr>
-                    <tr>
-                      <td>Eve</td>
-                      <td>Jackson</td>
-                      <td>94</td>
-                    </tr>
+    <div class="col-12 h-100 w-100" style="background-color: coral;">
+        <div class="col-12 text-center" >
+            {%include '../includes/actionspsicologo.html'%}
+        </div>     
+        <div class="col-8 h-75 my-5" style="background-color: cadetblue;" >        
+            <table class="table caption-top table-hover" >     
+                <thead >      
+                    {% if  informes.count == 0 %}
+                            <tr class="text-center">
+                                <td colspan="3">Sin resultados en la Búsqueda...</td>
+                            </tr>
+                        {% endif %}
+                         <tr>
+                            <th>ID Informes</th>
+                            <th>Rut Alumno</th>
+                            <th>Nombre del psicologo emitente</th>
+                            <th>Fecha de emision</th>
+                            <th>Imprimir</th>
+                            <th>Eliminar</th>
+                          </tr>          
+                        {% for i in informe  %}                  
+                          <tr>
+                            <td>{{i.id}}</td>
+                            <td>{{i.rut_alumno.rut}} - {{i.rut_alumno.nombre}}</td>
+                            <td>{{i.id_psicologo.nombre}} {{i.id_psicologo.apellido_paterno}}</td>
+                            <td>{{i.fecha_emision}}</td>   
+                            <td>"Icono IMP""</td> 
+                            <td class="text-light"><button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#id{{i_id}}"><i class="far fa-trash-alt"></i></button></td>
+                        </tr>
+                        {% endfor %}
                   </table>
-            </div>
-
+                  {% if is_paginated %}
+                    <div class="col-8" style="background-color: chartreuse;">
+                      <div class="row  w-100 h-100">
+                          <div class="col-12 d-flex flex-column justify-content-center align-items-center">
+                              <nav aria-label="Page navigation example">
+                                  <ul class="pagination my-0">
+                                      {% if page_obj.has_previous %}
+                                      <li class="page-item">
+                                      <a class="page-link" href="?page={{page_obj.previous_page_number}}" tabindex="-1" aria-disabled="true">Anterior</a>
+                                      </li>
+                                      {% endif %} 
+                                      {% for pag in paginator.page_range %}
+                      
+                                      {% ifequal pag page_obj.number  %}
+                                      <li class="page-item active"><a class="page-link" href="?page={{pag}}">{{pag}}</a></li>
+                                      {% else %}
+                                      <li class="page-item"><a class="page-link" href="?page={{pag}}">{{pag}}</a></li>
+                                      {% endifequal %}
+                                          
+                                      {% endfor %}
+                                      {% if page_obj.has_next %}
+                                      <li class="page-item">
+                                      <a class="page-link" href="?page={{page_obj.next_page_number}}" tabindex="-1" aria-disabled="true">Siguiente</a>
+                                      </li>
+                                      {% endif %}              
+                                  </ul>
+                              </nav>
+                          </div>                  
+                      </div>  
+                    </div> 
+                  {% endif %} 
         </div>
-        <!-- {% if 'filtros' in request.path or 'registrar' in request.path %}
-        <div class="col-12 d-flex flex-column justify-content-start align-items-center my-2">
-            <a href="{% url 'alumnos_app:inicio'%}" class="btn btn-primary"><i class="fas fa-undo-alt mx-2"></i>Menú Principal</a>
+        <div class="col-4"   >
+            <form method="GET" class=" d-flex">
+                {% keep_filters_apod request.get_full_path as filters %}
+                <div class="row w-100 mx-0 ">
+                    <div class="col-12 px-0">
+                        <div class="row mx-0  ">
+                            <div class="col-12 py-3">
+                                <label for="nombre" class="form-label fw-bold">Por Nombre:</label>
+                                <input type="text" class="form-control rounded-pill form-control-sm" id="nombre" name="nombre" value="{{filters.nombre}}" placeholder="&#xf00e; Nombre Apoderado"  style="font-family:KoHo, FontAwesome">
+                            </div>
+                            <div class="col-12 py-3">
+                                <label for="rut" class="form-label fw-bold">Por Rut:</label>
+                                <input type="text" class="form-control rounded-pill form-control-sm" id="rut" name="rut" value="{{filters.rut}}" placeholder="Sin puntos y con guión"  style="font-family:KoHo, FontAwesome">
+                            </div>
+                        </div>     
+                    </div>
+                    <div class="col-12 py-5 d-flex flex-column align-items-center justify-content-end">
+                        <button type="submit" class="btn btn-primary rounded-pill w-100"><i class="fas fa-sort mx-1"></i>Filtrar</button>
+                    </div>
+                </div>                  
+            </form>
         </div>
-        {% endif %} -->
 
     </div>
 </div>
