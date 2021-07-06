@@ -5,7 +5,7 @@ app_name = 'psicologos_app'
 
 urlpatterns = [
 
-    path('psicologos/', views.UserMainView.as_view(), name='inicio'),
+    path('psicologos/', views.InformeView.as_view(), name='inicio'),
 
 
 

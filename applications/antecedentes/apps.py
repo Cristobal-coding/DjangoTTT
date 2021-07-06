@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class InformesConfig(AppConfig):
+class AntecedentesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'applications.informes'
+    name = 'applications.antecedentes'
