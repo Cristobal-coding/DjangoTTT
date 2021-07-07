@@ -6,3 +6,5 @@ applications/asignaturas/migrations/*
 applications/cursos/migrations/*
 applications/home/migrations/*
 applications/users/migrations/*
+applications/psicologos/migrations/*
+applications/antecedentes/migrations/*

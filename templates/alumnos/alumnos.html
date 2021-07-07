@@ -25,14 +25,12 @@ Filtrar Alumnos por Parametros
                         <th scope="col">Apoderado</th>
                         <th scope="col" colspan="2">Gestionar</th>      
                       </tr>
-                      <tbody>
-                          
+                      <tbody>                        
                         {% if  alumnos.count == 0 %}
                             <tr class="text-center">
                                 <td colspan="6">Sin resultados en la Búsqueda...</td>
                             </tr>
-                        {% endif %}
-                                      
+                       {% endif %}                                  
                         {% for alumno in alumnos  %}
                         {% date_to_age alumno.fecha_nacimiento as edad%}           
                             <tr>

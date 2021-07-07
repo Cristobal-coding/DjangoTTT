@@ -8,7 +8,6 @@ urlpatterns = [
     path('psicologos/', views.InformeView.as_view(), name='inicio'),
 
 
-
     # path('usuarios/', views.UserMainView.as_view(), name='registrar'),
     # path('usuarios/register/user', views.CreateUser.as_view(), name='usercreate'),
     # path('usuarios/register/rol', views.CreateRol.as_view(), name='rolcreate'),

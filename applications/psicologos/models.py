@@ -1,3 +1,4 @@
+from applications.psicologos.managers import InformeManager
 from django.db import models
 # Create your models here.
 from applications.asignaturas.models import Asignatura
@@ -25,6 +26,7 @@ class Informe(models.Model):
     comentario=models.CharField('Comentario',max_length=255,blank=True)
     id_psicologo=models.ForeignKey(Psicologo,on_delete=models.CASCADE,related_name='informes')
     rut_alumno=models.ForeignKey(Alumno,on_delete=models.CASCADE,related_name='informes')
+    objects = InformeManager()
     class Meta:
         verbose_name = 'Informe'
         verbose_name_plural = 'Informes'
