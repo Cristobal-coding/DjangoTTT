@@ -51,22 +51,21 @@ function clearAll(myButton) {
     rep = 'radrepitente'+rut;
     aban = 'radabandono'+rut;
     err = 'raderror'+rut;
-    radi1=document.getElementById(rep);
     radi2=document.getElementById(aban);
     radi3=document.getElementById(err);
-    radi1.checked=false;
     radi2.checked=false;
     radi3.checked=false;
-
-    document.getElementById('repitente'+rut).classList.remove('d-block');
-    document.getElementById('repitente'+rut).classList.add('d-none');
-
+    
+    
     document.getElementById('abandono'+rut).classList.remove('d-block');
     document.getElementById('abandono'+rut).classList.add('d-none');
     
     document.getElementById('error'+rut).classList.remove('d-block');
     document.getElementById('error'+rut).classList.add('d-none');
-    console.log(radi1);
-    console.log(radi2);
-    console.log(radi3);
+    if (radi1 !=null){
+        radi1=document.getElementById(rep);
+        radi1.checked=false;
+        document.getElementById('repitente'+rut).classList.remove('d-block');
+        document.getElementById('repitente'+rut).classList.add('d-none');
+    }
 }
