@@ -2,9 +2,17 @@
 .vscode/
 .vscode/settings.json
 applications/alumnos/migrations/*
+applications/alumnos/__pycache__/*
 applications/asignaturas/migrations/*
+applications/asignaturas/__pycache__/*
 applications/cursos/migrations/*
+applications/cursos/__pycache__/*
 applications/home/migrations/*
+applications/home/__pycache__/*
 applications/users/migrations/*
+applications/users/__pycache__/*
 applications/psicologos/migrations/*
+applications/psicologos/__pycache__/*
 applications/antecedentes/migrations/*
+applications/antecedentes/__pycache__/*
+
