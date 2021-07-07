@@ -4,7 +4,9 @@
 Cursos del Establecimiento Manheim
 {% endblock 'titulo' %}
 
-
+{% block 'css-select2' %}
+<link rel="stylesheet"  href="{% static 'css/multi-select.css' %}">
+{% endblock 'css-select2' %}
 {% block 'content' %}
 <a href=""></a>
 <div class="row mx-0 h-100 w-100">
@@ -78,6 +80,13 @@ Cursos del Establecimiento Manheim
               </div>
             </div>
           </div>
+          <select multiple="multiple" id="my-select" name="my-select[]">
+            <option value='elem_1'>Mangini</option>
+            <option value='elem_2'>Renato</option>
+            <option value='elem_3'>Esteban</option>
+            <option value='elem_4'>Cristobal</option>
+            <option value='elem_100' selected>Dagoberto</option>
+          </select>
         
         {% if messages %}
           {% for m in messages %} 
@@ -156,6 +165,19 @@ Cursos del Establecimiento Manheim
 
 
 {% block 'js-select2' %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="{% static 'js/jquery.multi-select.js' %}"></script> 
 <script src="{% static 'js/formulario_cursos.js' %}"></script> 
+<script>
+  $(document).ready(function() {
+    $('#my-select').multiSelect({
+      selectableHeader: "<div class='bg-primary rounded text-light p-1 my-2'>Alumnos Disponibles</div>",
+      selectionHeader: "<div class='bg-primary rounded text-light p-1 my-2'>Alumnos Escogidos</div>",
+    });
+});
+  
+  
+</script>
+
 {% endblock 'js-select2' %}
 
