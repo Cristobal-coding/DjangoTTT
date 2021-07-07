@@ -1,11 +1,11 @@
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
-from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 from .models import Curso , Fecha, PlanEstudio
+from .logicas import cursos_base
 # Create your views here.
 class CursosHome(LoginRequiredMixin,TemplateView):
     template_name = 'cursos/cursos.html'
@@ -45,16 +45,7 @@ def finalizar_año(request,):
                 semestres = 1,
                 year = new_year
             )
-            cursos_base = [['1erobasico','Primero básico',1.0], ['2dobasico','Segundo básico',2.0],['3robasico','Tercero básico',3.0],
-            ['4tobasico', 'Cuarto básico',4.0],['5tobasico','Quinto básico',5.0],['6tobasico', 'Sexto básico',6.0],
-            ['7tobasico', 'Septimo básico',7.0],['8vobasico', 'Octavo básico',8.0],['1eromedio','Primero medio',9.0],['2domedio','Segundo medio',10.0],
-            ['3romedioCON','Tercero medio Construccion', 11.0, 'CON'],
-            ['3romedioEL','Tercero medio Electricidad', 11.1, 'EL'],
-            ['3romedioMET','Tercero medio Construnccion Metalicas', 11.2, 'MET'],
-            ['4tomedioCON','Cuarto medio Construccion',12.0, 'CON'] ,
-            ['4tomedioEL','Cuarto medio Electricidad',12.1, 'EL'] ,
-            ['4tomedioMET','Cuarto medio Construnccion Metalicas',12.2, 'MET'] ,
-            ]
+            
             for i in range(0, len(cursos_base)):
                 base = cursos_base[i]
                 #Acciones para Primero Basico

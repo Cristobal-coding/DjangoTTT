@@ -1,12 +1,14 @@
 {% extends '../layouts/master.html' %}
 {% load static %}
+{% load curso_anterior %}
+
 {% block 'titulo' %}
 Cursos del Establecimiento Manheim
 {% endblock 'titulo' %}
 
 
 {% block 'content' %}
-
+{% get_anterior_curso curso.numero as curso_ant%}
 <div class="row mx-0 h-100 w-100">
     <div class="col-12 h-100">
         <div class="row mx-0 h-100">
@@ -28,7 +30,80 @@ Cursos del Establecimiento Manheim
                             <h5 class="card-title fw-bold">Alumnos del Curso</h5>
                             <div class="w-100" style="height: 90%;">
                                 {% if curso.alumnos.all.count > 0 %}
-                                <ul class="list-group list-group-flush shadow-sm">
+                                <table class="table table-borderless table-sm">
+                                    <thead class="text-start">
+                                      <tr>
+                                        <th scope="col">A. Paterno</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Rut</th>
+                                        <th scope="col"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      
+                                      {% for a in curso.alumnos.all  %}
+                                      
+                                      <tr class="text-start">
+                                        <td class="fw-light">{{a.apellido_paterno}}</td>
+                                        <td class="fw-light">{{a.nombre}}</td>
+                                        <td class="fw-light">{{a.rut}}</td>
+                                        <td class="fw-light">
+                                            <button class="btn p-0 text-danger" type="button" data-bs-toggle="modal" data-bs-target="#drop{{a.rut}}">
+                                                <i class="fal fa-times"></i>
+                                            </button>
+                                        </td>
+                                      </tr>
+                                      <!-- Modal -->
+                                    <div class="modal fade" id="drop{{a.rut}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel"><i class="fad fa-window-restore text-danger"></i> Remover alumno del curso</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                <p class="fw-light">¿Porque desea remover a 
+                                                    <span class="fw-bold">{{a.nombre}} {{a.apellido_paterno}} {{a.apellido_materno}}</span>
+                                                    del curso?</p>
+                                                    <form action="" method="POST">
+                                                        {% csrf_token %}
+                                                        <div class="form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="repitente{{a.rut}}" id="radrepitente{{a.rut}}">
+                                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                              Repitente
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="abandono{{a.rut}}" id="radabandono{{a.rut}}">
+                                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                                Abandono
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="error{{a.rut}}" id="raderror{{a.rut}}">
+                                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                                Por error
+                                                            </label>
+                                                        </div>
+                                                        <div class="my-2">
+                                                            <h6 class="d-none" id="repitente{{a.rut}}">El alumno sera movido al curso <span class="fw-bold text-danger">{{curso_ant}}</span></h6>
+                                                            <h6 class="d-none" id="error{{a.rut}}">El alumno quedara <span class="fw-bold text-danger">sin curso</span></h6>
+                                                            <h6 class="d-none" id="abandono{{a.rut}}">El alumno quedara como <span class="fw-bold text-danger">no regular</span></h6>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" onclick="clearAll(this);" id={{a.rut}} class="btn btn-secondary float-left" data-bs-dismiss="modal">Cancelar</button>
+                                                    <button type="button" class="btn btn-danger">Remover</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                      {% endfor %}
+                                          
+                                    </tbody>
+                                  </table>
+                                <!-- <ul class="list-group list-group-flush shadow-sm">
                                     <li class="list-group-item list-group-item-action rounded text-start">
                                         <span class="text-decoration-underline">Apellidos Nombre</span>
                                         <span class="text-decoration-underline float-right">Rut</span>
@@ -43,7 +118,7 @@ Cursos del Establecimiento Manheim
                                         </span>
                                     </a>
                                     {% endfor %}                   
-                                </ul>
+                                </ul> -->
                                 {%else%}
                                 <h6>Curso vacío</h6>
                                 {% endif %}
@@ -145,3 +220,6 @@ Cursos del Establecimiento Manheim
     </div>
 </div>
 {% endblock 'content' %}
+{% block 'js-select2' %}
+<script src="{% static 'js/showInfoByRadio.js' %}"></script> 
+{% endblock 'js-select2' %}
