@@ -9,8 +9,7 @@ Cursos del Establecimiento Manheim
 <a href=""></a>
 <div class="row mx-0 h-100 w-100">
     <div class="h-100 py-3 px-5 " style="width: 70%;">
-        <table class="table caption-top table-hover table-sm">
-            <caption>Cursos actuales del año <span>{{current_año}}</span></caption>
+        <table class="table table-sm">
             <thead class="table-dark">
               <tr>
                 <th scope="col">Identificador</th>
@@ -22,7 +21,52 @@ Cursos del Establecimiento Manheim
                 <th scope="col">Ver</th>
               </tr>
             </thead>
-            <tbody>        
+            <tbody>     
+                
+                {% if current_cursos.count == 0 %}
+                  <tr>
+                    <td colspan="7" class="text-center">
+                      No hay cursos disponibles <br>
+                      <button type="button" class="btn p-0 text-primary text-decoration-underline" data-bs-toggle="modal" data-bs-target="#initCursos">
+                        <i class="far fa-arrow-right"></i><i class="far fa-arrow-right mx-2"></i>Click aqui para generar Cursos<i class="far fa-arrow-left mx-2"></i><i class="far fa-arrow-left"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- Modal -->
+                <div class="modal fade" id="initCursos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title fw-bold" id="exampleModalLabel">Crear cursos</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="w-100 text-center">
+                          <h5 class="text-primary text-decoration-underline">Porfavor rellene estos datos para continuar</h5>
+                        </div>
+
+                        <form action="{% url 'cursos_app:initCursos'%}" method="POST">
+                          {% csrf_token %}
+                          <label for="">Semestre: <span class="text-danger">*</span></label>
+                          <select name="semestre" id="" class="form-control">
+                            <option value="1" selected>Primer Semestre</option>
+                            <option value="2">Segundo Semestre</option>
+                          </select>
+                          <label for="">Fecha de inicio del semestre: <span class="text-danger">*</span></label>
+                          <input type="date"  name="inicio" class="form-control">
+                          <label for="">Año: <span class="text-danger">*</span></label>
+                          <input type="text" maxlength="4" name="año" class="form-control">
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Iniciar</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                     
                 {% for c in current_cursos  %}
                     <tr>
                       <th scope="row">{{c.id_curso}}</th>

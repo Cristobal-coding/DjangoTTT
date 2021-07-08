@@ -17,9 +17,10 @@ class CursosHome(LoginRequiredMixin,TemplateView):
         context = super(CursosHome, self).get_context_data(**kwargs)
         cursos, current_año, current_semestre = Curso.objects.get_all_data()
         context['current_cursos'] =cursos
-        context['current_año'] = int(current_año)
-        context['current_año_new'] = int(current_año)+1
-        context['current_semestre'] = int(current_semestre)
+        if cursos:
+            context['current_año'] = int(current_año)
+            context['current_año_new'] = int(current_año)+1
+            context['current_semestre'] = int(current_semestre)
         return context
 class CursosDetalle(DetailView):
     template_name = 'cursos/curso.html'
@@ -29,6 +30,44 @@ class CursosDetalle(DetailView):
         context['alumnos'] =Alumno.objects.get_alumno_sin_curso()
         return context
 
+def init_cursos(request):
+    if request.method == 'POST':
+        check_exists_cursos = Curso.objects.all()
+        if check_exists_cursos.count() ==0:
+            semestre = request.POST['semestre']
+            año = request.POST['año']
+            inicio = request.POST['inicio']
+            key_fecha = str(año)+str(semestre)
+            Fecha.objects.create(
+                cod_fecha = key_fecha,
+                fecha_inicio = inicio,
+                semestres = semestre,
+                year = año
+            )
+            
+            for i in range(0, len(cursos_base)):
+                base = cursos_base[i]
+                key_curso = base[0]+str(año)+str(semestre)
+                if i<10:
+                    Curso.objects.create(
+                        id_curso=key_curso,
+                        cod_fecha=Fecha.objects.get(cod_fecha=key_fecha),
+                        nombre=base[1],
+                        numero=base[2]                        
+                    )
+                else:
+                    Curso.objects.create(
+                        id_curso=key_curso,
+                        cod_fecha=Fecha.objects.get(cod_fecha=key_fecha),
+                        nombre=base[1],
+                        numero=base[2],
+                        electivo=base[3],
+                        plan_estudio = PlanEstudio.objects.get(id=3)                        
+                    )
+    messages.info(request,'!!Cursos generados con exito!!.')
+    return HttpResponseRedirect(reverse('cursos_app:all'))
+    # return HttpResponseRedirect(reverse('cursos_app:all'))
+
 def gestionar_alumnos(request,):
     if request.method == 'POST':
         alumnos = list(request.POST.getlist('alumnos'))
@@ -36,6 +75,9 @@ def gestionar_alumnos(request,):
         if len(alumnos) > 0 :
             for alumno in alumnos:
                 curso.alumnos.add(alumno)
+            for c in curso.curso_alumno_set.all():
+                c.is_current = True
+                c.save()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 def remove_alumno(request,):
     if request.method == 'POST':

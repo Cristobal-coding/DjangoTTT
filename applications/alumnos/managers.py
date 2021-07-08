@@ -42,9 +42,13 @@ class AlumnoManager(models.Manager):
         result=[]
         for a in total:
             if a.estado == '0':
-                for pivot in a.curso_alumno_set.all():
-                    if not pivot.is_current: 
-                        result.append(a)
+                cant = a.curso_alumno_set.all()
+                if cant.count() ==0:
+                    result.append(a)
+                else:
+                    for pivot in a.curso_alumno_set.all():
+                        if not pivot.is_current: 
+                            result.append(a)
         return result
             
 class ApoderadoManager(models.Manager):
