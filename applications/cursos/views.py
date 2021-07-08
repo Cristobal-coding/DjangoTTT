@@ -64,7 +64,7 @@ def init_cursos(request):
                         electivo=base[3],
                         plan_estudio = PlanEstudio.objects.get(id=3)                        
                     )
-    messages.info(request,'!!Cursos generados con exito!!.')
+            messages.info(request,'!!Cursos generados con exito!!.')
     return HttpResponseRedirect(reverse('cursos_app:all'))
     # return HttpResponseRedirect(reverse('cursos_app:all'))
 
@@ -77,7 +77,7 @@ def gestionar_alumnos(request,):
                 curso.alumnos.add(alumno)
             for c in curso.curso_alumno_set.all():
                 c.is_current = True
-                c.save()
+                c.save() 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 def remove_alumno(request,):
     if request.method == 'POST':
@@ -214,9 +214,9 @@ def finalizar_año(request,):
                                     for alumno in curso_Actual.curso_alumno_set.all():
                                         alumno.is_current=False
                                         alumno.save()
-                            
+            messages.info(request,'Año finalizado con exito!!.')                   
              
-    messages.info(request,'Año finalizado con exito!!.')
+    
     return HttpResponseRedirect(reverse('cursos_app:all'))
 
     
