@@ -105,6 +105,34 @@ def remove_alumno(request,):
             curso.alumnos.remove(data[1])
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+def finalizar_semestre(request):
+    if request.method == 'POST':
+        rol = str(request.user.rol)
+        fecha_inicio_old = request.POST['semestre_old']
+        fecha_inicio_new = request.POST['semestre_new']
+        if rol == 'Administrador' or rol == 'Director':
+            cursos, current_año, current_semestre = Curso.objects.get_all_data()
+            proceder = validate_cursos(cursos=cursos)
+            if proceder:
+                new_year = create_new_fecha(
+                current_año=current_año,
+                current_semestre=current_semestre,
+                fecha_inicio_new=fecha_inicio_new,
+                fecha_inicio_old=fecha_inicio_old
+                )
+                for i in range(0, len(cursos_base)):
+                    key = base[0]+str(new_year)+'1'
+                    Curso.objects.create(
+                        id_curso=key,
+                        cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
+                        nombre=base[1],
+                        numero=base[2]
+                    )
+                    base = cursos_base[i-1]
+                
+
+    return HttpResponseRedirect(reverse('cursos_app:all'))
+
 def finalizar_año(request,):
     if request.method == 'POST':
         rol = str(request.user.rol)
@@ -112,18 +140,11 @@ def finalizar_año(request,):
         fecha_inicio_new = request.POST['semestre_new']
         if rol == 'Administrador' or rol == 'Director':
             cursos, current_año, current_semestre = Curso.objects.get_all_data()
-            new_year = int(current_año) +1
-            #Seteamos la fecha de termino a traves de la busqueda get
-            pk = str(current_año)+str(current_semestre)
-            semestre_old= Fecha.objects.get(cod_fecha=pk)
-            semestre_old.fecha_termino = fecha_inicio_old
-            semestre_old.save()
-            #Creamos la nueva fecha con el año siguiente
-            Fecha.objects.create(
-                cod_fecha = str(new_year)+'1',
-                fecha_inicio = fecha_inicio_new,
-                semestres = 1,
-                year = new_year
+            new_year = create_new_fecha(
+                current_año=current_año,
+                current_semestre=current_semestre,
+                fecha_inicio_new=fecha_inicio_new,
+                fecha_inicio_old=fecha_inicio_old
             )
             
             for i in range(0, len(cursos_base)):
@@ -218,6 +239,30 @@ def finalizar_año(request,):
              
     
     return HttpResponseRedirect(reverse('cursos_app:all'))
+
+
+def validate_cursos(cursos):
+    proceder= True
+    for curso in cursos:
+        if not curso.id_prof_jefe:
+            proceder = False
+    return proceder
+def create_new_fecha(current_año, current_semestre, fecha_inicio_old, fecha_inicio_new):
+    new_year = int(current_año) +1
+    #Seteamos la fecha de termino a traves de la busqueda get
+    pk = str(current_año)+str(current_semestre)
+    semestre_old= Fecha.objects.get(cod_fecha=pk)
+    semestre_old.fecha_termino = fecha_inicio_old
+    semestre_old.save()
+    #Creamos la nueva fecha con el año siguiente
+    Fecha.objects.create(
+        cod_fecha = str(new_year)+'1',
+        fecha_inicio = fecha_inicio_new,
+        semestres = 1,
+        year = new_year
+    )
+    return new_year
+
 
     
    

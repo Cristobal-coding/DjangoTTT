@@ -55,7 +55,7 @@ Cursos del Establecimiento Manheim
                           <label for="">Fecha de inicio del semestre: <span class="text-danger">*</span></label>
                           <input type="date"  name="inicio" class="form-control">
                           <label for="">Año: <span class="text-danger">*</span></label>
-                          <input type="text" maxlength="4" name="año" class="form-control">
+                          <input type="number" max="9999" id="añoInput" name="año" class="form-control">
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-primary">Iniciar</button>
@@ -100,7 +100,9 @@ Cursos del Establecimiento Manheim
               <div class="row mx-0 w-100 my-2">
                 <div class="col-6 p-0">
                   {% if current_semestre == 1 %}
-                  <a href="#" class="btn btn-primary w-100">Finalizar Semestre</a>
+                  <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#finishS">
+                    Finalizar Semestre 
+                  </button>
                   {% else%} 
                   <button type="button" class="btn btn-primary w-100" disabled>Finalizar Semestre</button>
                   {% endif %}
@@ -148,7 +150,7 @@ Cursos del Establecimiento Manheim
         {% endif %}
           
         
-          <!-- Modal -->
+          <!-- Modal Finalizar Año -->
         <div class="modal fade" id="finishA" data-bs-backdrop="static" tabindex="-1" aria-labelledby="finishA" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -162,14 +164,46 @@ Cursos del Establecimiento Manheim
                   
                   <div class="my-2">
                     <label for="">Fecha de término del semestre Actual:</label>
-                    <input type="date" class="form-control" name="semestre_old" id="semestre_old">
+                    <input type="date" class="form-control" name="semestre_old" id="fasemestre_old">
                   </div>
                   <div class="my-2">
                     <label for="">Fecha de inicio del próximo semestre:</label>
-                    <input type="date" class="form-control" name="semestre_new" id="semestre_new">
+                    <input type="date" class="form-control" name="semestre_new" id="fasemestre_new">
                   </div>
                   <div class="m-2">
-                    <h6><span class="text-decoration-underline">Información:</span> El siguiente año, se tomará como el <span>{{current_año_new}}</span></h6>
+                    <h6><span class="text-decoration-underline text-danger">Información:</span> El siguiente año, se tomará como el <span>{{current_año_new}}</span></h6>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Comenzar Finalización</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+          <!-- Modal Finalizar Semestre -->
+        <div class="modal fade" id="finishS" data-bs-backdrop="static" tabindex="-1" aria-labelledby="finishS" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="finishS">Finalizar Semestre</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="{% url 'cursos_app:finishS' %}" method="POST" id="finishS">
+                  {% csrf_token %}
+                  
+                  <div class="my-2">
+                    <label for="">Fecha de término del semestre Actual:</label>
+                    <input type="date" class="form-control" name="semestre_old" id="fssemestre_old">
+                  </div>
+                  <div class="my-2">
+                    <label for="">Fecha de inicio del próximo semestre:</label>
+                    <input type="date" class="form-control" name="semestre_new" id="fssemestre_new">
+                  </div>
+                  <div class="m-2">
+                    <h6><span class="text-decoration-underline text-danger">Información:</span> Esta accion iniciara el 2°Semestre <span>{{current_año}}</span></h6>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
