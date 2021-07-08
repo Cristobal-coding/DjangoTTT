@@ -16,13 +16,13 @@ def get_curso_pasado(alumno):
     cursos = alumno.curso_alumno_set.all()
     if len(cursos) > 0 :
         for c in cursos:
-            if c.curso.cod_fecha.year == año:
+            if c.curso.cod_fecha.year == año-1:
                 founded = True
                 nombre=c.curso.nombre
     if founded :
         return nombre
     else:
-        return 'Ninguno'
+        return 'Sin Curso'
 
 @register.simple_tag
 def get_all_pks(alumnos, rut):

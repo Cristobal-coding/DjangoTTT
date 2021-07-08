@@ -55,19 +55,24 @@ Cursos del Establecimiento Manheim
                                                                 <input type="hidden" value="{{curso.id_curso}}" name="curso">
                                                                 <select multiple="multiple" id="my-select" name="alumnos">
                                                                     {% for a in alumnos  %}
-                                                                    {% get_curso_pasado a as curso_pasado%}
-                                                                    {% get_all_pks curso.curso_alumno_set.all a.rut as is_true%}
-                                                                    
-                                                                    {% if is_true %}
-                                                                    <option value='{{a.rut}}' selected disabled>{{a.apellido_paterno}} {{a.apellido_materno}} {{a.nombre}} </option>                           
-                                                                    {% else %}
-                                                                    <option value='{{a.rut}}'>{{a.apellido_paterno}} {{a.nombre}}                         
-                                                                        (Anterior: {{curso_pasado}})
-                                                                    </option>     
-
-                                                                    {% endif %}
-                                                                        
+                                                                        {% get_curso_pasado a as curso_pasado%}
+                                                                        <option value='{{a.rut}}'>{{a.apellido_paterno}} {{a.nombre}}                         
+                                                                            
+                                                                            {% if curso_pasado != 'Sin Curso' %}
+                                                                            (Anterior: {{curso_pasado}})
+                                                                            {% else %}
+                                                                            ({{curso_pasado}})
+                                                                            {% endif %}
+                                                                                
+                                                                        </option>     
                                                                     {% endfor %}
+                                                                    
+                                                                    {% for a in curso.alumnos.all %}
+                                                                    <option value='{{a.rut}}' selected disabled>{{a.apellido_paterno}} {{a.nombre}}                         
+                                                                        (Anterior: {{curso_pasado}})
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                        
                         
                                                                         
                                                                 </select>
