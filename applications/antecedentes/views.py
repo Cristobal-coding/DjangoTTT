@@ -6,7 +6,7 @@ from django.views.generic.list import ListView
 
 # Create your views here.
 class AntecedentesView(LoginRequiredMixin,ListView):
-    template_name = "antecedentes/inicio.html"
+    template_name = "antecedentes/antecedentes.html"
     model = Antecedente
     context_object_name = 'antecedentes'
     login_url = reverse_lazy('home_app:login')   
