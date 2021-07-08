@@ -5,16 +5,16 @@
 {% sin_especificar alumnos masc.count fem.count as otro%} 
     <div class="row mx-0 h-100 w-100">
         <div class="col-12 d-flex align-items-center flex-column ">
-            <div class="col-12  text-center">
+            <div class="col-12  text-center py-2">
                 {%include '../includes/actions.html'%}
                 
             </div>  
-            <div class="row mx-0 w-100 shadow-sm">
-                <div class="col-6 w-100" style="height: 500px;background-color:white;">
+            <div class="row mx-0 w-100 py-3">
+                <div class="col-6 offset-3  shadow-sm bg-white rounded">
                     <div class="text-center">
                         <h3 class="my-3"><i class="far fa-folder text-primary fs-3 mx-1"></i>Información General</h3>
                     </div>
-                    <div class="row mx-0 h-25 w-100 border border-2 border-dark rounded my-3 p-2">
+                    <div class="row mx-0 w-100 border border-2 border-dark rounded my-3 p-2">
                         <div class="col-6" style="border-right: 1px solid #343a40 ;">
                             <h6><span class="fw-bold"><i class="fas fa-user-graduate mx-1 text-primary"></i>Total de Alumnos: </span>  {{alumnos}}</h6>
                             <h6><span class="fw-bold"><i class="fas fa-venus mx-1 text-primary"></i>Mujeres:</span>{{fem.count}}</h6>

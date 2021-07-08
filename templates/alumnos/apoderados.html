@@ -14,14 +14,14 @@ Listado de Apoderados
                 {%include '../includes/actions.html'%}
             </div>
             <div class="col-8" style="height: 90% !important;">
-                <table class="table table-hover my-0">     
+                <table class="table table-hover my-0 table-sm">     
                     <thead class="table-dark">
                     <tr>
                         <th scope="col">Rut</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Contacto</th>
                         <th scope="col">Pupilos</th>
-                        <th scope="col" colspan="2">Gestionar</th>      
+                        <th scope="col" colspan="2" class="text-center">Gestionar</th>      
                     </tr>
                     </thead>
                     <tbody>        
@@ -33,8 +33,8 @@ Listado de Apoderados
                             <td><h6 class="my-0 fw-bold"> +56 9 {{apod.telefono_apoderado}} </h6><small class="my-0 fw-light">{{apod.correo}}</small></td>
                             <td><a href="#" class="badge text-decoration-none mx-1 w-50 link">{{apod.alumnos.count}}</a></td>
                             
-                            <td class="text-end"><a href="{% url 'alumnos_app:editApoderado' apod.rut %}" class="btn fs-4 p-0 m-0"><i class="far fa-edit"></i></a> </td>
-                            <td class="text-start"><a href="#" class="btn fs-4 p-0 m-0"><i class="far fa-bars"></i></a></td>
+                            <td class="text-end"><a href="{% url 'alumnos_app:editApoderado' apod.rut %}" class="btn p-0"><i class="far fa-edit text-success"></i></a> </td>
+                            <td class="text-start"><a href="#" class="btn  p-0"><i class="far fa-bars text-warning"></i></a></td>
                             <!-- <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#rut{{alumno.rut}}"><i class="fal fa-times fa-2x"></i></button> -->
                             <!-- Modal Innesario (borrar) -->
                             <!-- <div class="modal fade" id="rut{{apod.rut}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

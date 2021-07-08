@@ -15,15 +15,15 @@ Filtrar Alumnos por Parametros
                 {%include '../includes/actions.html'%}
             </div>           
             <div class="col-9"  style="height: 90% !important;">
-                <table class="table caption-top table-hover">     
+                <table class="table caption-top table-hover table-sm">     
                     <thead class="table-dark">
                       <tr>
                         <th scope="col">Rut</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Cursos</th>
-                        <th scope="col">Contacto</th>
+                        <th scope="col">Estado</th>
                         <th scope="col">Apoderado</th>
-                        <th scope="col" colspan="2">Gestionar</th>      
+                        <th scope="col" colspan="2" class="text-center">Gestionar</th>      
                       </tr>
                       <tbody>                        
                         {% if  alumnos.count == 0 %}
@@ -37,10 +37,10 @@ Filtrar Alumnos por Parametros
                               <th scope="row"><h6 class="my-0 fw-bold">{{alumno.rut}}</h6><small class="my-0 fw-light">{% if edad == '' %}Edad no ingresada{%else%}{{edad}} Años{%endif%}</small></th>
                               <td><h6 class="my-0 fw-bold">{{alumno.nombre}}</h6><small class="my-0 fw-light">{{alumno.get_sexo_display}}</small></td>
                               <td>{{alumno.get_current_curso}}</td>
-                              <td><h6 class="my-0 fw-bold">{{alumno.telefono}}</h6></td>
+                              <td><h6 class="my-0 fw-bold">{{alumno.get_estado_display}}</h6></td>
                               <td><h6 class="my-0 fw-bold"> {{alumno.rut_apoderado.nombre_apoderado}} </h6></td>
-                              <td class="text-end"><a href="{% url 'alumnos_app:actualizar' alumno.rut %}" class="btn fs-5"><i class="far fa-edit"></i></a> </td>       
-                              <td class="text-start"><button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#rut{{alumno.rut}}"><i class="fal fa-times fa-2x"></i></button></td>
+                              <td class="text-end"><a href="{% url 'alumnos_app:actualizar' alumno.rut %}" class="btn p-0"><i class="far fa-edit text-success"></i></a> </td>       
+                              <td class="text-start"><button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#rut{{alumno.rut}}"><i class="fal fa-times text-danger"></i></button></td>
      
                             </tr>
                             <!-- Modal innesecario (borrarlo) -->

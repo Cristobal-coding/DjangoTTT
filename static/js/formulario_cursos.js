@@ -1,4 +1,4 @@
-const formularioA = document.getElementById('finishA');
+const formularioA = document.getElementById('formRazon');
 formularioA.addEventListener('submit',(e)=>{  
     old = document.getElementById('semestre_old').value;
     nueva = document.getElementById('semestre_new').value;

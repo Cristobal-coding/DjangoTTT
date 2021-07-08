@@ -67,8 +67,8 @@ class Alumno(models.Model):
             return nombre
         else:
             return 'No Cursando'
+        
 
-                                       
                                        
     #  {% for c in  alumno.curso_alumno_set.all %}
                                         
