@@ -6,9 +6,13 @@
 Cursos del Establecimiento Manheim
 {% endblock 'titulo' %}
 
+{% block 'css-select2' %}
+<link rel="stylesheet"  href="{% static 'css/multi-select.css' %}">
+{% endblock 'css-select2' %}
 
 {% block 'content' %}
 {% get_anterior_curso curso.numero as curso_ant%}
+
 <div class="row mx-0 h-100 w-100">
     <div class="col-12 h-100">
         <div class="row mx-0 h-100">
@@ -27,7 +31,67 @@ Cursos del Establecimiento Manheim
                 <div class="card shadow w-100 my-2" style="height: 70%;">
                     <div class="text-center h-100">
                         <div class="card-body h-100">
-                            <h5 class="card-title fw-bold">Alumnos del Curso</h5>
+                            <div class="row mx-0 w-100">
+                                <div class="col-8">
+                                    <h5 class="card-title fw-bold">Alumnos del Curso</h5>
+                                </div>
+                                <div class="col-4">
+                                    <button class="btn btn-outline-primary py-0" data-bs-toggle="modal" data-bs-target="#gestionar">
+                                        Gestionar
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="gestionar" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Gestionar Alumnos del Curso</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body px-0">
+                                                    <div class="row mx-0 w-100">
+                                                        <div class="col-12 ">
+                                                            <form action="{% url 'cursos_app:gestionar'%}" method="POST" class="w-100 d-flex flex-column align-items-center justify-content-center">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" value="{{curso.id_curso}}" name="curso">
+                                                                <select multiple="multiple" id="my-select" name="alumnos">
+                                                                    {% for a in alumnos  %}
+                                                                    {% get_curso_pasado a as curso_pasado%}
+                                                                    {% get_all_pks curso.curso_alumno_set.all a.rut as is_true%}
+                                                                    
+                                                                    {% if is_true %}
+                                                                    <option value='{{a.rut}}' selected disabled>{{a.apellido_paterno}} {{a.apellido_materno}} {{a.nombre}} </option>                           
+                                                                    {% else %}
+                                                                    <option value='{{a.rut}}'>{{a.apellido_paterno}} {{a.nombre}}                         
+                                                                        (Anterior: {{curso_pasado}})
+                                                                    </option>     
+
+                                                                    {% endif %}
+                                                                        
+                                                                    {% endfor %}
+                        
+                                                                        
+                                                                </select>
+                                                                <div class="modal-footer w-100 py-1" style="margin-top: 20px;">
+                                                                    <div class="row m-0 w-100">
+                                                                        <div class="col-6">
+                                                                            <button type="button" class="btn btn-secondary w-100 py-1" data-bs-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <button type="submit" class="btn btn-primary w-100 py-1">Guardar</button>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>                                               
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="w-100" style="height: 90%;">
                                 {% if curso.alumnos.all.count > 0 %}
                                 <table class="table table-borderless table-sm">
@@ -36,7 +100,7 @@ Cursos del Establecimiento Manheim
                                         <th scope="col">A. Paterno</th>
                                         <th scope="col">Nombre</th>
                                         <th scope="col">Rut</th>
-                                        <th scope="col"></th>
+                                        <th scope="col" colspan="2"></th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -44,6 +108,7 @@ Cursos del Establecimiento Manheim
                                       {% for a in curso.alumnos.all  %}
                                       
                                       <tr class="text-start">
+                                        
                                         <td class="fw-light">{{a.apellido_paterno}}</td>
                                         <td class="fw-light">{{a.nombre}}</td>
                                         <td class="fw-light">{{a.rut}}</td>
@@ -52,6 +117,7 @@ Cursos del Establecimiento Manheim
                                                 <i class="fal fa-times"></i>
                                             </button>
                                         </td>
+                                        <td class="fw-light"><a href="{% url 'alumnos_app:actualizar' a.rut %}" class="p-0"><i class="fad fa-address-card"></i></a></td>
                                       </tr>
                                       <!-- Modal -->
                                     <div class="modal fade" id="drop{{a.rut}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -59,18 +125,18 @@ Cursos del Establecimiento Manheim
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="staticBackdropLabel"><i class="fad fa-window-restore text-danger"></i> Remover alumno del curso</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearAll(this);" id={{a.rut}}></button>
                                                 </div>
                                                 <div class="modal-body">
                                                 <p class="fw-light">¿Porque desea remover a 
                                                     <span class="fw-bold">{{a.nombre}} {{a.apellido_paterno}} {{a.apellido_materno}}</span>
                                                     del curso?</p>
-                                                    <form action="" method="POST">
+                                                    <form action="{% url 'cursos_app:removerAlum' %}" method="POST" id="formRazon">
                                                         {% csrf_token %}
-                                                        
+                                                        <input type="hidden" value="{{curso.id_curso}}" name="curso">
                                                         {% if curso.numero > 1 %}
                                                         <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="repitente{{a.rut}}" id="radrepitente{{a.rut}}">
+                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="repitente_{{a.rut}}" id="radrepitente{{a.rut}}">
                                                             <label class="form-check-label" for="flexRadioDefault1">
                                                               Repitente
                                                             </label>
@@ -78,27 +144,28 @@ Cursos del Establecimiento Manheim
                                                         {% endif %}
                                                             
                                                         <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="abandono{{a.rut}}" id="radabandono{{a.rut}}">
+                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="abandono_{{a.rut}}" id="radabandono{{a.rut}}">
                                                             <label class="form-check-label" for="flexRadioDefault2">
                                                                 Abandono
                                                             </label>
                                                         </div>
                                                         <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="error{{a.rut}}" id="raderror{{a.rut}}">
+                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="error_{{a.rut}}" id="raderror{{a.rut}}">
                                                             <label class="form-check-label" for="flexRadioDefault2">
                                                                 Por error
                                                             </label>
                                                         </div>
                                                         <div class="my-2">
-                                                            <h6 class="d-none" id="repitente{{a.rut}}">El alumno sera movido al curso <span class="fw-bold text-danger">{{curso_ant}}</span></h6>
-                                                            <h6 class="d-none" id="error{{a.rut}}">El alumno quedara <span class="fw-bold text-danger">sin curso</span></h6>
-                                                            <h6 class="d-none" id="abandono{{a.rut}}">El alumno quedara como <span class="fw-bold text-danger">no regular</span></h6>
+                                                            <h6 class="d-none" id="repitente_{{a.rut}}">El alumno sera movido al curso <span class="fw-bold text-danger">{{curso_ant}}</span></h6>
+                                                            <h6 class="d-none" id="error_{{a.rut}}">El alumno quedara <span class="fw-bold text-danger">sin curso</span></h6>
+                                                            <h6 class="d-none" id="abandono_{{a.rut}}">El alumno quedara como <span class="fw-bold text-danger">no regular</span></h6>
+                                                            <h6 class="d-none text-danger" id="validar">Si quiere remover al alumno, debe seleccionar Razón.</h6>
+                                                        </div>
+                                                        <div class="modal-footer py-0">
+                                                            <button type="button" onclick="clearAll(this);" id={{a.rut}} class="btn btn-secondary float-left py-1" data-bs-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-danger py-1">Remover</button>
                                                         </div>
                                                     </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" onclick="clearAll(this);" id={{a.rut}} class="btn btn-secondary float-left" data-bs-dismiss="modal">Cancelar</button>
-                                                    <button type="button" class="btn btn-danger">Remover</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -216,6 +283,7 @@ Cursos del Establecimiento Manheim
                                     </div>               
                                   </div>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -225,5 +293,17 @@ Cursos del Establecimiento Manheim
 </div>
 {% endblock 'content' %}
 {% block 'js-select2' %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="{% static 'js/jquery.multi-select.js' %}"></script> 
 <script src="{% static 'js/showInfoByRadio.js' %}"></script> 
+<script>
+    $(document).ready(function() {
+      $('#my-select').multiSelect({
+        selectableHeader: "<div class='bg-primary rounded text-light p-1 my-2'>Alumnos En Espera</div>",
+        selectionHeader: "<div class='bg-primary rounded text-light p-1 my-2'>Alumnos Añadidos</div>",
+      });
+  });
+    
+    
+  </script>
 {% endblock 'js-select2' %}

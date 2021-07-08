@@ -22,9 +22,7 @@ def curso_anterior(numero):
     for i in range(0, len(cursos_base)):
         if i > 0  :
             if numero < 11.0:
-                print('NUmero base: ',cursos_base[i][2])
                 if cursos_base[i][2] == numero:
-                    print('Nombre found')
                     return cursos_base[i-1][1]
             elif  numero in [11.0,11.1,11.2] and i>=10 and i<13:
                 if cursos_base[i][2] == numero:
@@ -32,7 +30,17 @@ def curso_anterior(numero):
             elif  numero in [12.0,12.1,12.2] and i>=13 :
                 if cursos_base[i][2] == numero:
                     number = i-3
-                    print('i ', i)
-                    print('number ', number)
-                    print(cursos_base[number][1])
                     return cursos_base[i-3][1]
+def get_curso_anterior_pk(numero):
+    for i in range(0, len(cursos_base)):
+        if i > 0  :
+            if numero < 11.0:
+                if cursos_base[i][2] == numero:
+                    return cursos_base[i-1][0]
+            elif  numero in [11.0,11.1,11.2] and i>=10 and i<13:
+                if cursos_base[i][2] == numero:
+                    return cursos_base[9][0]
+            elif  numero in [12.0,12.1,12.2] and i>=13 :
+                if cursos_base[i][2] == numero:
+                    number = i-3
+                    return cursos_base[i-3][0]

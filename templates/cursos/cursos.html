@@ -4,22 +4,19 @@
 Cursos del Establecimiento Manheim
 {% endblock 'titulo' %}
 
-{% block 'css-select2' %}
-<link rel="stylesheet"  href="{% static 'css/multi-select.css' %}">
-{% endblock 'css-select2' %}
+
 {% block 'content' %}
 <a href=""></a>
 <div class="row mx-0 h-100 w-100">
-    <div class="h-100 py-3 px-2" style="width: 70%;">
-        <table class="table caption-top table-hover">
+    <div class="h-100 py-3 px-5 " style="width: 70%;">
+        <table class="table caption-top table-hover table-sm">
             <caption>Cursos actuales del año <span>{{current_año}}</span></caption>
             <thead class="table-dark">
               <tr>
                 <th scope="col">Identificador</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Electivo</th>
-                <th scope="col">Alumnos</th>
-                <th scope="col">Prof. Jefe</th>
+                <th scope="col" >Alumnos</th>
                 <th scope="col">Semestre</th>
                 <th scope="col">Año</th>
                 <th scope="col">Ver</th>
@@ -37,11 +34,10 @@ Cursos del Establecimiento Manheim
                       Sin electivo
                       {% endif %}
                           </td>
-                      <td>{{c.alumnos.count}}</td>
-                      <td>{{c.id_prof_jefe.nombres}}</td>
+                      <td class="text-center">{{c.alumnos.count}}</td>
                       <td>{{c.cod_fecha.get_semestres_display}}</td>
                       <td>{{c.cod_fecha.year}}</td>
-                      <td><a href="{% url 'cursos_app:detalleCurso' c.id_curso %}"><i class="far fa-bars"></i></a></td>
+                      <td><a href="{% url 'cursos_app:detalleCurso' c.id_curso %}"><i class="far fa-bars text-warning"></i></a></td>
                     </tr>
                 {% endfor %}
                     
@@ -80,13 +76,7 @@ Cursos del Establecimiento Manheim
               </div>
             </div>
           </div>
-          <select multiple="multiple" id="my-select" name="my-select[]">
-            <option value='elem_1'>Mangini</option>
-            <option value='elem_2'>Renato</option>
-            <option value='elem_3'>Esteban</option>
-            <option value='elem_4'>Cristobal</option>
-            <option value='elem_100' selected>Dagoberto</option>
-          </select>
+          
         
         {% if messages %}
           {% for m in messages %} 
@@ -165,19 +155,9 @@ Cursos del Establecimiento Manheim
 
 
 {% block 'js-select2' %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-<script src="{% static 'js/jquery.multi-select.js' %}"></script> 
+
 <script src="{% static 'js/formulario_cursos.js' %}"></script> 
-<script>
-  $(document).ready(function() {
-    $('#my-select').multiSelect({
-      selectableHeader: "<div class='bg-primary rounded text-light p-1 my-2'>Alumnos Disponibles</div>",
-      selectionHeader: "<div class='bg-primary rounded text-light p-1 my-2'>Alumnos Escogidos</div>",
-    });
-});
-  
-  
-</script>
+
 
 {% endblock 'js-select2' %}
 

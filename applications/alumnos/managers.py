@@ -33,6 +33,20 @@ class AlumnoManager(models.Manager):
             fecha_nacimiento__range=(f1,f2), sexo=sex
             ).order_by('apellido_paterno')
         return resultado
+    
+    # from applications.alumnos.models import Alumno
+    # result = Alumno.objects.get_alumno_sin_curso()    
+    #Retorna alumnos sin curso, y que ademas tengan estado regular
+    def get_alumno_sin_curso(self):
+        total = self.all()
+        result=[]
+        for a in total:
+            if a.estado == '0':
+                for pivot in a.curso_alumno_set.all():
+                    if not pivot.is_current: 
+                        result.append(a)
+        return result
+            
 class ApoderadoManager(models.Manager):
     def buscar_apoderado(self, nombre):
         resultado =self.filter(

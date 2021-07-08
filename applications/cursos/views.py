@@ -1,3 +1,4 @@
+from applications.alumnos.models import Alumno
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -5,7 +6,7 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 from .models import Curso , Fecha, PlanEstudio
-from .logicas import cursos_base
+from .logicas import cursos_base , get_curso_anterior_pk
 # Create your views here.
 class CursosHome(LoginRequiredMixin,TemplateView):
     template_name = 'cursos/cursos.html'
@@ -23,7 +24,44 @@ class CursosHome(LoginRequiredMixin,TemplateView):
 class CursosDetalle(DetailView):
     template_name = 'cursos/curso.html'
     model = Curso
+    def get_context_data(self, **kwargs):
+        context = super(CursosDetalle, self).get_context_data(**kwargs)
+        context['alumnos'] =Alumno.objects.get_alumno_sin_curso()
+        return context
 
+def gestionar_alumnos(request,):
+    if request.method == 'POST':
+        alumnos = list(request.POST.getlist('alumnos'))
+        curso = Curso.objects.get(id_curso=request.POST['curso'])
+        if len(alumnos) > 0 :
+            for alumno in alumnos:
+                curso.alumnos.add(alumno)
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+def remove_alumno(request,):
+    if request.method == 'POST':
+        data = request.POST['razon']
+        data = data.split('_')
+        curso = Curso.objects.get(id_curso=request.POST['curso'])
+        año, semestre = Curso.objects.get_año_semestre()
+        pk = get_curso_anterior_pk(curso.numero) + str(año) + str(semestre)
+        c_anterior = Curso.objects.get(id_curso=pk)
+        if data[0] == 'repitente':
+            c_anterior.alumnos.add(data[1])
+            for al in c_anterior.curso_alumno_set.all():
+                if al.alumno.rut == data[1]:
+                    al.is_current = True;
+                    al.save()
+            curso.alumnos.remove(data[1])
+            # Aqui deberia escribir que es repitente en ANTECEDENTES
+
+        elif data[0] == 'abandono':
+            alumno = Alumno.objects.get(rut = data[1])
+            alumno.estado= '1'
+            alumno.save()
+            curso.alumnos.remove(data[1])
+        elif data[0] == 'error':
+            curso.alumnos.remove(data[1])
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 def finalizar_año(request,):
     if request.method == 'POST':
@@ -103,21 +141,23 @@ def finalizar_año(request,):
                         )
                     #Acciones de Segundo medio hasta segundo basico
                     else:
+                        #Crea el nuevo curso
+                        key = base[0]+str(new_year)+'1'
+                        Curso.objects.create(
+                            id_curso=key,
+                            cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
+                            nombre=base[1],
+                            numero=base[2]
+                        )
                         base = cursos_base[i-1]
                         anteriores = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
-                        base = cursos_base[i]
-                        for c in anteriores:
-                            #Crea el nuevo curso
-                            key = base[0]+str(new_year)+'1'
-                            Curso.objects.create(
-                                id_curso=key,
-                                cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
-                                nombre=base[1],
-                                numero=base[2]
-                            )
+                        
+                        if anteriores.count() > 0 :
+                            curso_anterior = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
+                            base = cursos_base[i]            
                             #Añade los alumnos del curso anterior al nuevo
                             this_curso = Curso.objects.get(id_curso=key)  
-                            for alumno in c.curso_alumno_set.all():
+                            for alumno in curso_anterior.curso_alumno_set.all():
                                 alumno.is_current=False
                                 alumno.save()
                                 this_curso.alumnos.add(alumno.alumno.rut)
@@ -125,6 +165,14 @@ def finalizar_año(request,):
                             for a in this_curso.curso_alumno_set.all():
                                 a.is_current=True
                                 a.save()
+                            if i == 9 :
+                                check = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
+                                if check.count() > 0:
+                                    curso_Actual = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
+                                    for alumno in curso_Actual.curso_alumno_set.all():
+                                        alumno.is_current=False
+                                        alumno.save()
+                            
              
     messages.info(request,'Año finalizado con exito!!.')
     return HttpResponseRedirect(reverse('cursos_app:all'))

@@ -34,5 +34,14 @@ class CursoManager(models.Manager):
             Q(cod_fecha__year =current_año ) & Q(cod_fecha__semestres =current_semestre )
         )
         return current_cursos, current_año, current_semestre
+    def get_año_semestre(self):
+        total = self.all()
+        current_año = total.aggregate(Max('cod_fecha__year'))['cod_fecha__year__max']
+        current_semestre = total.filter(
+            cod_fecha__year = current_año
+        ).aggregate(Max('cod_fecha__semestres'))['cod_fecha__semestres__max']
+       
+        return current_año, current_semestre
 
+   
     
