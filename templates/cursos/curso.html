@@ -67,9 +67,9 @@ Cursos del Establecimiento Manheim
                                                                         </option>     
                                                                     {% endfor %}
                                                                     
-                                                                    {% for a in curso.alumnos.all %}
-                                                                    <option value='{{a.rut}}' selected disabled>{{a.apellido_paterno}} {{a.nombre}}                         
-                                                                        (Anterior: {{curso_pasado}})
+                                                                    {% for al in curso.alumnos.all %}
+                                                                    <option value='{{a.rut}}' selected disabled>{{al.apellido_paterno}} {{al.nombre}}                         
+                                                                       
                                                                     </option>
                                                                     {% endfor %}
                                                                         
