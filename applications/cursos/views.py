@@ -113,23 +113,50 @@ def finalizar_semestre(request):
         if rol == 'Administrador' or rol == 'Director':
             cursos, current_año, current_semestre = Curso.objects.get_all_data()
             proceder = validate_cursos(cursos=cursos)
-            if proceder:
-                new_year = create_new_fecha(
-                current_año=current_año,
-                current_semestre=current_semestre,
-                fecha_inicio_new=fecha_inicio_new,
-                fecha_inicio_old=fecha_inicio_old
-                )
-                for i in range(0, len(cursos_base)):
-                    key = base[0]+str(new_year)+'1'
+            # if proceder:
+                 
+            # messages.error(request,'Lo cursos deben contar con profesor jefe, para finalizar semestre.') 
+            #aqui retorna el mismo año
+            new_year = create_new_fecha(
+            current_año=current_año,
+            current_semestre=current_semestre,
+            fecha_inicio_new=fecha_inicio_new,
+            fecha_inicio_old=fecha_inicio_old,
+            what='fsemestre'
+            )
+            for i in range(0, len(cursos_base)):
+                #creamos el curso del segundo semestre
+                base = cursos_base[i]
+                key = base[0]+str(new_year)+'2'
+                #Aqui obtenemos el curso pasado (el del 1°er semestre)
+                curso_semestre_pasado = Curso.objects.get(id_curso=base[0]+str(current_año)+str(current_semestre))
+                if i in [10,11,12,13,14,15]:
                     Curso.objects.create(
                         id_curso=key,
-                        cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
+                        cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'2'),
+                        nombre=base[1],
+                        numero=base[2],
+                        electivo=base[3],
+                        plan_estudio = curso_semestre_pasado.plan_estudio
+                    )
+                else:
+                    Curso.objects.create(
+                        id_curso=key,
+                        cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'2'),
                         nombre=base[1],
                         numero=base[2]
                     )
-                    base = cursos_base[i-1]
-                
+                #Aqui copiamos los alumnos del antiguo curso al nuevo curso
+                this_curso = Curso.objects.get(id_curso=key)
+                for alumno in curso_semestre_pasado.curso_alumno_set.all():
+                    alumno.is_current = False
+                    alumno.save()
+                    this_curso.alumnos.add(alumno.alumno.rut)
+                #Finalmente fijamos como el curso actual a los alumnos
+                for current_al in this_curso.curso_alumno_set.all():
+                    current_al.is_current = True
+                    current_al.save()
+            messages.info(request,'!!Semestre finalizado con exito!!.')
 
     return HttpResponseRedirect(reverse('cursos_app:all'))
 
@@ -144,7 +171,8 @@ def finalizar_año(request,):
                 current_año=current_año,
                 current_semestre=current_semestre,
                 fecha_inicio_new=fecha_inicio_new,
-                fecha_inicio_old=fecha_inicio_old
+                fecha_inicio_old=fecha_inicio_old,
+                what='faño'
             )
             
             for i in range(0, len(cursos_base)):
@@ -189,7 +217,9 @@ def finalizar_año(request,):
                         cuarto_actual = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
                         for alumno in cuarto_actual.curso_alumno_set.all():
                             alumno.alumno.estado = '2'
-                            alumno.alumno.save()          
+                            alumno.alumno.save()
+                            alumno.is_current= False
+                            alumno.save()          
                     #Acciones para Tercero medio
                     elif i in [10,11,12]:
                         base = cursos_base[i]
@@ -247,21 +277,33 @@ def validate_cursos(cursos):
         if not curso.id_prof_jefe:
             proceder = False
     return proceder
-def create_new_fecha(current_año, current_semestre, fecha_inicio_old, fecha_inicio_new):
-    new_year = int(current_año) +1
+def create_new_fecha(current_año, current_semestre, fecha_inicio_old, fecha_inicio_new, what):
     #Seteamos la fecha de termino a traves de la busqueda get
+    print(current_año, current_semestre)
     pk = str(current_año)+str(current_semestre)
     semestre_old= Fecha.objects.get(cod_fecha=pk)
     semestre_old.fecha_termino = fecha_inicio_old
     semestre_old.save()
+
     #Creamos la nueva fecha con el año siguiente
-    Fecha.objects.create(
-        cod_fecha = str(new_year)+'1',
-        fecha_inicio = fecha_inicio_new,
-        semestres = 1,
-        year = new_year
-    )
-    return new_year
+    if what == 'faño':
+        new_year = int(current_año) +1
+        Fecha.objects.create(
+            cod_fecha = str(new_year)+'1',
+            fecha_inicio = fecha_inicio_new,
+            semestres = 1,
+            year = new_year
+        )
+        return new_year
+     #Creamos la nueva fecha con el mismo año 
+    else:
+        Fecha.objects.create(
+            cod_fecha = str(current_año)+'2',
+            fecha_inicio = fecha_inicio_new,
+            semestres = 2,
+            year = current_año
+        )
+        return current_año
 
 
     
