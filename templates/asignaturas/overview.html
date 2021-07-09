@@ -57,7 +57,7 @@ Asignaturas del Colegio Manheim
                         {% with 'imgs/asign'|add:num|add:'.jpg' as image_static %}
                             {% static image_static %}
                         {% endwith %}" 
-                      class="card-img-top" alt="...">
+                      class="card-img-top" style="height: 150px !important;">
                         <div class="card-body">
                             <h5 class="card-title">{{asign.nombre}}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Incorporada en: 
@@ -71,7 +71,7 @@ Asignaturas del Colegio Manheim
                                         
                                 </span>
                             </h6>
-                            <a href="#" class="btn btn-primary"><i class="far fa-minus mx-1"></i>Remover</a>
+                            <a href="#" class="btn btn-primary py-1"><i class="far fa-minus mx-1"></i>Remover</a>
                         </div>
                     </div>             
                 {% endfor %} 

@@ -18,9 +18,7 @@
   background: #fff;
   color: #555555;
   float: left;
-  width: 100%;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  width: 45%;
 }
 .ms-container .ms-selection{
   float: right;
@@ -40,7 +38,7 @@
   -moz-border-radius: 3px;
   border-radius: 3px;
   position: relative;
-  height: 170px;
+  height: 200px;
   padding: 0;
   overflow-y: auto;
 }

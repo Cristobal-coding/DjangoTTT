@@ -40,3 +40,19 @@ class PlanesView(LoginRequiredMixin, FormView):
         context = super(PlanesView, self).get_context_data(**kwargs)
         context['planes'] = PlanEstudio.objects.all()
         return context
+    def form_valid(self, form):
+        nombre = form.cleaned_data['nombre'].capitalize()
+        PlanEstudio.objects.create(
+            nombre = nombre,
+            detalle_url = form.cleaned_data['detalle_url']
+        )
+        plan = PlanEstudio.objects.filter(
+            nombre__iexact = nombre
+        )
+        asignaturas = form.cleaned_data['asignaturas']
+        for pl in plan:
+            for a in asignaturas:
+                pl.asignaturas.add(a.cod_asign)
+                
+        messages.success(self.request, 'Asignatura registrada con exito.')
+        return HttpResponseRedirect(self.get_success_url())

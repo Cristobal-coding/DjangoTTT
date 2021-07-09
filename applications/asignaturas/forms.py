@@ -45,21 +45,29 @@ class AsignaturaForm(forms.ModelForm):
             ),
         }
 class PlanesForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PlanesForm, self).__init__(*args, **kwargs)
+        self.fields['detalle_url'].label = "Url(Informacion del plan de estudio implementado en chile):"
     class Meta:
         model=PlanEstudio
         fields= ('__all__')
-        # widgets={
-        #     'cod_asign': forms.TextInput(
-        #         attrs={
-        #             'class': 'form-control rounded-pill my-2 text-uppercase',
-        #             'placeholder': 'Este valor debe ser unico'
-        #         },
+        widgets={
+            'nombre': forms.TextInput(
+                attrs={
+                    'class': 'form-control rounded-pill my-2 text-capitalize',
+                    'placeholder': 'Este valor debe ser unico'
+                },
                 
-        #     ),
-        #     'nombre': forms.TextInput(
-        #         attrs={
-        #             'class': 'form-control rounded-pill my-2 text-capitalize',
-        #             'placeholder': 'Nombre representativo'
-        #         }
-        #     ),
-        # }
+            ),
+            'detalle_url': forms.TextInput(
+                attrs={
+                    'class': 'form-control rounded-pill my-2 ',
+                    'placeholder': 'Nombre representativo'
+                }
+            ),
+            'asignaturas': forms.SelectMultiple(
+                attrs={
+                    'id':'select-asigns'
+                }
+            ),
+        }

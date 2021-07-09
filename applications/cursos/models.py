@@ -91,7 +91,7 @@ class Asignatura_Plan(models.Model):
     asignatura=models.ForeignKey(Asignatura,on_delete=models.CASCADE)
 
     #foranea hacia profesores
-    id_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='profesor')
+    id_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='profesor', null=True, blank=True)
 
 class Curso_Alumno(models.Model):
 
