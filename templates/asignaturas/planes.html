@@ -7,6 +7,9 @@ Planes de estudio del Colegio Manheim
 {% endblock 'titulo' %}
 
 {% block 'css-select2' %}
+<!-- Jquery -->
+<script src="{% static 'js/jquery-3.6.0.js' %}"></script>
+
 <link rel="stylesheet"  href="{% static 'css/multi-select(pathern).css' %}">
 {% endblock 'css-select2' %}
 
@@ -80,7 +83,61 @@ Planes de estudio del Colegio Manheim
                                     <a href="#" class="btn py-0 my-1 disabled border" style="color: rgba(52, 58, 64, 0.5);" aria-disabled="true" ><i class="far fa-marker mx-1"></i>Profesores</a>    
 
                                 {% else %}
-                                    <a href="#" class="btn btn-warning py-0 my-1" ><i class="far fa-marker mx-1"></i>Profesores</a>    
+                                    <button class="btn btn-warning py-0 my-1" data-bs-toggle="modal" data-bs-target="#adminProf">
+                                        <i class="far fa-marker mx-1"></i>Profesores
+                                    </button> 
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="adminProf" tabindex="-1" aria-labelledby="adminProf" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="adminProf">Asignar profesor a asignaturas</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                <form action="" method="POST">
+                                                    {% csrf_token %}
+                                                    
+                                                    <div class="row mx-0 w-100">
+                                                        <div class="col-6 text-center">
+                                                            <h5 class="text-primary fw-bold">Asignatura</h5>
+                                                        </div>
+                                                        <div class="col-6 text-center">
+                                                            <h5 class="text-primary fw-bold">Profesor</h5>
+                                                        </div>
+                                                    </div>
+                                                    {% for asign in plan.asignaturas.all  %}
+                                                    <div class="row mx-0 w-100 my-3">
+                                                        <div class="col-4 d-flex flex-column justify-content-center">
+                                                            <label for="">{{asign.nombre}} </label>
+                                                        </div>
+                                                        <div class="col-2 d-flex flex-column justify-content-center">
+                                                            <i class="far fa-arrow-right mx-2  text-danger"></i>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="form-floating">
+                                                                <select class="form-select" name="{{asign.cod_asign}}" aria-label="Floating label select example">
+                                                                    <option value="">---------</option>
+                                                                    {% for prof in profs %}
+                                                                    <option value="{{prof.id}}">{{prof}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                                <label for="floatingSelect text-secondary">Seleccione Profesor</label>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                        
+                                                </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>   
                                 {% endif %}
                                     
                             </div>
@@ -131,7 +188,6 @@ Planes de estudio del Colegio Manheim
         {% endif %}      
     {% endfor %}
 {% endif %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <script src="{% static 'js/jquery.quicksearch.js' %}"></script> 
 <script src="{% static 'js/jquery.multi-select.js' %}"></script> 
 <script>
