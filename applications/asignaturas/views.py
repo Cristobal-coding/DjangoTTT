@@ -4,7 +4,7 @@ from django.views.generic import  FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Asignatura
 from .forms import AsignaturaForm, PlanesForm
-from applications.cursos.models import PlanEstudio
+from applications.cursos.models import PlanEstudio, Profesor
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 # Create your views here.
@@ -39,6 +39,7 @@ class PlanesView(LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(PlanesView, self).get_context_data(**kwargs)
         context['planes'] = PlanEstudio.objects.all()
+        context['profs'] = Profesor.objects.all()
         return context
     def form_valid(self, form):
         nombre = form.cleaned_data['nombre'].capitalize()
