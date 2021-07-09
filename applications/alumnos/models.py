@@ -89,7 +89,7 @@ class Alumno_antecedente(models.Model):
         db_table= 'Alumno_antecedente'
         unique_together = (('alumno', 'antecedente'),)
     def __str__(self):
-        return str(self.alumno.id) + ' '+ str(self.antecedente_id)
+        return str(self.alumno.rut) + ' '+ str(self.antecedente_id)
     #Clave primaria de m2m
     alumno=models.ForeignKey(Alumno,on_delete=models.CASCADE)
     antecedente=models.ForeignKey(Antecedente,on_delete=models.CASCADE)
