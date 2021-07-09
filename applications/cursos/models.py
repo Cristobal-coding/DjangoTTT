@@ -50,7 +50,7 @@ class Profesor(models.Model):
 class PlanEstudio(models.Model):
     nombre = models.CharField('Nombre', max_length=50)
     detalle_url = models.CharField('Url', max_length=255)
-    asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Plan')
+    asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Plan', related_name='plan')
     def __str__(self):
         return self.nombre + ' ' + str(self.id)
 

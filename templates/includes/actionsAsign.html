@@ -1,0 +1,15 @@
+<ul class="list-group list-group-horizontal">
+    <a  href="{% url 'asignaturas_app:overview'%}"
+    class="list-group-item
+    {% if 'asignatura' in request.path %}
+    active
+    {% endif %}
+    "
+    >
+    Asignaturas
+    </a>
+    <a class="list-group-item" href="{% url 'asignaturas_app:planes'%}">
+        Planes de Estudio
+    </a>
+    <!-- <li class="list-group-item">A third item</li> -->
+  </ul>
