@@ -1,4 +1,7 @@
+from applications.antecedentes.models import Antecedente
 from django.db import models
+
+
 from .managers import AlumnoManager, ApoderadoManager
 
 class Apoderado(models.Model):
@@ -41,6 +44,7 @@ class Alumno(models.Model):
     telefono=models.CharField('Telefono',max_length=8,null=True,blank=True)
     direccion=models.CharField('Direccion',max_length=50,null=True,blank=True)
     estado=models.CharField('estado',max_length=1,choices=ESTADO_CHOICES,blank=False)
+    antecedentes = models.ManyToManyField(Antecedente, through='Alumno_antecedente')
 
     objects = AlumnoManager()
     class Meta:
@@ -80,3 +84,16 @@ class Alumno(models.Model):
         
 
 
+class Alumno_antecedente(models.Model):
+    class Meta:
+        db_table= 'Alumno_antecedente'
+        unique_together = (('alumno', 'antecedente'),)
+    def __str__(self):
+        return str(self.alumno.id) + ' '+ str(self.antecedente_id)
+    #Clave primaria de m2m
+    alumno=models.ForeignKey(Alumno,on_delete=models.CASCADE)
+    antecedente=models.ForeignKey(Antecedente,on_delete=models.CASCADE)
+    fecha=models.DateField('Fecha',null=True,blank=True)
+    detalle=models.CharField(max_length=255,blank=True)
+
+  
