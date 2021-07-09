@@ -91,7 +91,7 @@ def remove_alumno(request,):
             c_anterior.alumnos.add(data[1])
             for al in c_anterior.curso_alumno_set.all():
                 if al.alumno.rut == data[1]:
-                    al.is_current = True;
+                    al.is_current = True
                     al.save()
             curso.alumnos.remove(data[1])
             # Aqui deberia escribir que es repitente en ANTECEDENTES

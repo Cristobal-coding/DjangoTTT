@@ -50,7 +50,7 @@ class Profesor(models.Model):
 class PlanEstudio(models.Model):
     nombre = models.CharField('Nombre', max_length=50)
     detalle_url = models.CharField('Url', max_length=255)
-    asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Plan')
+    asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Plan', related_name='plan')
     def __str__(self):
         return self.nombre + ' ' + str(self.id)
 
@@ -91,7 +91,7 @@ class Asignatura_Plan(models.Model):
     asignatura=models.ForeignKey(Asignatura,on_delete=models.CASCADE)
 
     #foranea hacia profesores
-    id_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='profesor')
+    id_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='profesor', null=True, blank=True)
 
 class Curso_Alumno(models.Model):
 

@@ -31,4 +31,5 @@ urlpatterns = [
     re_path('', include('applications.cursos.urls')),
     re_path('', include('applications.psicologos.urls')),
     re_path('', include('applications.antecedentes.urls')),
+    re_path('', include('applications.asignaturas.urls')),
 ]+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
