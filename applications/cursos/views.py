@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
-from .models import Curso , Fecha, PlanEstudio
+from .models import Curso , Fecha, PlanEstudio, Profesor
 from .logicas import cursos_base , get_curso_anterior_pk
 # Create your views here.
 class CursosHome(LoginRequiredMixin,TemplateView):
@@ -28,6 +28,7 @@ class CursosDetalle(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CursosDetalle, self).get_context_data(**kwargs)
         context['alumnos'] =Alumno.objects.get_alumno_sin_curso()
+        context['profs'] =Profesor.objects.all()
         return context
 
 def init_cursos(request):
@@ -53,7 +54,8 @@ def init_cursos(request):
                         id_curso=key_curso,
                         cod_fecha=Fecha.objects.get(cod_fecha=key_fecha),
                         nombre=base[1],
-                        numero=base[2]                        
+                        numero=base[2],
+                        plan_estudio = PlanEstudio.objects.get(id=1)                        
                     )
                 else:
                     Curso.objects.create(
@@ -62,9 +64,11 @@ def init_cursos(request):
                         nombre=base[1],
                         numero=base[2],
                         electivo=base[3],
-                        plan_estudio = PlanEstudio.objects.get(id=3)                        
+                        plan_estudio = PlanEstudio.objects.get(id=2)                        
                     )
-            messages.info(request,'!!Cursos generados con exito!!.')
+                this_curso = Curso.objects.get(id_curso = key_curso)
+                linked_asignaturas_to_curso(this_curso)
+            messages.success(request,'!!Cursos generados con exito!!.')
     return HttpResponseRedirect(reverse('cursos_app:all'))
     # return HttpResponseRedirect(reverse('cursos_app:all'))
 
@@ -144,7 +148,8 @@ def finalizar_semestre(request):
                         id_curso=key,
                         cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'2'),
                         nombre=base[1],
-                        numero=base[2]
+                        numero=base[2],
+                        plan_estudio = PlanEstudio.objects.get(id=1)
                     )
                 #Aqui copiamos los alumnos del antiguo curso al nuevo curso
                 this_curso = Curso.objects.get(id_curso=key)
@@ -152,11 +157,12 @@ def finalizar_semestre(request):
                     alumno.is_current = False
                     alumno.save()
                     this_curso.alumnos.add(alumno.alumno.rut)
+                linked_asignaturas_to_curso(this_curso)
                 #Finalmente fijamos como el curso actual a los alumnos
                 for current_al in this_curso.curso_alumno_set.all():
                     current_al.is_current = True
                     current_al.save()
-            messages.info(request,'!!Semestre finalizado con exito!!.')
+            messages.success(request,'!!Semestre finalizado con exito!!.')
 
     return HttpResponseRedirect(reverse('cursos_app:all'))
 
@@ -184,8 +190,11 @@ def finalizar_año(request,):
                         id_curso=key,
                         cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
                         nombre=base[1],
-                        numero=base[2]                        
+                        numero=base[2],
+                        plan_estudio = PlanEstudio.objects.get(id=1)                        
                     )
+                    this_curso = Curso.objects.get(id_curso = key)
+                    linked_asignaturas_to_curso(this_curso)
                 else:
                     #Acciones para Cuarto medio
                     if i in [13,14,15]:
@@ -200,7 +209,7 @@ def finalizar_año(request,):
                             nombre=base[1],
                             numero=base[2],
                             electivo=base[3],
-                            plan_estudio = PlanEstudio.objects.get(id=3)
+                            plan_estudio = PlanEstudio.objects.get(id=2)
                         )
                         #Añade los alumnos del curso anterior al nuevo
                         this_curso = Curso.objects.get(id_curso=key)
@@ -213,6 +222,7 @@ def finalizar_año(request,):
                         for a in this_curso.curso_alumno_set.all():
                             a.is_current=True
                             a.save()
+                        linked_asignaturas_to_curso(this_curso)
                         #Cambia el estado a Finalizado de los alumnos que salen de 4to
                         cuarto_actual = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
                         for alumno in cuarto_actual.curso_alumno_set.all():
@@ -230,8 +240,10 @@ def finalizar_año(request,):
                             nombre=base[1],
                             numero=base[2],
                             electivo=base[3],
-                            plan_estudio = PlanEstudio.objects.get(id=3)
+                            plan_estudio = PlanEstudio.objects.get(id=2)
                         )
+                        this_curso = Curso.objects.get(id_curso = key)
+                        linked_asignaturas_to_curso(this_curso)
                     #Acciones de Segundo medio hasta segundo basico
                     else:
                         #Crea el nuevo curso
@@ -240,7 +252,8 @@ def finalizar_año(request,):
                             id_curso=key,
                             cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
                             nombre=base[1],
-                            numero=base[2]
+                            numero=base[2],
+                            plan_estudio = PlanEstudio.objects.get(id=1)
                         )
                         base = cursos_base[i-1]
                         anteriores = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
@@ -265,11 +278,16 @@ def finalizar_año(request,):
                                     for alumno in curso_Actual.curso_alumno_set.all():
                                         alumno.is_current=False
                                         alumno.save()
-            messages.info(request,'Año finalizado con exito!!.')                   
+                            linked_asignaturas_to_curso(this_curso)
+            messages.success(request,'Año finalizado con exito!!.')                   
              
     
     return HttpResponseRedirect(reverse('cursos_app:all'))
 
+def linked_asignaturas_to_curso(curso):
+
+    for asig in curso.plan_estudio.asignaturas.all():
+        curso.asignaturas.add(asig.cod_asign)
 
 def validate_cursos(cursos):
     proceder= True

@@ -3,10 +3,10 @@ cursos_base = [['1erobasico','Primero básico',1.0], ['2dobasico','Segundo bási
             ['7tobasico', 'Septimo básico',7.0],['8vobasico', 'Octavo básico',8.0],['1eromedio','Primero medio',9.0],['2domedio','Segundo medio',10.0],
             ['3romedioCON','Tercero medio Construccion', 11.0, 'CON'],
             ['3romedioEL','Tercero medio Electricidad', 11.1, 'EL'],
-            ['3romedioMET','Tercero medio Construnccion Metalicas', 11.2, 'MET'],
+            ['3romedioMET','Tercero medio Construccion Metalicas', 11.2, 'MET'],
             ['4tomedioCON','Cuarto medio Construccion',12.0, 'CON'] ,
             ['4tomedioEL','Cuarto medio Electricidad',12.1, 'EL'] ,
-            ['4tomedioMET','Cuarto medio Construnccion Metalicas',12.2, 'MET'] ,
+            ['4tomedioMET','Cuarto medio Construccion Metalicas',12.2, 'MET'] ,
             ]
 
 #Esto genera un Choices desde 2000 hasta la fecha actual

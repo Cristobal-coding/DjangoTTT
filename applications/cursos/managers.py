@@ -42,6 +42,12 @@ class CursoManager(models.Manager):
         ).aggregate(Max('cod_fecha__semestres'))['cod_fecha__semestres__max']
        
         return current_año, current_semestre
+    # def prove_Asign(self):
+    #     result= self.all()
+    #     for i in result:
+    #         print(i.asignatura_curso_set.all())
+            # from applications.cursos.models import Curso
+            # asign = Curso.objects.prove_Asign()
 
    
     

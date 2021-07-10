@@ -1,5 +1,5 @@
 from django.db import models
-from applications.asignaturas.models import Asignatura
+from applications.asignaturas.models import Asignatura, PlanEstudio
 from applications.alumnos.models import Alumno
 from .managers import CursoManager
 # Create your models here.
@@ -47,12 +47,6 @@ class Profesor(models.Model):
     apellido_materno=models.CharField('A.Materno',max_length=30)
     asig_impartir=models.ForeignKey(Asignatura,on_delete=models.CASCADE, related_name='asignatura')
 
-class PlanEstudio(models.Model):
-    nombre = models.CharField('Nombre', max_length=50)
-    detalle_url = models.CharField('Url', max_length=255)
-    asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Plan', related_name='plan')
-    def __str__(self):
-        return self.nombre + ' ' + str(self.id)
 
 class Curso(models.Model):
     electivos_choices=(
@@ -76,18 +70,19 @@ class Curso(models.Model):
     objects = CursoManager()
 
     id_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='jefe' ,null=True,blank=True)
-    plan_estudio=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE, related_name='plan' ,null=True,blank=True)
+    plan_estudio=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE,related_name='cursos')
     alumnos = models.ManyToManyField(Alumno,through='Curso_Alumno', related_name='cursos')
+    asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Curso')
 
-class Asignatura_Plan(models.Model):
+class Asignatura_Curso(models.Model):
     
     class Meta:
-        db_table= 'Asignatura_Plan'
-        unique_together = (('plan', 'asignatura'),)
+        db_table= 'Asignatura_Curso'
+        unique_together = (('curso', 'asignatura'),)
     def __str__(self):
-        return self.plan.nombre + ' '+self.asignatura.cod_asign
+        return self.curso.nombre + ' '+self.asignatura.cod_asign
     #Clave primaria de m2m
-    plan=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE)
+    curso=models.ForeignKey(Curso,on_delete=models.CASCADE)
     asignatura=models.ForeignKey(Asignatura,on_delete=models.CASCADE)
 
     #foranea hacia profesores

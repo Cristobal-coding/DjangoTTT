@@ -7,6 +7,7 @@ from .forms import AsignaturaForm, PlanesForm
 from applications.cursos.models import PlanEstudio, Profesor
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from applications.cursos.models import Curso
 # Create your views here.
 class AsignaturasView(LoginRequiredMixin, FormView):
     model =Asignatura
@@ -57,3 +58,21 @@ class PlanesView(LoginRequiredMixin, FormView):
                 
         messages.success(self.request, 'Asignatura registrada con exito.')
         return HttpResponseRedirect(self.get_success_url())
+
+def profe_to_asign(request,):
+    if request.method == 'POST':
+        print(request.POST)
+        key_asign = request.POST['asignatura']
+        key_prof = request.POST['profesor']
+        key_curso = request.POST['curso']
+        curso = Curso.objects.get(id_curso= key_curso)
+ 
+        for asign in curso.asignatura_curso_set.all():
+            if asign.asignatura.cod_asign == key_asign:
+                if key_prof == '':
+                    asign.id_profesor =None
+                    asign.save()
+                else:
+                    asign.id_profesor =Profesor.objects.get(id=key_prof)
+                    asign.save()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
