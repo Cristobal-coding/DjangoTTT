@@ -228,18 +228,67 @@ Cursos del Establecimiento Manheim
                                             </h6>
                                         </div>
                                         <div class="col-6 px-0">
-                                            <p class="card-text my-0">Profesor Jefe</p>
+                                            
                                             {% if curso.id_prof_jefe %}
-                                            <h6>{{curso.id_prof_jefe.nombres}} {{curso.id_prof_jefe.apellido_paterno}} {{curso.id_prof_jefe.apellido_materno}}</h6>
+                                            <p class="card-text my-0">Profesor Jefe<i class="fas fa-check-circle text-success mx-1"></i></p>
+                                            {% else %}
+                                            <p class="card-text my-0">Profesor Jefe<i class="fas fa-question-circle text-danger mx-1"></i></p>
+                                            {% endif %}
+                                                
+                                            {% if curso.id_prof_jefe  %}
+                                            <button type="button" class="btn btn-success p-0" data-bs-toggle="modal" data-bs-target="#newProf">
+                                               
+                                                {{curso.id_prof_jefe.nombres}} {{curso.id_prof_jefe.apellido_paterno}}
+                                                    
+                                            </button>
                                             {% else %}
                                             <button type="button" class="btn btn-danger p-0" data-bs-toggle="modal" data-bs-target="#newProf">
-                                                Añadir profesor<i class="far fa-question-circle mx-1"></i>
+                                                
+                                                Añadir profesor
+                                                    
                                             </button>
+                                            
                                             {% endif %}
                                         </div>
                                     </div>
-                                                                         
-                                  </div>
+                                    <!-- Modal añadir Profesor -->
+                                    <div class="modal fade" id="newProf" tabindex="-1" aria-labelledby="newProf" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="newProf">Profesor Jefe del Curso</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{% url 'cursos_app:addProfeJefe' %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" value="{{curso.id_curso}}" name="curso">
+                                                        <label for="">Seleccione Profesor Jefe:</label>
+                                                        <select name="prof_jefe" class="form-select">
+                                                            <option value="">-------</option>
+                                                            
+                                                            {% for pr in profs %}
+                                                                
+                                                                {% if curso.id_prof_jefe.id == pr.id %}
+                                                                <option value="{{pr.id}}" selected>{{pr}}</option>
+                                                                {% else %}
+                                                                <option value="{{pr.id}}">{{pr}}</option>
+                                                                {% endif %}
+                                                                    
+                                                            {% endfor %}
+                                                                
+                                                        </select>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                    <!-- Modal añadir Profesor -->                              
+                                </div>
                             </div>
                             <div class="card shadow w-100 my-3">
                                 <div class="card-body">
@@ -420,6 +469,34 @@ Cursos del Establecimiento Manheim
       });
   });
     
-    
   </script>
+  {% if messages %}
+    {% for m in messages %}
+    
+    {% if m.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+      <script>
+        Swal.fire({
+            'timer':'2000',
+            title: 'Éxito!',
+            text: '{{m}}',
+            icon: 'success',
+            showConfirmButton: false,
+          })
+    </script>
+    {% endif %}
+    
+    {% if m.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+      <script>
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '{{m}}',
+        })
+    </script>
+    {% endif %}
+      
+      
+    
+    {% endfor %}
+{% endif %}
 {% endblock 'js-select2' %}

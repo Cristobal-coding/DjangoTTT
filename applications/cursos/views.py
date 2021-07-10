@@ -285,9 +285,22 @@ def finalizar_año(request,):
     return HttpResponseRedirect(reverse('cursos_app:all'))
 
 def linked_asignaturas_to_curso(curso):
-
     for asig in curso.plan_estudio.asignaturas.all():
         curso.asignaturas.add(asig.cod_asign)
+
+def profe_to_curso(request,):
+    if request.method == 'POST':
+        key_profe = request.POST['prof_jefe']
+        key_curso = request.POST['curso']
+        curso = Curso.objects.get(id_curso = key_curso)
+        if key_profe == '':
+            curso.id_prof_jefe =None
+            curso.save()
+        else:
+            curso.id_prof_jefe = Profesor.objects.get(id = key_profe)
+            curso.save()
+        messages.success(request,'!!Profesor Jefe actualizado con exito!!')
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 def validate_cursos(cursos):
     proceder= True

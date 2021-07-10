@@ -216,6 +216,13 @@ Cursos del Establecimiento Manheim
         </div>
     </div>
 </div>
+ 
+{% endblock 'content' %}
+
+
+{% block 'js-select2' %}
+
+<script src="{% static 'js/formulario_cursos.js' %}"></script> 
 {% if messages %}
     {% for m in messages %}
     
@@ -244,13 +251,7 @@ Cursos del Establecimiento Manheim
       
     
     {% endfor %}
-{% endif %} 
-{% endblock 'content' %}
-
-
-{% block 'js-select2' %}
-
-<script src="{% static 'js/formulario_cursos.js' %}"></script> 
+{% endif %}
 
 
 {% endblock 'js-select2' %}

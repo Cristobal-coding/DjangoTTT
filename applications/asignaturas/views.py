@@ -75,4 +75,5 @@ def profe_to_asign(request,):
                 else:
                     asign.id_profesor =Profesor.objects.get(id=key_prof)
                     asign.save()
+        messages.success(request,'!!Profesor actualizado con exito!!')
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
