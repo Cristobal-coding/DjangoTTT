@@ -154,6 +154,7 @@ def finalizar_semestre(request):
                 #Aqui copiamos los alumnos del antiguo curso al nuevo curso
                 this_curso = Curso.objects.get(id_curso=key)
                 for alumno in curso_semestre_pasado.curso_alumno_set.all():
+                    print(this_curso.nombre)
                     alumno.is_current = False
                     alumno.save()
                     this_curso.alumnos.add(alumno.alumno.rut)
@@ -279,7 +280,7 @@ def finalizar_año(request,):
                                         alumno.is_current=False
                                         alumno.save()
                             linked_asignaturas_to_curso(this_curso)
-            messages.success(request,'Año finalizado con exito!!.')                   
+            messages.success(request,'!!Año finalizado con exito!!.')                   
              
     
     return HttpResponseRedirect(reverse('cursos_app:all'))
