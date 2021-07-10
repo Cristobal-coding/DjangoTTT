@@ -15,11 +15,11 @@ Asignaturas del Colegio Manheim
         <div class="card w-100 h-100 shadow" style="border-radius: 1rem !important;" >
             <div class="w-100 p-4 d-flex align-items-center justify-content-center">
                 <h3 class="card-title d-inline my-0 fw-bold">Asignaturas</h3>
-                <button class="mx-2 btn btn-outline-secondary py-1" id="añadirAsignatura" data-bs-toggle="modal" data-bs-target="#añadirAsign">
+                <!-- <button class="mx-2 btn btn-outline-secondary py-1" id="añadirAsignatura" data-bs-toggle="modal" data-bs-target="#añadirAsign">
                     Añadir <i class="far fa-plus mx-1"></i>
-                </button>
+                </button> -->
                 <!-- Modal añadir asignatura -->
-                <div class="modal fade" id="añadirAsign" data-bs-backdrop="static" tabindex="-1" aria-labelledby="añadirAsign" aria-hidden="true">
+                <!-- <div class="modal fade" id="añadirAsign" data-bs-backdrop="static" tabindex="-1" aria-labelledby="añadirAsign" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -43,13 +43,28 @@ Asignaturas del Colegio Manheim
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <hr class="my-0 text-primary">
             <div class="card-body d-flex flex-wrap align-items-start justify-content-start py-2 overflow-auto">
+                
+                {% if asignaturas.count == 0  %}
+                    <div class="w-100 d-flex flex-column align-items-center justify-content-center">
+                        <div class="w-75 text-center card shadow my-5 py-3">
+                            <h5 class="text-danger">No hay asignaturas Registradas <i class="fas fa-engine-warning mx-1"></i></h5>
+                            <form action="{% url 'asignaturas_app:initGenerador'%}" method="POST">
+                                {% csrf_token %}
+                                <button class="fw-light btn py-0" >Por favor haz click aquí para generar las <span class="text-warning">asignaturas</span> y 
+                                    <span class="text-warning">Planes de Estudio</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+                    
                 {% for asign in asignaturas  %}
                 {% random_number as num%}
-                    <div class="card my-2 mx-2 shadow" style="width: 16rem;">
+                    <div class="card my-2 mx-2 shadow" style="width: 16rem; height: 316.4px">
                         <!-- <div class="card-img-top bg-secondary w-100" style="height: 7rem;">
                         </div> -->
                         <img src="
@@ -62,15 +77,14 @@ Asignaturas del Colegio Manheim
                             <h6 class="card-subtitle mb-2 text-muted">Incorporada en: 
                                 <span class=" fst-italic">
                                     
-                                    {% if asign.plan.all.count == 1 %}
-                                    {{asign.plan.all.count}} Plan de estudio
+                                    {% if asign.nombre == 'Matemáticas' or asign.nombre == 'Inglés' %}
+                                    Educación General y Técnico Profesional
                                     {% else %}
-                                    {{asign.plan.all.count}} Planes de estudios
+                                    {{asign.plan.nombre}}
                                     {% endif %}
                                         
                                 </span>
                             </h6>
-                            <a href="#" class="btn btn-primary py-1"><i class="far fa-minus mx-1"></i>Remover</a>
                         </div>
                     </div>             
                 {% endfor %} 

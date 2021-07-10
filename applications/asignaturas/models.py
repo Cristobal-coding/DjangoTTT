@@ -11,7 +11,7 @@ class PlanEstudio(models.Model):
         
 class Asignatura(models.Model):
     cod_asign =models.CharField('Cod_asign',max_length=4,unique=True,primary_key=True)     
-    nombre=models.CharField('Nombre',max_length=30)
+    nombre=models.CharField('Nombre',max_length=100)
     plan=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE,related_name='asignaturas', null=True, blank=True)
     
 

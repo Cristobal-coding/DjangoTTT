@@ -8,6 +8,7 @@ from applications.cursos.models import PlanEstudio, Profesor
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from applications.cursos.models import Curso
+from .logics import asignaturas_base, planes_base
 # Create your views here.
 class AsignaturasView(LoginRequiredMixin, FormView):
     model =Asignatura
@@ -76,4 +77,23 @@ def profe_to_asign(request,):
                     asign.id_profesor =Profesor.objects.get(id=key_prof)
                     asign.save()
         messages.success(request,'!!Profesor actualizado con exito!!')
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+def init_all(request,):
+    if request.method == 'POST':
+        # Primer crear los planes de estudio
+        for plan in planes_base:
+            PlanEstudio.objects.create(
+                nombre = plan[0],
+                detalle_url = plan[1]
+            )
+        
+        for asign in asignaturas_base:  
+            plan = PlanEstudio.objects.get(nombre=asign[2])     
+            Asignatura.objects.create(
+                cod_asign=asign[0],
+                nombre=asign[1],
+                plan=plan
+            )
+        messages.success(request,'!!Planes de estudio y Asignaturas generados con Exito!!')
     return HttpResponseRedirect(request.META['HTTP_REFERER'])

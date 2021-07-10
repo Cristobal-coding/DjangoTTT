@@ -55,7 +55,7 @@ def init_cursos(request):
                         cod_fecha=Fecha.objects.get(cod_fecha=key_fecha),
                         nombre=base[1],
                         numero=base[2],
-                        plan_estudio = PlanEstudio.objects.get(id=1)                        
+                        plan_estudio = PlanEstudio.objects.get(nombre='Educación General')                        
                     )
                 else:
                     Curso.objects.create(
@@ -64,7 +64,7 @@ def init_cursos(request):
                         nombre=base[1],
                         numero=base[2],
                         electivo=base[3],
-                        plan_estudio = PlanEstudio.objects.get(id=2)                        
+                        plan_estudio = PlanEstudio.objects.get(nombre='Técnico Profesional')                        
                     )
                 this_curso = Curso.objects.get(id_curso = key_curso)
                 linked_asignaturas_to_curso(this_curso)
@@ -149,7 +149,7 @@ def finalizar_semestre(request):
                         cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'2'),
                         nombre=base[1],
                         numero=base[2],
-                        plan_estudio = PlanEstudio.objects.get(id=1)
+                        plan_estudio = PlanEstudio.objects.get(nombre = 'Educación General')
                     )
                 #Aqui copiamos los alumnos del antiguo curso al nuevo curso
                 this_curso = Curso.objects.get(id_curso=key)
@@ -192,7 +192,7 @@ def finalizar_año(request,):
                         cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
                         nombre=base[1],
                         numero=base[2],
-                        plan_estudio = PlanEstudio.objects.get(id=1)                        
+                        plan_estudio = PlanEstudio.objects.get(nombre='Educación General')                        
                     )
                     this_curso = Curso.objects.get(id_curso = key)
                     linked_asignaturas_to_curso(this_curso)
@@ -210,7 +210,7 @@ def finalizar_año(request,):
                             nombre=base[1],
                             numero=base[2],
                             electivo=base[3],
-                            plan_estudio = PlanEstudio.objects.get(id=2)
+                            plan_estudio = PlanEstudio.objects.get(nombre='Técnico Profesional')
                         )
                         #Añade los alumnos del curso anterior al nuevo
                         this_curso = Curso.objects.get(id_curso=key)
@@ -241,7 +241,7 @@ def finalizar_año(request,):
                             nombre=base[1],
                             numero=base[2],
                             electivo=base[3],
-                            plan_estudio = PlanEstudio.objects.get(id=2)
+                            plan_estudio = PlanEstudio.objects.get(nombre='Técnico Profesional')
                         )
                         this_curso = Curso.objects.get(id_curso = key)
                         linked_asignaturas_to_curso(this_curso)
@@ -254,7 +254,7 @@ def finalizar_año(request,):
                             cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
                             nombre=base[1],
                             numero=base[2],
-                            plan_estudio = PlanEstudio.objects.get(id=1)
+                            plan_estudio = PlanEstudio.objects.get(nombre='Educación General')
                         )
                         base = cursos_base[i-1]
                         anteriores = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
@@ -286,8 +286,24 @@ def finalizar_año(request,):
     return HttpResponseRedirect(reverse('cursos_app:all'))
 
 def linked_asignaturas_to_curso(curso):
+
+    if curso.numero > 10:
+        curso.asignaturas.add('MA')
+        curso.asignaturas.add('ING')
     for asig in curso.plan_estudio.asignaturas.all():
-        curso.asignaturas.add(asig.cod_asign)
+        if asig.nombre == 'Inglés' and curso.numero < 5 :
+            pass # Solamente para saltarse la asignatura y no Añadirla
+                                                    
+        elif asig.nombre == 'Lengua indígena':
+            if curso.numero < 3 or curso.numero > 8:
+                pass # Solamente para saltarse la asignatura y no Añadirla
+            else:
+                curso.asignaturas.add(asig.cod_asign)
+
+        elif  asig.cod_asign == 'LCP' and curso.numero > 6 :
+            pass # Solamente para saltarse la asignatura y no Añadirla
+        else:
+            curso.asignaturas.add(asig.cod_asign)
 
 def profe_to_curso(request,):
     if request.method == 'POST':

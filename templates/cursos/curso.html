@@ -332,7 +332,25 @@ Cursos del Establecimiento Manheim
                                             {% for a in curso.asignatura_curso_set.all %}
                                                 <div class="row mx-1 shadow-sm p-1 border rounded my-1">
                                                     <div class="col-6" >
+                                                        
+                                                        {% if curso.numero >= 10  %}
+                                                            {% if a.asignatura.nombre == 'Matemática' or a.asignatura.nombre == 'Inglés'  %}
+                                                                
+                                                                {% if curso.numero >= 10 and curso.numero < 12 %}
+                                                                <a href="#" class=" text-start">{{a.asignatura.nombre}} 3°Medio</a>
+                                                                {% elif curso.numero >= 12 %}
+                                                                <a href="#" class=" text-start">{{a.asignatura.nombre}} 4°Medio</a>
+                                                                {% endif %}
+                                                            {% else %}
+                                                            <a href="#" class=" text-start">{{a.asignatura.nombre}}</a>
+                                                            {% endif %}
+
+                                                        {% else %}
                                                         <a href="#" class=" text-start">{{a.asignatura.nombre}}</a>
+                                                        {% endif %}
+                                                            
+                                                       
+                                                            
                                                     </div>
                                                     <div class="col-6 text-end">
                                                         
@@ -407,6 +425,8 @@ Cursos del Establecimiento Manheim
                                                     </div>
                                                 </div> 
                                                 <!-- Modal Setear Profesor-->
+
+                                               
                                             {% endfor %}
                                                     
                                             {% else %}
@@ -477,7 +497,7 @@ Cursos del Establecimiento Manheim
       <script>
         Swal.fire({
             'timer':'2000',
-            title: 'Éxito!',
+            title: 'Operación exitosa',
             text: '{{m}}',
             icon: 'success',
             showConfirmButton: false,
