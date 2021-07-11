@@ -1,6 +1,7 @@
+from django.views.generic.edit import CreateView
 from applications.cursos import models
 from django.urls import reverse_lazy, reverse
-from django.views.generic import  FormView
+from django.views.generic import  FormView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Asignatura
 from .forms import AsignaturaForm, PlanesForm
@@ -10,6 +11,19 @@ from django.http import HttpResponseRedirect
 from applications.cursos.models import Curso
 from .logics import asignaturas_base, planes_base
 # Create your views here.
+
+class ProfesoresView(LoginRequiredMixin, ListView):
+    model =Profesor
+    template_name= 'asignaturas/profesores.html'
+    login_url = reverse_lazy('home_app:login')
+    context_object_name = 'profesores'    
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfesoresView, self).get_context_data(**kwargs)
+        # context['profesores'] = Profesor.objects.all()
+        context['asignaturas'] = Asignatura.objects.all()
+        return context
+
 class AsignaturasView(LoginRequiredMixin, FormView):
     model =Asignatura
     template_name= 'asignaturas/overview.html'
@@ -97,3 +111,25 @@ def init_all(request,):
             )
         messages.success(request,'!!Planes de estudio y Asignaturas generados con Exito!!')
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+def profesor_create(request):
+    if request.method == 'POST':
+        Profesor.objects.create(
+            nombres=request.POST['nombre'],
+            apellido_paterno=request.POST['paterno'],
+            apellido_materno=request.POST['materno'],
+            asig_impartir=Asignatura.objects.get(cod_asign=request.POST['asignatura'],)
+        )
+        messages.success(request,'!!Profesor añadido con exito!!')
+    return HttpResponseRedirect(reverse('asignaturas_app:profesores'))
+def profesor_edit(request):
+    if request.method == 'POST':
+        profesor = Profesor.objects.get(id=request.POST['profesor'])
+
+        profesor.nombres=request.POST['nombre']
+        profesor.apellido_paterno=request.POST['paterno']
+        profesor.apellido_materno=request.POST['materno']
+        profesor.asig_impartir=Asignatura.objects.get(cod_asign=request.POST['asignatura'],)
+        profesor.save()
+        messages.success(request,'!!Profesor actualizado con exito!!')
+    return HttpResponseRedirect(reverse('asignaturas_app:profesores'))
