@@ -1,4 +1,4 @@
-from applications.cursos.models import PlanEstudio
+from applications.cursos.models import PlanEstudio, Profesor
 from django import forms
 from .models import Asignatura
 from django.forms import ValidationError

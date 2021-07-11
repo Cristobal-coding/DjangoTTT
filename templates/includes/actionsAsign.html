@@ -17,5 +17,14 @@
     >
     Planes de Estudio
     </a>
-    <!-- <li class="list-group-item">A third item</li> -->
+    <a href="{% url 'asignaturas_app:profesores' %}"
+    class="list-group-item
+    {% if 'profesores' in request.path %}
+    active
+    {% endif %}
+    
+    "
+    >
+      Profesores
+    </a>
   </ul>

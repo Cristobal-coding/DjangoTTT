@@ -1,0 +1,189 @@
+{% extends '../layouts/master.html' %}
+{% load static %}
+
+{% block 'css-select2' %}
+    <!-- Jquery -->
+    <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
+    <!-- Select2 css y js-->
+    <link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
+    <script src="{% static 'js/select2.min.js' %}"></script>
+    <!-- Select2 theme con Bootstrap4 -->
+    <link rel="stylesheet" href="{% static 'css/select2-bootstrap4.min.css' %}">
+{% endblock 'css-select2' %}
+
+{% block 'content' %}
+<div class="row mx-0 w-100 h-100">
+    <div class="col-12 d-flex align-items-center justify-content-center" style="height: 10%;">
+        {% include '../includes/actionsAsign.html' %}
+    </div>
+    <div class="col-12" style="height: 90%;">
+        <div class="row mx-0 w-100 h-100">
+            <div class="col-8">
+                <table class="table table-sm">
+                    <thead class="table-dark">
+                        <tr>
+                            <td>Nombres</td>
+                            <td>Apellido Paterno</td>
+                            <td>Apellido Materno</td>
+                            <td>Asignatura</td>
+                            <td>Acciones</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {% if profesores.count == 0 %}
+                        <tr>
+                            <td colspan="6">No hay profesores resgistrados...</td>
+                        </tr>
+                        {% endif %}
+                            
+                        {% for prof in profesores %}
+                            <tr>
+                                <td>{{prof.nombres}}</td>
+                                <td>{{prof.apellido_paterno}}</td>
+                                <td>{{prof.apellido_materno}}</td>
+                                <td>{{prof.asig_impartir.nombre}}</td>
+                                <td class="text-center">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#edit{{prof.id}}">
+                                        <i class="far fa-user-edit text-success fs-5"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Modal -->
+                        <div class="modal fade" id="edit{{prof.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Actualizar Información</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'asignaturas_app:editProfesor' %}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="profesor" value="{{prof.id}}">
+                                            <label for="">Nombre del Profesor:</label>
+                                            <input type="text" name="nombre" value="{{prof.nombres}}" class="form-control rounded-pill">
+                                            <label for="">Apellido Paterno:</label>
+                                            <input type="text" name="paterno" value="{{prof.apellido_paterno}}" class="form-control rounded-pill">
+                                            <label for="">Apellido Materno:</label>
+                                            <input type="text" name="materno" value="{{prof.apellido_materno}}" class="form-control rounded-pill">
+                                            <label for="">Asignatura que imparte:</label>
+                                            <select name="asignatura"  class="form-select">
+                                                <option value="">---------</option>
+                                                
+                                                {% for asign in asignaturas  %}
+                                                <option value="{{asign.cod_asign}}"
+                                                
+                                                
+                                                {% if asign.cod_asign == prof.asig_impartir.cod_asign %}
+                                                selected
+                                                {% endif %}
+                                                    
+                                                
+                                                >{{asign.nombre}}</option>
+                                                
+                                                {% endfor %}
+                                                    
+                                            </select>
+                                            <div class="modal-footer" style="padding-bottom: 0;margin-top:20px">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="submit" class="btn btn-primary">Actualizar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                            
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form action="{% url 'asignaturas_app:createProfesor' %}" method="POST">
+                            {% csrf_token %}
+                            <h4 class="fw-bold">Añadir Profesor</h4>
+                            <label for="">Nombre del Profesor:</label>
+                            <input type="text" name="nombre" class="form-control rounded-pill">
+                            <label for="">Apellido Paterno:</label>
+                            <input type="text" name="paterno" class="form-control rounded-pill">
+                            <label for="">Apellido Materno:</label>
+                            <input type="text" name="materno" class="form-control rounded-pill">
+                            <label for="">Asignatura que imparte:</label>
+                            <select name="asignatura" id="asignaturas" class="form-select">
+                                <option value="">---------</option>
+                                
+                                {% for asign in asignaturas  %}
+                                <option value="{{asign.cod_asign}}">{{asign.nombre}}</option>
+                                
+                                {% endfor %}
+                                    
+                            </select>
+                            <div class="w-100 text-center" style="padding-top: 20px;">
+                                <button type="submit" class="btn btn-outline-primary w-50">Añadir</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock 'content' %}
+
+
+
+{% block 'js-select2' %}
+<script>
+    $(document).ready(function() {
+        $('#asignaturas').select2({
+            theme: 'bootstrap4',
+            placeholder:'Seleccione Asignatura',
+            allowClear: true,
+            
+        });
+       
+    });
+ </script> 
+ <script>
+    $(document).ready(function() {
+        $('body').on('shown.bs.modal', '.modal', function() {
+            $(this).find('select').each(function() {
+              var dropdownParent = $(document.body);
+              if ($(this).parents('.modal.in:first').length !== 0)
+                dropdownParent = $(this).parents('.modal.in:first');
+              $(this).select2({
+                //dropdownParent: dropdownParent,
+                theme: 'bootstrap4',
+                allowClear: true,
+              });
+            });
+          });
+       
+    });
+ </script> 
+
+
+ {% if messages %}
+   {% for m in messages %}  
+        {% if m.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <script>
+            Swal.fire({
+                'timer':'2000',
+                title: 'Operación Exitosa',
+                text: '{{m}}',
+                icon: 'success',
+                showConfirmButton: false,
+            })
+        </script>
+        {% endif %}      
+    {% endfor %}
+{% endif %}
+{% endblock 'js-select2' %}
+    
+    

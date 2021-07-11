@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy, reverse
-from django.views.generic import TemplateView , ListView, UpdateView
+from django.views.generic import TemplateView , ListView, UpdateView, DetailView
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import  FormView
 from django.contrib import messages
@@ -46,6 +46,14 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
                 return Alumno.objects.buscar_alumno_fecha(palabra_clave,f1,f2)
             else:
                 return Alumno.objects.buscar_alumno(palabra_clave)
+class AlumnoDetalle(LoginRequiredMixin,DetailView):
+    template_name = 'alumnos/alumno_detalle.html'
+    model = Alumno
+    # def get_context_data(self, **kwargs):
+    #     context = super(AlumnoDetalle, self).get_context_data(**kwargs)
+    #     context['alumnos'] =Alumno.objects.get_alumno_sin_curso()
+    #     context['profs'] =Profesor.objects.all()
+    #     return context
             
 class AlumnosRegister(LoginRequiredMixin,FormView):
     model = Alumno
@@ -75,12 +83,13 @@ class AlumnoEdit(LoginRequiredMixin,UpdateView):
     template_name = "alumnos/edit_alumn.html"
     form_class = AlumnosRegisterForm
     model = Alumno
-    success_url = reverse_lazy('alumnos_app:filtrar')
+    # success_url = reverse_lazy('alumnos_app:detailAlumn')
     login_url = reverse_lazy('home_app:login')
     def form_valid(self, form):
         messages.success(self.request, 'Alumno actualizado Satisfactoriamente.')
         form.save()
-        return HttpResponseRedirect(self.get_success_url())
+        url = reverse('alumnos_app:detailAlumn', kwargs={'pk': self.kwargs['pk']}) # Esto redirecciona al detalle
+        return HttpResponseRedirect(url)
     
 class ApoderadosList(LoginRequiredMixin,ListView):
     template_name= 'alumnos/apoderados.html'

@@ -39,8 +39,9 @@ Filtrar Alumnos por Parametros
                               <td>{{alumno.get_current_curso}}</td>
                               <td><h6 class="my-0 fw-bold">{{alumno.get_estado_display}}</h6></td>
                               <td><h6 class="my-0 fw-bold"> {{alumno.rut_apoderado.nombre_apoderado}} </h6></td>
-                              <td class="text-end"><a href="{% url 'alumnos_app:actualizar' alumno.rut %}" class="btn p-0"><i class="far fa-edit text-success"></i></a> </td>       
-                              <td class="text-start"><button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#rut{{alumno.rut}}"><i class="fal fa-times text-danger"></i></button></td>
+                              <!-- <td class="text-end"><a href="{% url 'alumnos_app:actualizar' alumno.rut %}" class="btn p-0"><i class="far fa-edit text-success"></i></a> </td>        -->
+                              <td class="text-end"><button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#rut{{alumno.rut}}"><i class="fal fa-times text-danger"></i></button></td>
+                              <td class="text-start"><a href="{% url 'alumnos_app:detailAlumn' alumno.rut %}" class="btn p-0"><i class="fal fa-address-card text-warning"></i> </td>       
      
                             </tr>
                             <!-- Modal innesecario (borrarlo) -->
