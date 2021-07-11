@@ -4,31 +4,15 @@
 <div class="row mx-0 h-100 w-100 my-0 py-0"> 
     <div class="col-12 h-100 w-100 py-0 my-0 px-0 mx-0" >
         <div class="row mx-0 w-100 " style="height: 97%;">     
-            <div class="col-3 h-100 py-3" style="background-color: brown;  overflow:scroll;direction: rtl;">   
-                <div class="col-12 " style="background-color: cyan;">
-                    <h1>Nombre del antecedednte</h1>
+            <div class="col-3 h-100 py-3 shadow-lg" style="  overflow:scroll;direction: rtl;">   
+                {% for a in antecedentes  %}
+                <div class="col-12 shadow-lg" >
+                    <h2>{{a.nombre_antecedente}}</h2>
                 </div>
-                <div class="col-12 " style="background-color: cyan;">
-                    <h1>Nombre del antecedednte</h1>
-                </div>
-                <div class="col-12 " style="background-color: cyan;">
-                    <h1>Nombre del antecedednte</h1>
-                </div>
-                <div class="col-12 " style="background-color: cyan;">
-                    <h1>Nombre del antecedednte</h1>
-                </div>
-                <div class="col-12 " style="background-color: cyan;">
-                    <h1>Nombre del antecedednte</h1>
-                </div>
-                <div class="col-12 " style="background-color: cyan;">
-                    <h1>Nombre del antecedednte</h1>
-                </div>
-                <div class="col-12 " style="background-color: cyan;">
-                    <h1>Nombre del antecedednte</h1>
-                </div>
-                <div class="col-12 " style="background-color: cyan;">
-                    <h1>Nombre del antecedednte</h1>
-                </div>
+
+                {% endfor %}
+                
+                
             </div>
             
             <div class="col-9 px-0  h-100" style="background-color: darkgreen;">
