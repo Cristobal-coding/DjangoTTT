@@ -114,6 +114,7 @@ def init_all(request,):
 
 def profesor_create(request):
     if request.method == 'POST':
+
         Profesor.objects.create(
             nombres=request.POST['nombre'],
             apellido_paterno=request.POST['paterno'],

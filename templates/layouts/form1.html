@@ -54,7 +54,10 @@
    
 </div>
 
+
+{% endblock 'content' %}
 {% block 'js-select2' %}
+<script src="{% static 'js/formulario.js' %}"></script>
 <script>
     $(document).ready(function() {
         $('#id_estado').select2({
@@ -79,9 +82,6 @@
     });
  </script>
 {% endblock 'js-select2' %}
-    
- 
-{% endblock 'content' %}
     
 
 
