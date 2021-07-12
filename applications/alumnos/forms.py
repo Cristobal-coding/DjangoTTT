@@ -19,7 +19,7 @@ class AlumnosRegisterForm(AlumnosPathern):
 
     def __init__(self, *args, **kwargs):
         super(AlumnosRegisterForm, self).__init__(*args, **kwargs)
-        self.fields['rut'].required = False
+        # self.fields['rut'].required = False
         # self.fields['nombre'].required = False
         # self.fields['apellido_paterno'].required = False
         # self.fields['apellido_materno'].required = False
@@ -35,15 +35,16 @@ class AlumnosRegisterForm(AlumnosPathern):
 
     class Meta:
         model=Alumno
-        fields= ('__all__')
+        fields= ('nombre','apellido_paterno','apellido_materno','fecha_nacimiento','rut_apoderado','sexo',
+        'telefono','direccion', 'estado')
         widgets = {
-            'rut': forms.TextInput(
-                attrs={
-                    'class': 'form-control rounded-pill my-2 fw-bold',
-                    'placeholder': 'Sin puntos y con guión',
+            # 'rut': forms.TextInput(
+            #     attrs={
+            #         'class': 'form-control rounded-pill my-2 fw-bold',
+            #         'placeholder': 'Sin puntos y con guión',
                 
-                },
-            ),
+            #     },
+            # ),
             'nombre': forms.TextInput(
                 attrs={
                     'class': 'form-control rounded-pill my-2 fw-bold',          
@@ -97,14 +98,14 @@ class AlumnosRegisterForm(AlumnosPathern):
 class ApoderadosRegisterForm(AlumnosPathern):
     class Meta:
         model=Apoderado
-        fields= ('__all__')
+        fields= ('nombre_apoderado','apellido_paterno','apellido_materno','telefono_apoderado','correo')
         widgets = {
-            'rut': forms.TextInput(
-                attrs={
-                    'class': 'form-control rounded-pill my-2 fw-bold',
-                    'placeholder': 'Sin puntos y con guión'
-                }
-            ),
+            # 'rut': forms.TextInput(
+            #     attrs={
+            #         'class': 'form-control rounded-pill my-2 fw-bold',
+            #         'placeholder': 'Sin puntos y con guión'
+            #     }
+            # ),
             'nombre_apoderado': forms.TextInput(
                 attrs={
                     'class': 'form-control rounded-pill my-2 fw-bold'

@@ -80,19 +80,7 @@
  </script>
 {% endblock 'js-select2' %}
     
-{% if messages %}
-    {% for m in messages %}
-    <script>
-        Swal.fire({
-            'timer':'2000',
-            title: 'Operación Exitosa',
-            text: '{{m}}',
-            icon: 'success',
-            showConfirmButton: false,
-          })
-    </script>
-    {% endfor %}
-{% endif %} 
+ 
 {% endblock 'content' %}
     
 

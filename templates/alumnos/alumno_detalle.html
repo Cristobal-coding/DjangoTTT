@@ -1,0 +1,104 @@
+{% extends '../layouts/master.html' %}
+{% load static %}
+{% load formats %}
+
+
+{% block 'content' %}
+<div class="row mx-0 h-100 w-100">
+    <div class="col-8 h-100 p-2">
+        <div class="card w-100" style="height: 30%;">
+            <div class="row mx-0 w-100 h-100">
+                <div class="col-2 py-2 text-center" style="padding-right: 0;">
+                    <img src="{% static 'imgs/user.png' %}" alt="" class="img-fluid" style="width:9rem;">
+                    <a class="btn btn-primary py-1 my-2 fw-bold" href="{% url 'alumnos_app:actualizar' alumno.rut %}">Editar Alumno</a>
+                </div>
+                <div class="col-10 py-2">
+                    <h4 class="fw-bold my-0">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</h4>
+                    <small class="text-warning fw-bold">+56 9 {{alumno.telefono}}</small>
+                    <h6 class="text-muted my-2"><i class="fas fa-map-marker-alt text-muted mx-1"></i>{{alumno.direccion}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 d-flex" style="height: 10%;padding-top:15px">
+            <div class="card w-25 h-100">
+                <div class="card-body py-1 d-flex flex-column align-items-center justify-content-center">
+                    <h6 class="fw-bold my-0">Datos Personales</h6>
+                </div>
+            </div>
+            <!-- <div class="w-25 h-100">
+                <div class="card-body h-100 py-1 d-flex flex-column align-items-center justify-content-center">
+                    <h6 class="my-0">Datos Personales</h6>
+                </div>
+            </div> -->
+            <div class="h-100 w-75">
+                <div class="card-body  h-100 py-1 d-flex flex-column align-items-end justify-content-center">
+                    <small>Estado: 
+                        
+                        {% if alumno.estado == '0' %}
+                        <span class="badge bg-success">{{alumno.get_estado_display}}</span>
+                        {% elif alumno.estado == '1' %}
+                        <span class="badge bg-danger">{{alumno.get_estado_display}}</span>
+                        {% else %}
+                        <span class="badge bg-warning">{{alumno.get_estado_display}}</span>
+                        {% endif %}
+                            
+                    </small>
+                </div>
+            </div>
+            
+
+        </div>
+        <div class="col-12 " style="height: 60%;">
+            <div class="card h-100 w-100">
+                <div class="card-body">
+                    <ul class="list-group list-group-horizontal w-100">
+                        <li class="list-group-item w-25 text-end">Rut</li>
+                        <li class="list-group-item w-75 fw-light">{{alumno.rut}}</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal w-100">
+                        <li class="list-group-item w-25 text-end">Apoderado</li>
+                        <li class="list-group-item w-75 fw-light">{{alumno.rut_apoderado}}</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal w-100">
+                        <li class="list-group-item w-25 text-end">Fecha de nacimiento</li>
+                        <li class="list-group-item w-75 fw-light">{{alumno.fecha_nacimiento}}</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal w-100">
+                        {% date_to_age alumno.fecha_nacimiento as edad%}
+                        <li class="list-group-item w-25 text-end">Edad</li>
+                        <li class="list-group-item w-75 fw-light">{{edad}} Años</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal w-100">
+                        <li class="list-group-item w-25 text-end">Curso Actual</li>
+                        <li class="list-group-item w-75 fw-light">{{alumno.get_current_curso}}</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal w-100">
+                        <li class="list-group-item w-25 text-end">Género</li>
+                        <li class="list-group-item w-75 fw-light">{{alumno.get_sexo_display}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 h-100 p-2 bg-secondary">
+        <h2>Detalle alumno</h2>
+        <h2>{{alumno.rut}}</h2>
+    </div>
+</div>
+{% endblock 'content' %}
+  
+{% block 'js-select2' %}
+{% if messages %}
+    {% for m in messages %}
+    <script>
+        Swal.fire({
+            'timer':'2000',
+            title: 'Operación Exitosa',
+            text: '{{m}}',
+            icon: 'success',
+            showConfirmButton: false,
+          })
+    </script>
+    {% endfor %}
+{% endif %}
+{% endblock 'js-select2' %}

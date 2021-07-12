@@ -70,7 +70,7 @@
                                             <label for="">Apellido Materno:</label>
                                             <input type="text" name="materno" value="{{prof.apellido_materno}}" class="form-control rounded-pill">
                                             <label for="">Asignatura que imparte:</label>
-                                            <select name="asignatura" id="asignaturas" class="form-select edit_prof">
+                                            <select name="asignatura"  class="form-select">
                                                 <option value="">---------</option>
                                                 
                                                 {% for asign in asignaturas  %}
@@ -147,6 +147,11 @@
             allowClear: true,
             
         });
+       
+    });
+ </script> 
+ <script>
+    $(document).ready(function() {
         $('body').on('shown.bs.modal', '.modal', function() {
             $(this).find('select').each(function() {
               var dropdownParent = $(document.body);
@@ -159,8 +164,10 @@
               });
             });
           });
+       
     });
  </script> 
+
 
  {% if messages %}
    {% for m in messages %}  

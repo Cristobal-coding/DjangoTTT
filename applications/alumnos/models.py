@@ -31,7 +31,7 @@ class Alumno(models.Model):
     ESTADO_CHOICES=(
         ('0','Regular'),
         ('1','Abandonó'),
-        ('2','Finalizado')
+        ('2','Graduado')
     )
     
     rut =models.CharField('Rut',max_length=13,unique=True,primary_key=True)

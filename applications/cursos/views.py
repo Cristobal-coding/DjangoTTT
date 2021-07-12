@@ -22,7 +22,7 @@ class CursosHome(LoginRequiredMixin,TemplateView):
             context['current_año_new'] = int(current_año)+1
             context['current_semestre'] = int(current_semestre)
         return context
-class CursosDetalle(DetailView):
+class CursosDetalle(LoginRequiredMixin,DetailView):
     template_name = 'cursos/curso.html'
     model = Curso
     def get_context_data(self, **kwargs):
