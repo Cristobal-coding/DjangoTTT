@@ -42,6 +42,18 @@ class CursoManager(models.Manager):
         ).aggregate(Max('cod_fecha__semestres'))['cod_fecha__semestres__max']
        
         return current_año, current_semestre
+    
+    def get_curso_with_fecha(self, year, semestre, rut):
+        cursos =  self.filter(
+            Q(cod_fecha__year =year ) & Q(cod_fecha__semestres =semestre )
+        )
+
+        for c in cursos:
+            for alumno in c.alumnos.all():
+                alumno.rut == rut
+                curso = c
+        return curso
+
     # def prove_Asign(self):
     #     result= self.all()
     #     for i in result:

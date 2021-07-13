@@ -8,6 +8,18 @@
     font-family: 'KoHo', sans-serif;
     font-weight: bold;
 }
+
+.mi-scrol::-webkit-scrollbar {
+    width: 5px;
+}
+.mi-scrol::-webkit-scrollbar-thumb {
+/* background:linear-gradient( #ff913d,#ffe014); */
+    background: #594f8d;
+    border-radius: 8px;
+    border-right: 1px solid rgba(244, 124, 253, 0.5);
+    box-shadow: #594f8d;
+}
+
 .hover-ico{
     font-size: 1.5rem !important;
     transition: 0.2s;

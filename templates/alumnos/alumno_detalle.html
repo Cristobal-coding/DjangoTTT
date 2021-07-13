@@ -3,6 +3,11 @@
 {% load formats %}
 
 
+{% block 'titulo' %}
+Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}
+{% endblock 'titulo' %}
+    
+
 {% block 'content' %}
 <div class="row mx-0 h-100 w-100">
     <div class="col-8 h-100 p-2">
@@ -70,7 +75,16 @@
                     </ul>
                     <ul class="list-group list-group-horizontal w-100">
                         <li class="list-group-item w-25 text-end">Curso Actual</li>
-                        <li class="list-group-item w-75 fw-light">{{alumno.get_current_curso}}</li>
+                        {% if alumno.get_current_curso == 'Graduado' %}
+                        <li class="list-group-item w-75 fw-bold text-warning">{{alumno.get_current_curso}}<i class="fas fa-diploma mx-1"></i></li>
+                        {% elif alumno.get_current_curso == 'Sin Curso' %}
+                        <li class="list-group-item w-75 fw-bold text-danger">{{alumno.get_current_curso}}<i class="fas fa-exclamation-circle mx-1"></i></li>
+                        {% elif alumno.get_current_curso == 'No Cursando' %}
+                        <li class="list-group-item w-75 fw-bold text-danger">{{alumno.get_current_curso}}</li>
+                        {% else %}
+                        <li class="list-group-item w-75 fw-bold text-success">{{alumno.get_current_curso}}</li>
+                        {% endif %}
+                        
                     </ul>
                     <ul class="list-group list-group-horizontal w-100">
                         <li class="list-group-item w-25 text-end">Género</li>
@@ -80,9 +94,97 @@
             </div>
         </div>
     </div>
-    <div class="col-4 h-100 p-2 bg-secondary">
-        <h2>Detalle alumno</h2>
-        <h2>{{alumno.rut}}</h2>
+    <div class="col-4 h-100 p-2 ">
+        <div class="row mx-0 w-100 h-100">
+            <div class="col-12 px-0" style="height: 45%;">
+                <div class="card w-100 h-100 shadow">
+                   <div class="card-body" style="height: 17%;">
+                        <h5 class="fw-bold text-decoration-underline d-inline">Rendimiento académico</h5>  
+                        <i class="fas fa-books mx-1 fs-5 text-warning"></i>
+                   </div>
+                   <div class="overflow-auto px-1 mi-scrol" style="height: 83%">
+                        <ul class="list-group list-group-flush">
+                            
+                            {% for cert in certificados  %}
+                            <li class="list-group-item py-1">
+                                Certificado de notas {{cert.0}} - {{cert.1}}°Semestre 
+                                <a href="{% url 'alumnos_app:certificado' alumno.rut cert.0 cert.1 %}"><i class="far fa-eye text-warning mx-1 fs-5"></i></a>
+                            </li>                            
+                            {% endfor %}
+                                
+                        </ul>
+                   </div>
+                </div>
+            </div>
+            <div class="col-12 px-0" style="height: 53%;margin-top:10px;">
+                <div class="card w-100 h-100 shadow">
+                   <div class="card-body" style="height: 17%;">
+                        <h5 class="fw-bold text-decoration-underline d-inline">Antecedentes academicos</h5>
+                        <i class="far fa-history fs-5 text-warning"></i>
+                    </div>
+                    <div class="px-1 overflow-auto mi-scrol" style="height:83%">
+                        <table class="table table-sm">
+                            <thead class="table-dark">
+                                <tr>
+                                    <td>#</td>
+                                    <td>Antecedente</td>
+                                    <td>Fecha</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>REP</td>
+                                    <td>Repitente</td>
+                                    <td>22/01/2000</td>
+                                </tr>
+                                <tr>
+                                    <td>REP</td>
+                                    <td>Repitente</td>
+                                    <td>22/01/2000</td>
+                                </tr>
+                                <tr>
+                                    <td>REP</td>
+                                    <td>Repitente</td>
+                                    <td>22/01/2000</td>
+                                </tr>
+                                <tr>
+                                    <td>REP</td>
+                                    <td>Repitente</td>
+                                    <td>22/01/2000</td>
+                                </tr>
+                                <tr>
+                                    <td>REP</td>
+                                    <td>Repitente</td>
+                                    <td>22/01/2000</td>
+                                </tr>
+                                <tr>
+                                    <td>REP</td>
+                                    <td>Repitente</td>
+                                    <td>22/01/2000</td>
+                                </tr>
+                                <tr>
+                                    <td>REP</td>
+                                    <td>Repitente</td>
+                                    <td>22/01/2000</td>
+                                </tr>
+                                <tr>
+                                    <td>REP</td>
+                                    <td>Repitente</td>
+                                    <td>22/01/2000</td>
+                                </tr>
+                                <tr>
+                                    <td>REP</td>
+                                    <td>Repitente</td>
+                                    <td>22/01/2000</td>
+                                </tr>
+    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
 {% endblock 'content' %}
