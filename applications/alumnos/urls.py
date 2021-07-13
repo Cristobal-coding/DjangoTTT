@@ -12,5 +12,6 @@ urlpatterns = [
     path('alumnos/apoderados/register/', views.CreateApoderado.as_view(), name='addApoderado'),
     path('alumnos/apoderados/edit/<pk>/', views.ApoderadoEdit.as_view(), name='editApoderado'),
     path('alumnos/delete/<pk>', views.delete_alumno, name='eliminar'),
-    path('alumnos/informacion/<pk>', views.AlumnoDetalle.as_view(), name='detailAlumn'),
+    path('alumnos/informacion/<pk>/', views.AlumnoDetalle.as_view(), name='detailAlumn'),
+    path('alumnos/certificados/<pk>/<year>/<semestre>', views.Certificado.as_view(), name='certificado'),
 ]

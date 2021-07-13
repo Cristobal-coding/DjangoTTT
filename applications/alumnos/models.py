@@ -69,6 +69,10 @@ class Alumno(models.Model):
                     nombre=c.curso.nombre
         if cursando :
             return nombre
+        elif self.estado == '0':
+            return 'Sin Curso'
+        elif self.estado == '2':
+            return 'Graduado'
         else:
             return 'No Cursando'
         

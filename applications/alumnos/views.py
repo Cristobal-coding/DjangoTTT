@@ -6,6 +6,7 @@ from django.contrib import messages
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
 from applications.alumnos.models import Alumno, Apoderado
+from applications.cursos.models import Curso
 #local
 from .forms import AlumnosRegisterForm, ApoderadosRegisterForm
 
@@ -49,11 +50,25 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
 class AlumnoDetalle(LoginRequiredMixin,DetailView):
     template_name = 'alumnos/alumno_detalle.html'
     model = Alumno
-    # def get_context_data(self, **kwargs):
-    #     context = super(AlumnoDetalle, self).get_context_data(**kwargs)
-    #     context['alumnos'] =Alumno.objects.get_alumno_sin_curso()
-    #     context['profs'] =Profesor.objects.all()
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super(AlumnoDetalle, self).get_context_data(**kwargs)
+        context['certificados'] =Alumno.objects.get_certificados(rut=self.kwargs['pk'])
+        return context
+
+class Certificado(LoginRequiredMixin,DetailView):
+    template_name = 'alumnos/certificado.html'
+    model = Alumno
+    def get_context_data(self, **kwargs):
+        context = super(Certificado, self).get_context_data(**kwargs)
+        context['datos'] =Alumno.objects.get_certificados(rut=self.kwargs['pk'])
+        context['semestre'] =self.kwargs['semestre']
+        context['año'] =self.kwargs['year']
+        context['curso'] =Curso.objects.get_curso_with_fecha(
+            year=self.kwargs['year'],
+            semestre=self.kwargs['semestre'],
+            rut=self.kwargs['pk']
+        )
+        return context
             
 class AlumnosRegister(LoginRequiredMixin,FormView):
     model = Alumno

@@ -53,6 +53,33 @@ class AlumnoManager(models.Manager):
                     if not sin_curso:
                         result.append(a)
         return result
+
+    def get_certificados(self, rut):
+        alumno = self.get(rut = rut)
+        parciales = alumno.parciales.all()
+        fechas=[]
+        for p in parciales:
+            fecha = []
+            año = str(p.asignatura.curso.cod_fecha.year)
+            semestre = str(p.asignatura.curso.cod_fecha.semestres)
+            exists = False
+            if len(fechas) == 0:
+                fecha.append(año)
+                fecha.append(semestre)
+                fechas.append(fecha)
+            else:
+                print(fechas)
+                for f in fechas:
+                    if año in f[0] and semestre in f[1]:
+                        exists =True
+                if not exists:
+                    fecha.append(año)
+                    fecha.append(semestre)
+                    fechas.append(fecha)
+        return fechas
+    # from applications.alumnos.models import Alumno
+    # alumno = Alumno.objects.get_certificados(rut = '16671047-2')
+    # for p in alumno.parciales.all():
             
 class ApoderadoManager(models.Manager):
     def buscar_apoderado(self, nombre):

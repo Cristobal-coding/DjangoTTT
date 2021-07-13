@@ -73,20 +73,38 @@ class Curso(models.Model):
     plan_estudio=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE,related_name='cursos')
     alumnos = models.ManyToManyField(Alumno,through='Curso_Alumno', related_name='cursos')
     asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Curso')
-
+# from applications.alumnos.models import Alumno
+# alumno = Alumno.objects.get(rut = '16671047-2')
+# for p in alumno.parciales.all():
 class Asignatura_Curso(models.Model):
     
     class Meta:
         db_table= 'Asignatura_Curso'
         unique_together = (('curso', 'asignatura'),)
     def __str__(self):
-        return self.curso.nombre + ' '+self.asignatura.cod_asign
+        return  str(self.curso.numero) + '..' + self.asignatura.nombre + ' -- '+ str(self.curso.cod_fecha.year) + ' ' + str(self.curso.cod_fecha.semestres)
     #Clave primaria de m2m
     curso=models.ForeignKey(Curso,on_delete=models.CASCADE)
     asignatura=models.ForeignKey(Asignatura,on_delete=models.CASCADE)
 
     #foranea hacia profesores
     id_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='profesor', null=True, blank=True)
+
+class Parciales(models.Model):
+    
+    fecha = models.DateField('Fecha del parcial')
+    calificacion = models.FloatField()
+    alumno=models.ForeignKey(Alumno,on_delete=models.CASCADE,related_name='parciales')
+    asignatura=models.ForeignKey(Asignatura_Curso,on_delete=models.CASCADE,related_name='parciales')
+    
+
+    class Meta:
+        verbose_name = 'Parcial'
+        verbose_name_plural = 'Parciales'
+        db_table= 'Paraciales'
+        ordering = ['-id']
+    def __str__(self):
+        return str(self.id)+' -  ' +str(self.calificacion)+ '( ' + str(self.asignatura.asignatura.nombre) + ')'
 
 class Curso_Alumno(models.Model):
 

@@ -1,0 +1,16 @@
+
+{% extends '../layouts/master.html' %}
+{% load static %}
+
+
+{% block 'titulo' %}
+Certificados de notas {{año}} {{semestre}}°Semestre
+{% endblock 'titulo' %}
+
+
+{% block 'content' %}
+<h5>{{alumno.nombre}}</h5>    
+<h1>{{curso.nombre}}</h1>
+{% endblock 'content' %}
+    
+    
