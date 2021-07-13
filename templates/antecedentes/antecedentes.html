@@ -2,60 +2,62 @@
 
 {% block 'content' %}
 <div class="row mx-0 h-100 w-100 my-0 py-0"> 
-    <div class="col-12 h-100 w-100 py-0 my-0 px-0 mx-0" >
+    <div class="col-12 h-100  py-0 my-0 px-0 mx-0" >
         <div class="row mx-0 w-100 " style="height: 97%;">     
-            <div class="col-3 h-100 py-3 shadow-lg" style="  overflow:scroll;direction: rtl;">   
+            <div class="col-3 h-100 py-3 shadow-lg" style="  overflow:auto;direction: rtl;">   
                 {% for a in antecedentes  %}
                 <div class="col-12 shadow-lg" >
                     <h2>{{a.nombre_antecedente}}</h2>
                 </div>
-
-                {% endfor %}
-                
-                
+                {% endfor %}               
             </div>
-            
-            <div class="col-9 px-0  h-100" style="background-color: darkgreen;">
+            <div class="col-9 px-0  h-100 shadow-lg rounded-lg" style="background-color: rgb(209, 209, 209);">
                 <div class="row mx-0 w-100 h-100 ">   
                     <div class="col-12 h-25">
                         <form method="GET" class="w-100 d-flex"> 
                             <div class="row mx-0 w-100">
                                 <div class="col-12 px-0">
                                     <div class="row mx-0 w-100">
-                                        <div class="col-12 py-2">
+                                        <div class="col-8 py-2">
                                             <label for="" class="form-label fw-bold">Nombre de antecedente:</label>
                                             <input type="text" class="form-control rounded-pill form-control-sm" id="" name="" value="" placeholder="&#xf00e; Nombre del antecedente"  style="font-family:KoHo, FontAwesome">
                                         </div>
                                     </div>
-                                    <div class="col-12 py-5 pl-5"style="">
+                                    <div class="col-12 py-5  "style="">
                                         <button type="submit" class="btn btn-primary rounded-pill w-50"><i class="fas fa-sort mx-1"></i>Agregar</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div class="col-12 px-5 py-5  h-75" style="background-color: pink;">
+                    <div class="col-12 px-5 py-5  h-75 shadow-lg rounded-lg"  style="background-color: rgb(255, 255, 255);">
+                        <H2>Antecedentes mas repetidos</H2>
                         <table class="table caption-top table-hover table-sm ">   
                             <thead class="table-dark" >      
                                 <tr>
                                    <th>Antecedente</th>
                                    <th>Repeticiones</th>
                                  </tr>    
-                            </thead>
-                            <tbody>            
-                                <tr>
-                                    <td>droga</td>
-                                    <td>12</td>
-                                </tr>
-                                <tr>
-                                    <td>Fuma</td>
-                                    <td>10</td>
-                                </tr> 
-                                <tr>
-                                    <td>Toma</td>
-                                    <td>1</td>
-                                </tr>                          
+                            </thead>                        
+                            <tbody>  
+                                {% if antecedentes.count < 1  %}
+                                    <td>Debe ingresar antecedentes y asignarlos a alumnos</td>
+                                 {% else %}          
+                                    <tr>
+                                        <td>droga</td>
+                                        <td>12</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fuma</td>
+                                        <td>10</td>
+                                    </tr> 
+                                    <tr>
+                                        <td>Toma</td>
+                                        <td>1</td>
+                                    </tr> 
+                                {% endif %}                         
                            </tbody>
+                          
                         </table>
                 
                 
