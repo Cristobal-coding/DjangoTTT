@@ -5,5 +5,5 @@ app_name = 'antecedentes_app'
 
 urlpatterns = [
     path('antecedentes/', views.AntecedentesView.as_view(), name='inicio'),
-
+    path('antecedentes/create/', views.antecedente_create, name='create'),
 ]

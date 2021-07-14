@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.http.response import HttpResponseRedirect
 from django.urls.base import reverse, reverse_lazy
 from applications.antecedentes.models import Antecedente
@@ -17,9 +18,15 @@ class AntecedentesView(LoginRequiredMixin,ListView):
 
 def antecedente_create(request):
     if request.method == 'POST':
-
-        Antecedente.objects.create(
-            nombre_antecedente=request.POST['nombre'],
-        )
-        messages.success(request,'!!Antecedente añadido con exito!!')
+        nombreAdd=request.POST['nombre']
+        if Antecedente.objects.filter(nombre_antecedente__iexact=nombreAdd):            
+             messages.error(request,'Ya existe ese nombre')
+        else:
+            Antecedente.objects.create(
+                nombre_antecedente=(request.POST['nombre']).upper(),
+            )
+            messages.success(request,'!!Antecedente añadido con exito!!')
+       
+        # print("request: ", request.POST)
+        
     return HttpResponseRedirect(reverse('antecedentes_app:inicio'))
