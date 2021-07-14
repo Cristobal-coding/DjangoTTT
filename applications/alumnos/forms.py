@@ -1,7 +1,33 @@
 from django import forms
 from applications.errors import DivErrorList
 from .models import Alumno, Apoderado
+from applications.cursos.models import Parciales, Curso
 from applications.validators import validar_rut
+from django.forms import ModelChoiceField, widgets
+
+
+class CertificadoForm(forms.Form):
+    coeficientes = [
+        ['1', 'Coficiente 1'],
+        ['2', 'Coficiente 2'],
+    ]
+
+    # def __init__(self, *args, **kwargs):
+    #     curso = Curso.objects.get_curso_with_fecha(
+    #         year=kwargs['initial']['year'],
+    #         semestre=kwargs['initial']['semestre'],
+    #         rut=kwargs['initial']['pk']
+    #     )
+    #     super(CertificadoForm, self).__init__(*args, **kwargs)
+    #     self.fields['asignatura'] =  ModelChoiceField(queryset=curso.asignatura_curso_set.all(), widget=forms.Select(attrs={'class':'form-select'}))
+
+    # asignatura = forms.MultipleChoiceField()
+    nota = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    coeficiente = forms.CharField(widget=forms.Select(attrs={'class':'form-select'}, choices=coeficientes))
+    fecha = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type':'date'}, format='%Y-%m-%d'))
+
+
+
 
 class AlumnosPathern(forms.ModelForm):
     def __init__(self, *args, **kwargs):

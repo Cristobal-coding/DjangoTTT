@@ -6,9 +6,10 @@ from django.contrib import messages
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
 from applications.alumnos.models import Alumno, Apoderado
-from applications.cursos.models import Curso
+from applications.cursos.models import Curso, Parciales, Asignatura_Curso
+from django.forms import formset_factory
 #local
-from .forms import AlumnosRegisterForm, ApoderadosRegisterForm
+from .forms import AlumnosRegisterForm, ApoderadosRegisterForm, CertificadoForm
 
 class AlumnosHome(LoginRequiredMixin,TemplateView):
     template_name = 'alumnos/inicio.html'
@@ -55,20 +56,64 @@ class AlumnoDetalle(LoginRequiredMixin,DetailView):
         context['certificados'] =Alumno.objects.get_certificados(rut=self.kwargs['pk'])
         return context
 
-class Certificado(LoginRequiredMixin,DetailView):
+class Certificado(LoginRequiredMixin,FormView):
     template_name = 'alumnos/certificado.html'
-    model = Alumno
+    form_class = formset_factory(CertificadoForm, extra=1, max_num=5) 
+    login_url = reverse_lazy('home_app:login')
+    success_url = '.'
+    
+    def form_valid(self, form):
+        nota_key = ''
+        coef_key = ''
+        key_asign = self.request.POST['asignatura']
+        key_alumno = self.request.POST['alumno']
+
+        for i in range(int(self.request.POST['form-TOTAL_FORMS'])):
+            nota_key = 'form-'+str(i)+'-nota'
+            coef_key = 'form-'+str(i)+'-coeficiente'
+            fecha_key = 'form-'+str(i)+'-fecha'
+            nota = self.request.POST[nota_key]
+            coef = self.request.POST[coef_key]
+            fecha = self.request.POST[fecha_key]
+            for coe in range(int(coef)):
+                Parciales.objects.create(
+                    fecha = fecha,
+                    calificacion = float(nota),
+                    alumno = Alumno.objects.get(rut = key_alumno),
+                    asignatura = Asignatura_Curso.objects.get(id = key_asign)
+                )
+
+        url = reverse('alumnos_app:certificado', 
+        kwargs={'pk': self.kwargs['pk'],
+        'year': self.kwargs['year'],
+        'semestre': self.kwargs['semestre']
+        }) 
+        return HttpResponseRedirect(url)
+
     def get_context_data(self, **kwargs):
-        context = super(Certificado, self).get_context_data(**kwargs)
-        context['datos'] =Alumno.objects.get_certificados(rut=self.kwargs['pk'])
+        context = super().get_context_data(**kwargs)
         context['semestre'] =self.kwargs['semestre']
         context['año'] =self.kwargs['year']
+        context['range'] =range(20)
+        context['alumno'] =Alumno.objects.get(rut= self.kwargs['pk'])
         context['curso'] =Curso.objects.get_curso_with_fecha(
             year=self.kwargs['year'],
             semestre=self.kwargs['semestre'],
             rut=self.kwargs['pk']
         )
         return context
+    # def get_form_kwargs(self):
+
+    #     kwargs = {
+    #         'initial': self.kwargs, #Lo unico que cambie de la herencia
+    #         'prefix': self.get_prefix(),
+    #     }
+    #     if self.request.method in ('POST', 'PUT'):
+    #         kwargs.update({
+    #             'data': self.request.POST,
+    #             'files': self.request.FILES,
+    #         })
+    #     return kwargs
             
 class AlumnosRegister(LoginRequiredMixin,FormView):
     model = Alumno

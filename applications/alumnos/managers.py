@@ -68,7 +68,6 @@ class AlumnoManager(models.Manager):
                 fecha.append(semestre)
                 fechas.append(fecha)
             else:
-                print(fechas)
                 for f in fechas:
                     if año in f[0] and semestre in f[1]:
                         exists =True

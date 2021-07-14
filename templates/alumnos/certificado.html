@@ -1,7 +1,7 @@
 
 {% extends '../layouts/master.html' %}
 {% load static %}
-
+{% load index %}
 
 {% block 'titulo' %}
 Certificados de notas {{año}} {{semestre}}°Semestre
@@ -9,8 +9,225 @@ Certificados de notas {{año}} {{semestre}}°Semestre
 
 
 {% block 'content' %}
-<h5>{{alumno.nombre}}</h5>    
-<h1>{{curso.nombre}}</h1>
+<div class="row mx-0 h-100 w-100">
+    <div class="col-12 py-3 h-100 d-flex flex-column align-items-center justify-content-start">
+        <h4 class="fw-bold">Informe de Notas Parciales</h4>
+        <div class="row mx-0 w-75">
+            <div class="col-2">
+                <button class="btn btn-primary py-0" data-bs-toggle="modal" data-bs-target="#addnotas">
+                    Añadir Notas
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="addnotas" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Añadir notas a una Asignatura</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="padding-bottom: 10px;">
+                                <form  method="POST">
+                                    {% csrf_token %}
+                                    <div class="row w-100 mx-0  my-0 py-0">
+                                        <div class="col-6 lh-1 px-0 d-flex flex-column align-items-start justify-content-end">
+                                            <label for="id_asignatura" style="margin-bottom: 3px !important;">Asignatura:</label>
+                                        </div>
+                                        <div class="col-6 text-end px-0">
+                                            <button onclick="deleteInput()" type="button" class="btn btn-danger d-inline lh-1 px-2 py-1 my-1">
+                                                Nota<i class="fas fa-minus mx-1"></i>
+                                            </button>
+                                            <button onclick="addInput()" type="button" class="btn btn-primary d-inline lh-1 px-2 py-1 my-1">
+                                                Nota<i class="far fa-plus mx-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" value="{{alumno.rut}}" name="alumno">
+                                    
+                                    <select name="asignatura" id="id_asignatura" class="form-select">
+                                        <option value="">-------</option>
+                                        
+                                        {% for asign in curso.asignatura_curso_set.all  %}
+                                        <option value="{{asign.id}}">{{asign.asignatura.nombre}}</option>
+                                            
+                                        {% endfor %}
+                                            
+                                    </select>
+                                    <label for="" id="label" style="margin-bottom: 1px !important;"></label>
+                                    <div class="row mx-0 w-100" id='plantilla'>
+                                        <div class="col-4" style="padding-left: 0;" > 
+                                        </div>
+                                        <div class="col-4" >
+                                        </div>
+                                        <div class="col-4" style="padding-right: 0;">
+                                        </div>
+                                    </div>
+                                    {{form.management_form}}
+                                    <div id="formNota" class="w-100">
+                                        {% for f in form %}
+                                            <div class="row mx-0 w-100">
+                                                <div class="col-4" style="padding-left: 0;"> 
+                                                    {{f.nota.label}}:
+                                                    {{f.nota}}
+                                                </div>
+                                                <div class="col-4">
+                                                    {{f.coeficiente.label}}:
+                                                    {{f.coeficiente}}
+                                                </div>
+                                                <div class="col-4" style="padding-right: 0;">
+                                                    {{f.fecha.label}}:
+                                                    {{f.fecha}}
+                                                </div>
+                                            </div>   
+                                        {% endfor %}
+
+                                    </div>
+                                        
+                                    <div class="modal-footer py-0" style="margin-top: 30px;">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8 text-center">
+                {% if semestre == 1 %}
+                <h5>Primer semestre del {{año}}</h5>
+                {% else %}
+                <h5>Segundo semestre del {{año}}</h5>
+                {% endif %}
+            </div>
+            <div class="col-2 text-end">
+                <i class="fas fa-file-pdf fs-3 text-danger"></i>
+            </div>
+        </div>
+       
+            
+        <table class="table table-sm table-bordered w-75">
+            <thead>
+                <tr>
+                    <td colspan="1" class="text-center lh-1">Subsector del Aprendizaje <br>
+                    (Formación General)
+                    </td>
+                    <td colspan="20" class="text-center ">Notas</td>
+                    <td colspan="1">{{semestre}}°SE</td>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for asign in curso.asignatura_curso_set.all %}
+                <tr>
+                    <td class="lh-sm" style="width:45.5% !important;">{{asign.asignatura.nombre}}</td>
+                    
+                    {% for n in range  %}
+                    
+                    
+                    {% if asign.parciales.all|index:n >= 4 %}
+                    <td class="lh-sm fs-6 text-warning" style="width:2.5% !important;">{{ asign.parciales.all|index:n }}</td>
+                    {% else %}
+                    <td class="lh-sm fs-6 text-danger" style="width:2.5% !important;">{{ asign.parciales.all|index:n }}</td>
+                    {% endif %}
+                        
+                    {% endfor %}
+                        
+                    <td class="lh-sm fs-6" style="width:2.5% !important;">6.5</td>
+                </tr>          
+                {% endfor %}
+                    
+                <tr>
+                    <td class="text-end" colspan="21">PROMEDIO</td>
+                    <td >6.7</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row mx-0 w-75">
+            <div class="col-6">
+                <h5 class="fw-bold">Curso: <span class="fw-light">{{curso.nombre}}</span></h5>
+            </div>
+            <div class="col-4">
+                <h5 class="fw-bold">Alumno: <span class="fw-light">{{alumno.nombre}} 
+                    {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</span></h5>
+            </div>
+            <div class="col-2 text-end">
+                <a href="{% url 'alumnos_app:detailAlumn' alumno.rut %}" class="btn btn-primary px-2 py-1">
+                    <i class="far fa-backward mx-1"></i> Volver
+                </a>
+            </div>
+        </div>
+        
+    </div>
+</div>
 {% endblock 'content' %}
     
-    
+
+{% block 'js-select2' %}
+<script>
+    function addInput() {
+        var forms = document.querySelector('#id_form-TOTAL_FORMS')
+        var max = document.querySelector('#id_form-MAX_NUM_FORMS')
+        if (forms.value < max.value){
+            var plantilla = document.querySelector('#plantilla').cloneNode( true );
+            plantilla.removeAttribute('id')
+            uno =plantilla.childNodes[1]
+            dos =plantilla.childNodes[3]
+            tres =plantilla.childNodes[5]
+
+
+            var newinput = document.querySelector('#id_form-0-nota').cloneNode( true );
+            newinput.name = 'form-'+forms.value+'-nota';
+            newinput.id = 'id_form-'+forms.value+'-nota';
+            newinput.value= '';
+
+            var newselect= document.querySelector('#id_form-0-coeficiente').cloneNode( true );
+            newselect.name = 'form-'+forms.value+'-coeficiente';
+            newselect.id = 'id_form-'+forms.value+'-coeficiente';
+
+            var newfecha= document.querySelector('#id_form-0-fecha').cloneNode( true );
+            newfecha.name = 'form-'+forms.value+'-fecha';
+            newfecha.id = 'id_form-'+forms.value+'-fecha';
+            newfecha.value= '';
+
+            fecha = document.querySelector('#label').cloneNode( true );
+            nota  = document.querySelector('#label').cloneNode( true );
+            coef = document.querySelector('#label').cloneNode( true );
+
+            coef.removeAttribute('id');
+            nota.removeAttribute('id');
+            fecha.removeAttribute('id');
+            
+            fecha.innerHTML = "Fecha:";
+            nota.innerHTML = "Nota:";
+            coef.innerHTML = "Coeficiente:";
+            plantilla.id = 'formulario'+forms.value;
+
+            uno.appendChild(nota)
+            uno.appendChild(newinput)
+
+            dos.appendChild(coef)
+            dos.appendChild(newselect)
+
+            tres.appendChild(fecha)
+            tres.appendChild(newfecha)
+
+            document.querySelector('#formNota').appendChild(plantilla);
+        
+            forms.value = parseInt(forms.value) + 1;
+        }
+        
+    }
+
+    function deleteInput() {
+        var forms = document.querySelector('#id_form-TOTAL_FORMS');
+        if (forms.value > 1){
+            forms.value = parseInt(forms.value) - 1;
+            //
+            removeContainer = '#formulario'+forms.value;
+            document.querySelector(removeContainer).remove();
+        }
+    }
+
+</script>
+{% endblock 'js-select2' %}
+       
