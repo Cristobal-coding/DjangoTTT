@@ -76,14 +76,61 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                     <ul class="list-group list-group-horizontal w-100">
                         <li class="list-group-item w-25 text-end">Curso Actual</li>
                         {% if alumno.get_current_curso == 'Graduado' %}
-                        <li class="list-group-item w-75 fw-bold text-warning">{{alumno.get_current_curso}}<i class="fas fa-diploma mx-1"></i></li>
+                        <li class="d-flex align-items-center list-group-item w-75 fw-bold text-warning">
+                            <div class="mx-0 w-75">
+                                {{alumno.get_current_curso}} 
+                                <i class="fas fa-diploma mx-1"></i>
+
+                            </div>
+                            <div class="mx-0 w-25 text-end">
+                                <a class="btn btn-success py-0 px-1 my-0 float-right" href="{% url 'cursos_app:detalleCurso' curso.curso.id_curso %}">
+                                    Ver el Curso<i class="far fa-forward mx-1"></i>
+                                </a>
+
+                            </div>
+                        </li>
                         {% elif alumno.get_current_curso == 'Sin Curso' %}
-                        <li class="list-group-item w-75 fw-bold text-danger">{{alumno.get_current_curso}}<i class="fas fa-exclamation-circle mx-1"></i></li>
+                        <li class="d-flex align-items-center list-group-item w-75 fw-bold text-danger">
+                            <div class="mx-0 w-75">
+                                {{alumno.get_current_curso}} 
+                                <i class="fas fa-exclamation-circle mx-1"></i>
+
+                            </div>
+                            <div class="mx-0 w-25 text-end">
+                                <a class="btn btn-success py-0 px-1 my-0 float-right" href="{% url 'cursos_app:detalleCurso' curso.curso.id_curso %}">
+                                    Ver el Curso<i class="far fa-forward mx-1"></i>
+                                </a>
+
+                            </div>
+                        </li>
                         {% elif alumno.get_current_curso == 'No Cursando' %}
-                        <li class="list-group-item w-75 fw-bold text-danger">{{alumno.get_current_curso}}</li>
+                        <li class="d-flex align-items-center list-group-item w-75 fw-bold text-danger">
+                            <div class="mx-0 w-75">
+                                {{alumno.get_current_curso}} 
+
+                            </div>
+                            <div class="mx-0 w-25 text-end">
+                                <a class="btn btn-success py-0 px-1 my-0 float-right" href="{% url 'cursos_app:detalleCurso' curso.curso.id_curso %}">
+                                    Ver el Curso<i class="far fa-forward mx-1"></i>
+                                </a>
+
+                            </div>
+                        </li>
                         {% else %}
-                        <li class="list-group-item w-75 fw-bold text-success">{{alumno.get_current_curso}}</li>
+                        <li class="d-flex align-items-center list-group-item w-75 fw-bold text-success">
+                            <div class="mx-0 w-75">
+                                {{alumno.get_current_curso}} 
+
+                            </div>
+                            <div class="mx-0 w-25 text-end">
+                                <a class="btn btn-success py-0 px-1 my-0 float-right" href="{% url 'cursos_app:detalleCurso' curso.curso.id_curso %}">
+                                    Ver el Curso<i class="far fa-forward mx-1"></i>
+                                </a>
+
+                            </div>
+                        </li>
                         {% endif %}
+                       
                         
                     </ul>
                     <ul class="list-group list-group-horizontal w-100">

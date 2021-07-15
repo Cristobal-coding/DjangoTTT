@@ -54,6 +54,11 @@ class AlumnoDetalle(LoginRequiredMixin,DetailView):
     def get_context_data(self, **kwargs):
         context = super(AlumnoDetalle, self).get_context_data(**kwargs)
         context['certificados'] =Alumno.objects.get_certificados(rut=self.kwargs['pk'])
+        alumno=Alumno.objects.get(rut=self.kwargs['pk'])
+        for curso in alumno.curso_alumno_set.all():
+            if curso.is_current:
+                current_curso = curso
+        context['curso'] =current_curso
         return context
 
 class Certificado(LoginRequiredMixin,FormView):
