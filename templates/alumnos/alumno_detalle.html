@@ -153,10 +153,13 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                         <ul class="list-group list-group-flush">
                             
                             {% for cert in certificados  %}
-                            <li class="list-group-item py-1">
+                            <a href="{% url 'alumnos_app:certificado' alumno.rut cert.0 cert.1 %}" class="list-group-item list-group-item-action py-1">
                                 Certificado de notas {{cert.0}} - {{cert.1}}°Semestre 
-                                <a href="{% url 'alumnos_app:certificado' alumno.rut cert.0 cert.1 %}"><i class="far fa-eye text-warning mx-1 fs-5"></i></a>
-                            </li>                            
+                                {% if cert|length == 3 %}
+                                <span class="text-warning"> {{cert.2}} <i class="fas fa-star-christmas"></i></span>
+                                {% endif %}
+                                    
+                            </a>                            
                             {% endfor %}
                                 
                         </ul>

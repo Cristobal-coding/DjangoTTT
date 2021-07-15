@@ -56,9 +56,7 @@ class AlumnoManager(models.Manager):
 
     def get_certificados(self, rut):
         alumno = self.get(rut = rut)
-        # parciales = alumno.parciales.all()
         fechas=[]
-        print('Cursos: ', alumno.curso_alumno_set.all())
         for pivot in alumno.curso_alumno_set.all():
             fecha=[]
             if len(fechas) ==0:
@@ -66,16 +64,14 @@ class AlumnoManager(models.Manager):
                 fecha.append(pivot.curso.cod_fecha.semestres)
                 fechas.append(fecha)
             else:
-                print('Fechas: ', fechas)
                 for f in fechas:
                     fecha.append(pivot.curso.cod_fecha.year)
                     fecha.append(pivot.curso.cod_fecha.semestres)
                     if f != fecha:
-                        print('hola')
-                        fecha.append(pivot.curso.cod_fecha.year)
-                        fecha.append(pivot.curso.cod_fecha.semestres)
                         fechas.append(fecha)
-        
+                        break
+        if len(fechas) > 0:
+            fechas[0].append('Actual')
         return fechas
     # from applications.alumnos.models import Alumno
     # alumno = Alumno.objects.get_certificados(rut = '16671047-2')

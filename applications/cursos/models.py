@@ -113,6 +113,7 @@ class Curso_Alumno(models.Model):
     class Meta:
         db_table= 'Curso_Alumno'
         unique_together = (('curso', 'alumno'),)
+        ordering=['-id']
     def __str__(self):
         return self.alumno.nombre + ' '+ self.curso.id_curso
     #Clave primaria de m2m
