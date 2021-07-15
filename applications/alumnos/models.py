@@ -1,6 +1,6 @@
 from applications.antecedentes.models import Antecedente
 from django.db import models
-
+from ckeditor.fields import RichTextField
 
 from .managers import AlumnoManager, ApoderadoManager
 
@@ -39,11 +39,12 @@ class Alumno(models.Model):
     apellido_paterno =models.CharField('Apellido paterno',max_length=25)
     apellido_materno =models.CharField('Apellido materno',max_length=25)
     fecha_nacimiento=models.DateField('Fecha de nacimiento',null=True,blank=True)
-    rut_apoderado=models.ForeignKey(Apoderado,on_delete=models.CASCADE,max_length=13,unique=False, related_name='alumnos')
     sexo=models.CharField('Sexo',max_length=1,choices=SEX_CHOICES)
     telefono=models.CharField('Telefono',max_length=8,null=True,blank=True)
     direccion=models.CharField('Direccion',max_length=50,null=True,blank=True)
     estado=models.CharField('estado',max_length=1,choices=ESTADO_CHOICES,blank=False)
+
+    rut_apoderado=models.ForeignKey(Apoderado,on_delete=models.CASCADE,max_length=13,unique=False, related_name='alumnos')
     antecedentes = models.ManyToManyField(Antecedente, through='Alumno_antecedente')
 
     objects = AlumnoManager()
@@ -97,7 +98,9 @@ class Alumno_antecedente(models.Model):
     #Clave primaria de m2m
     alumno=models.ForeignKey(Alumno,on_delete=models.CASCADE)
     antecedente=models.ForeignKey(Antecedente,on_delete=models.CASCADE)
-    fecha=models.DateField('Fecha',null=True,blank=True)
-    detalle=models.CharField(max_length=255,blank=True)
+    #atributos
+    fecha=models.DateField('Fecha')
+    detalle=RichTextField()
+    # detalle=models.CharField(max_length=255,blank=True)
 
   

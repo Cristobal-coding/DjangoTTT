@@ -5,11 +5,12 @@ from django.views.generic.edit import  FormView
 from django.contrib import messages
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
-from applications.alumnos.models import Alumno, Apoderado
+from applications.alumnos.models import Alumno, Apoderado, Alumno_antecedente
 from applications.cursos.models import Curso, Parciales, Asignatura_Curso
+from applications.antecedentes.models import Antecedente
 from django.forms import formset_factory
 #local
-from .forms import AlumnosRegisterForm, ApoderadosRegisterForm, CertificadoForm
+from .forms import AlumnosRegisterForm, ApoderadosRegisterForm, CertificadoForm, Alumno_AntecedenteForm
 
 class AlumnosHome(LoginRequiredMixin,TemplateView):
     template_name = 'alumnos/inicio.html'
@@ -54,6 +55,7 @@ class AlumnoDetalle(LoginRequiredMixin,DetailView):
     def get_context_data(self, **kwargs):
         context = super(AlumnoDetalle, self).get_context_data(**kwargs)
         context['certificados'] =Alumno.objects.get_certificados(rut=self.kwargs['pk'])
+        context['form'] =Alumno_AntecedenteForm()
         alumno=Alumno.objects.get(rut=self.kwargs['pk'])
         for curso in alumno.curso_alumno_set.all():
             if curso.is_current:
@@ -211,3 +213,15 @@ def delete_alumno(request, pk):
     query.delete()
     messages.success(request,'Alumno elminado Satisfactoriamente.')
     return HttpResponseRedirect(reverse('alumnos_app:filtrar'))
+
+def add_antecedente(request):
+    if request.method == 'POST':
+        alumno = Alumno.objects.get(rut = request.POST['alumno'])
+        antecedente = Antecedente.objects.get(id = request.POST['antecedente'])
+        Alumno_antecedente.objects.create(
+            alumno = alumno,
+            antecedente = antecedente,
+            detalle = request.POST['detalle'],
+            fecha = request.POST['fecha']
+        )
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])

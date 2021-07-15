@@ -1,10 +1,28 @@
 from django import forms
 from applications.errors import DivErrorList
-from .models import Alumno, Apoderado
+from .models import Alumno, Apoderado, Alumno_antecedente
 from applications.cursos.models import Parciales, Curso
 from applications.validators import validar_rut
 from django.forms import ModelChoiceField, widgets
 
+
+class Alumno_AntecedenteForm(forms.ModelForm):
+    class Meta:
+        model=Alumno_antecedente
+        fields= ('detalle', 'antecedente', 'fecha')
+        widgets={
+            'antecedente' : forms.Select(
+                attrs={
+                    'class' : 'form-select'
+                }
+            ),
+            'fecha' : forms.DateInput(
+                attrs={
+                    'class' : 'form-control',
+                    'type': 'date'
+                }
+            )
+        }
 
 class CertificadoForm(forms.Form):
     coeficientes = [

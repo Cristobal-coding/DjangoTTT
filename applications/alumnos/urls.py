@@ -14,4 +14,5 @@ urlpatterns = [
     path('alumnos/delete/<pk>', views.delete_alumno, name='eliminar'),
     path('alumnos/informacion/<pk>/', views.AlumnoDetalle.as_view(), name='detailAlumn'),
     path('alumnos/certificados/<pk>/<year>/<semestre>', views.Certificado.as_view(), name='certificado'),
+    path('alumnos/register/antecedente', views.add_antecedente, name='addAntecedente'),
 ]

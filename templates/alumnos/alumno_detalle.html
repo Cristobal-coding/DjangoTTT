@@ -168,9 +168,50 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
             </div>
             <div class="col-12 px-0" style="height: 53%;margin-top:10px;">
                 <div class="card w-100 h-100 shadow">
-                   <div class="card-body" style="height: 17%;">
-                        <h5 class="fw-bold text-decoration-underline d-inline">Antecedentes academicos</h5>
-                        <i class="far fa-history fs-5 text-warning"></i>
+                   <div class="card-body py-1 d-flex" style="height: 17%;">
+                       <div class="w-75 h-100 d-flex align-items-center">
+                           <h5 class="fw-bold text-decoration-underline d-inline">Antecedentes academicos</h5>
+                           <i class="far fa-history fs-5 text-warning mx-1"></i>
+                       </div>
+                       <div class="w-25 h-100 d-flex align-items-center">
+                           <button class="btn btn-primary px-2 py-0 align-self-right" data-bs-toggle="modal" data-bs-target="#addAntecedente">
+                               Añadir<i class="far fa-plus mx-1"></i>
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="addAntecedente" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" style="max-width: 880px !important;">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Registrar Antecedente al Alumno/a 
+                                                <span class="fw-bold">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</span>
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                        <form action="{% url 'alumnos_app:addAntecedente'%}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{alumno.rut}}" name="alumno">
+                                            {{form.media}}
+                                            {{form.fecha.label}}
+                                            {{form.fecha}}
+                                            {{form.antecedente.label}}
+                                            {{form.antecedente}}
+                                            {{form.detalle.label}} del asunto:
+                                            {{form.detalle}}
+                                            <div class="row mx-0 w-100 py-2">
+                                                <div class="col-6">
+                                                    <button type="button" class="btn btn-outline-danger w-100" data-bs-dismiss="modal">Cancelar</button>
+                                                </div>
+                                                <div class="col-6">
+                                                    <button type="submit" class="btn btn-outline-success w-100">Registrar</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
                     </div>
                     <div class="px-1 overflow-auto mi-scrol" style="height:83%">
                         <table class="table table-sm">
@@ -179,54 +220,63 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                                     <td>#</td>
                                     <td>Antecedente</td>
                                     <td>Fecha</td>
+                                    <td colspan="2">Gestión</td>
                                 </tr>
                             </thead>
                             <tbody>
+                                
+                                {% for ant in alumno.alumno_antecedente_set.all  %}
                                 <tr>
-                                    <td>REP</td>
-                                    <td>Repitente</td>
-                                    <td>22/01/2000</td>
+                                    <td>{{ant.id}}</td>
+                                    <td>{{ant.antecedente.nombre_antecedente}}</td>
+                                    <td>{{ant.fecha}}</td>
+                                    <td>
+                                        <button class="btn p-0" data-bs-toggle="modal" data-bs-target="#verAnt{{ant.id}}">
+                                            <i class="fas fa-folder-open  text-warning fs-5"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="btn p-0">
+                                            <i class="fas fa-file-edit fs-5 text-success"></i>
+                                        </button>
+                                    </td>
+                                    <!-- Modal Visualizar Antecedente -->
+                                    <div class="modal fade" id="verAnt{{ant.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Detalle del antecedente - 
+                                                    <span class="fw-bold">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</span>
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-decoration-none">
+                                                <ul class="list-group list-group-horizontal w-100">
+                                                    <li class="list-group-item w-25 text-end">Fecha de registro</li>
+                                                    <li class="list-group-item w-75 fw-light">{{ant.fecha}}</li>
+                                                </ul>
+                                                <ul class="list-group list-group-horizontal w-100">
+                                                    <li class="list-group-item w-25 text-end">Tipo Antecedente</li>
+                                                    <li class="list-group-item w-75 fw-light">{{ant.antecedente.nombre_antecedente}}</li>
+                                                </ul>
+                                                <ul class="list-group list-group-horizontal w-100">
+                                                    <li class="list-group-item w-25 text-end">Situación Descrita</li>
+                                                    <li class="list-group-item w-75 fw-light">
+                                                        {{ant.detalle|safe}}
+                                                    </li>
+                                                </ul>  
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
                                 </tr>
-                                <tr>
-                                    <td>REP</td>
-                                    <td>Repitente</td>
-                                    <td>22/01/2000</td>
-                                </tr>
-                                <tr>
-                                    <td>REP</td>
-                                    <td>Repitente</td>
-                                    <td>22/01/2000</td>
-                                </tr>
-                                <tr>
-                                    <td>REP</td>
-                                    <td>Repitente</td>
-                                    <td>22/01/2000</td>
-                                </tr>
-                                <tr>
-                                    <td>REP</td>
-                                    <td>Repitente</td>
-                                    <td>22/01/2000</td>
-                                </tr>
-                                <tr>
-                                    <td>REP</td>
-                                    <td>Repitente</td>
-                                    <td>22/01/2000</td>
-                                </tr>
-                                <tr>
-                                    <td>REP</td>
-                                    <td>Repitente</td>
-                                    <td>22/01/2000</td>
-                                </tr>
-                                <tr>
-                                    <td>REP</td>
-                                    <td>Repitente</td>
-                                    <td>22/01/2000</td>
-                                </tr>
-                                <tr>
-                                    <td>REP</td>
-                                    <td>Repitente</td>
-                                    <td>22/01/2000</td>
-                                </tr>
+                                    
+                                {% endfor %}
+                                    
+
     
                             </tbody>
                         </table>
