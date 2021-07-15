@@ -101,10 +101,14 @@ def remove_alumno(request,):
             # Aqui deberia escribir que es repitente en ANTECEDENTES
 
         elif data[0] == 'abandono':
+            print(data)
             alumno = Alumno.objects.get(rut = data[1])
             alumno.estado= '1'
             alumno.save()
-            curso.alumnos.remove(data[1])
+            for al in curso.curso_alumno_set.all():
+                if al.alumno.rut == alumno.rut:
+                    al.abandono= True
+                    al.save()
         elif data[0] == 'error':
             curso.alumnos.remove(data[1])
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -154,10 +158,10 @@ def finalizar_semestre(request):
                 #Aqui copiamos los alumnos del antiguo curso al nuevo curso
                 this_curso = Curso.objects.get(id_curso=key)
                 for alumno in curso_semestre_pasado.curso_alumno_set.all():
-                    print(this_curso.nombre)
                     alumno.is_current = False
                     alumno.save()
-                    this_curso.alumnos.add(alumno.alumno.rut)
+                    if not alumno.abandono:
+                        this_curso.alumnos.add(alumno.alumno.rut)
                 linked_asignaturas_to_curso(this_curso)
                 #Finalmente fijamos como el curso actual a los alumnos
                 for current_al in this_curso.curso_alumno_set.all():
@@ -217,8 +221,8 @@ def finalizar_año(request,):
                         for alumno in curso_anterior.curso_alumno_set.all():
                             alumno.is_current=False
                             alumno.save() 
-                            
-                            this_curso.alumnos.add(alumno.alumno.rut)
+                            if not alumno.abandono:
+                                this_curso.alumnos.add(alumno.alumno.rut)
                         #Este curso es el actual de los alumnos
                         for a in this_curso.curso_alumno_set.all():
                             a.is_current=True
@@ -267,11 +271,13 @@ def finalizar_año(request,):
                             for alumno in curso_anterior.curso_alumno_set.all():
                                 alumno.is_current=False
                                 alumno.save()
-                                this_curso.alumnos.add(alumno.alumno.rut)
+                                if not alumno.abandono:
+                                    this_curso.alumnos.add(alumno.alumno.rut)
                             #Este curso es el actual de los alumnos
                             for a in this_curso.curso_alumno_set.all():
                                 a.is_current=True
                                 a.save()
+                            # Accion unica para segundo medio
                             if i == 9 :
                                 check = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
                                 if check.count() > 0:

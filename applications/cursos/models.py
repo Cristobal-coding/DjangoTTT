@@ -82,8 +82,8 @@ class Asignatura_Curso(models.Model):
         db_table= 'Asignatura_Curso'
         unique_together = (('curso', 'asignatura'),)
     def __str__(self):
-        return self.asignatura.nombre
-        # return  str(self.curso.numero) + '..' + self.asignatura.nombre + ' -- '+ str(self.curso.cod_fecha.year) + ' ' + str(self.curso.cod_fecha.semestres)
+        # return self.asignatura.nombre
+        return  str(self.curso.numero) + '..' + self.asignatura.nombre + ' -- '+ str(self.curso.cod_fecha.year) + ' ' + str(self.curso.cod_fecha.semestres)
     #Clave primaria de m2m
     curso=models.ForeignKey(Curso,on_delete=models.CASCADE)
     asignatura=models.ForeignKey(Asignatura,on_delete=models.CASCADE)
@@ -105,8 +105,8 @@ class Parciales(models.Model):
         db_table= 'Paraciales'
         ordering = ['-id']
     def __str__(self):
-        return self.asignatura.asignatura.nombre 
-        # return str(self.id)+' -  ' +str(self.calificacion)+ '( ' + str(self.asignatura.asignatura.nombre) + ')'
+        # return self.asignatura.asignatura.nombre 
+        return str(self.id)+' -  ' +str(self.calificacion)+ '( ' + str(self.asignatura.asignatura.nombre) + ')'
 
 class Curso_Alumno(models.Model):
 
@@ -121,5 +121,6 @@ class Curso_Alumno(models.Model):
 
     #atributo si es curso actual
     is_current = models.BooleanField(default=False)
+    abandono =models.BooleanField(default=False)
 
 

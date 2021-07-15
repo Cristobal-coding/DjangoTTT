@@ -56,25 +56,26 @@ class AlumnoManager(models.Manager):
 
     def get_certificados(self, rut):
         alumno = self.get(rut = rut)
-        parciales = alumno.parciales.all()
+        # parciales = alumno.parciales.all()
         fechas=[]
-        for p in parciales:
-            fecha = []
-            año = str(p.asignatura.curso.cod_fecha.year)
-            semestre = str(p.asignatura.curso.cod_fecha.semestres)
-            exists = False
-            if len(fechas) == 0:
-                fecha.append(año)
-                fecha.append(semestre)
+        print('Cursos: ', alumno.curso_alumno_set.all())
+        for pivot in alumno.curso_alumno_set.all():
+            fecha=[]
+            if len(fechas) ==0:
+                fecha.append(pivot.curso.cod_fecha.year)
+                fecha.append(pivot.curso.cod_fecha.semestres)
                 fechas.append(fecha)
             else:
+                print('Fechas: ', fechas)
                 for f in fechas:
-                    if año in f[0] and semestre in f[1]:
-                        exists =True
-                if not exists:
-                    fecha.append(año)
-                    fecha.append(semestre)
-                    fechas.append(fecha)
+                    fecha.append(pivot.curso.cod_fecha.year)
+                    fecha.append(pivot.curso.cod_fecha.semestres)
+                    if f != fecha:
+                        print('hola')
+                        fecha.append(pivot.curso.cod_fecha.year)
+                        fecha.append(pivot.curso.cod_fecha.semestres)
+                        fechas.append(fecha)
+        
         return fechas
     # from applications.alumnos.models import Alumno
     # alumno = Alumno.objects.get_certificados(rut = '16671047-2')
@@ -91,7 +92,3 @@ class ApoderadoManager(models.Manager):
             (Q(nombre_apoderado__icontains=nombre) | Q(apellido_paterno__icontains=nombre) | Q(apellido_materno__icontains=nombre)), rut__icontains=rut
             ).order_by('apellido_paterno')
         return resultado
-   
-    # def buscar_fecha(self, fecha1,fecha2):
-
-    #     resultado=

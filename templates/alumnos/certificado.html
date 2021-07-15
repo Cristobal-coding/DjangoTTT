@@ -2,6 +2,7 @@
 {% extends '../layouts/master.html' %}
 {% load static %}
 {% load index %}
+{% load promedio %}
 
 {% block 'titulo' %}
 Certificados de notas {{año}} {{semestre}}°Semestre
@@ -14,7 +15,7 @@ Certificados de notas {{año}} {{semestre}}°Semestre
         <h4 class="fw-bold">Informe de Notas Parciales</h4>
         <div class="row mx-0 w-75">
             <div class="col-2">
-                <button class="btn btn-primary py-0" data-bs-toggle="modal" data-bs-target="#addnotas">
+                <button class="btn btn-primary py-0" data-bs-toggle="modal" data-bs-target="#addnotas" >
                     Añadir Notas
                 </button>
                 <!-- Modal -->
@@ -93,7 +94,7 @@ Certificados de notas {{año}} {{semestre}}°Semestre
                 </div>
             </div>
             <div class="col-8 text-center">
-                {% if semestre == 1 %}
+                {% if semestre == '1' %}
                 <h5>Primer semestre del {{año}}</h5>
                 {% else %}
                 <h5>Segundo semestre del {{año}}</h5>
@@ -121,24 +122,56 @@ Certificados de notas {{año}} {{semestre}}°Semestre
                 <tr>
                     <td class="lh-sm" style="width:45.5% !important;">{{asign.asignatura.nombre}}</td>
                     
-                    {% for n in range  %}
+                    {% get_notas asign alumno as notas%}
                     
                     
-                    {% if asign.parciales.all|index:n >= 4 %}
-                    <td class="lh-sm fs-6 text-warning" style="width:2.5% !important;">{{ asign.parciales.all|index:n }}</td>
-                    {% else %}
-                    <td class="lh-sm fs-6 text-danger" style="width:2.5% !important;">{{ asign.parciales.all|index:n }}</td>
-                    {% endif %}
+                    {% for n in range %}
+                        {% if notas|index:n >= 4 %}
+                                
+                            {% if notas|index:n != '' %}     
+                            <td class="lh-sm fs-6 text-warning" style="width:2.5% !important;" data-bs-toggle="tooltip" data-bs-placement="right" title="{{notas|fecha:n}}">{{ notas|index:n }}</td>
+                            {% else %}
+                            <td class="lh-sm fs-6 text-warning" style="width:2.5% !important;">{{ notas|index:n }}</td>
+                            {% endif %}
+                            
+                        {% else %}
+                        
+                            {% if notas|index:n != '' %}
+                            <td class="lh-sm fs-6 text-danger" style="width:2.5% !important;" data-bs-toggle="tooltip" data-bs-placement="right" title="{{notas|fecha:n}}">{{ notas|index:n }}</td>   
+                            {% else %}
+                            <td class="lh-sm fs-6 text-danger" style="width:2.5% !important;">{{ notas|index:n }}</td>
+                            {% endif %}
+                            
+                        {% endif %}
                         
                     {% endfor %}
+                    {% prom_especifico notas as especifico%}
+                    
+                    {% if especifico >= 4 %}
+                    <td class="lh-sm fs-6 text-warning" style="width:2.5% !important;">{{especifico}}</td>
+                    
+                    {% else %}
+                    <td class="lh-sm fs-6 text-danger" style="width:2.5% !important;">{{especifico}}</td>
                         
-                    <td class="lh-sm fs-6" style="width:2.5% !important;">6.5</td>
+                    {% endif %}
+                    
+                        
+                    
+                        
                 </tr>          
                 {% endfor %}
-                    
+                {% prom_global curso.asignatura_curso_set.all alumno as global%}
                 <tr>
                     <td class="text-end" colspan="21">PROMEDIO</td>
-                    <td >6.7</td>
+                    
+                    {% if global >= 4 %}
+                    <td class="text-warning">{{global}}</td>
+                    
+                    {% else %}
+                    <td class="text-danger">{{global}}</td>
+                        
+                    {% endif %}
+                        
                 </tr>
             </tbody>
         </table>

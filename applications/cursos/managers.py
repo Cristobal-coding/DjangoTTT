@@ -50,8 +50,8 @@ class CursoManager(models.Manager):
 
         for c in cursos:
             for alumno in c.alumnos.all():
-                alumno.rut == rut
-                curso = c
+                if alumno.rut == rut:
+                    curso = c
         return curso
 
     # def prove_Asign(self):
