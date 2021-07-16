@@ -44,14 +44,14 @@ Registrar
     </div>
     <div class="col-6 px-0" style="border-left: 1px solid #dee2e6;" >
         <div class="row mx-0 w-100">
-            <div class="col-6">
+            <div class="col-12">
                 <label for="" class="text-primary">Apoderado: {% for e in  form.rut_apoderado.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
                 {{form.rut_apoderado}}   
             </div>
-            <div class="col-6">
+            <!-- <div class="col-6">
                 <label for="" class="text-primary">Estado: {% for e in  form.estado.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
-                {{form.estado}}
-            </div>
+                form.estado
+            </div> -->
             <div class="col-6">
                 <label for="" class="text-primary">Direccion:(Opcional) {% for e in  form.direccion.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
                 {{form.direccion}}   

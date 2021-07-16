@@ -19,8 +19,19 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                 </div>
                 <div class="col-10 py-2 d-flex flex-column ">
                     <h4 class="fw-bold my-0">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</h4>
-                    <small class="text-warning fw-bold">+56 9 {{alumno.telefono}}</small>
+                    
+                    {% if alumno.telefono == None %}
+                    <small class="text-warning fw-bold"><i class="fas fa-phone-volume mx-1"></i>No definido<i class="far fa-question-circle mx-2"></i></small>
+                    {% else %}
+                    <small class="text-warning fw-bold"><i class="fas fa-phone-volume mx-1"></i>+56 9 {{alumno.telefono}}</small>
+                    {% endif %}
+                    
+                    {% if alumno.direccion == None %}
+                    <h6 class="text-muted my-2 flex-fill"><i class="fas fa-map-marker-alt text-muted mx-1"></i>Direccion no definida<i class="far fa-question-circle mx-2"></i></h6>
+                    {% else %}
                     <h6 class="text-muted my-2 flex-fill"><i class="fas fa-map-marker-alt text-muted mx-1"></i>{{alumno.direccion}}</h6>
+                    {% endif %}
+                        
                     <a href="{% url 'alumnos_app:filtrar'%}" class="text-warning align-self-end">Ir a todos los alumnos<i class="far fa-chevron-double-up mx-1"></i></a>
                 </div>
             </div>
@@ -62,12 +73,24 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                     </ul>
                     <ul class="list-group list-group-horizontal w-100">
                         <li class="list-group-item w-25 text-end">Fecha de nacimiento</li>
+                        
+                        {% if alumno.fecha_nacimiento == None %}
+                        <li class="list-group-item w-75 text-danger fw-light">Fecha de nacimiento no definida</li>
+                        {% else %}
                         <li class="list-group-item w-75 fw-light">{{alumno.fecha_nacimiento}}</li>
+                        {% endif %}
+                            
                     </ul>
                     <ul class="list-group list-group-horizontal w-100">
                         {% date_to_age alumno.fecha_nacimiento as edad%}
                         <li class="list-group-item w-25 text-end">Edad</li>
+                        
+                        {% if alumno.fecha_nacimiento == None %}
+                        <li class="list-group-item w-75 text-danger fw-light">No es posible calcularla</li>
+                        {% else %}
                         <li class="list-group-item w-75 fw-light">{{edad}} Años</li>
+                        {% endif %}
+                            
                     </ul>
                     <ul class="list-group list-group-horizontal w-100">
                         <li class="list-group-item w-25 text-end">Curso Actual</li>

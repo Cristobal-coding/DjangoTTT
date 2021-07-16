@@ -8,6 +8,8 @@ from django.views.generic.edit import FormView
 from django.views.generic import TemplateView, View
 from applications.users.models import User
 from .forms import LoginForm
+from applications.alumnos.models import Alumno, Apoderado
+from applications.cursos.models import Profesor
 
 class LoginPage(FormView):
     model = User
@@ -41,10 +43,16 @@ class LogoutView(View):
 class HomePage(LoginRequiredMixin,TemplateView):
     template_name = "home/home.html"
     login_url = reverse_lazy('home_app:login')
-    # def get_context_data(self, **kwargs):
-    #     context = super(HomePage, self).get_context_data(**kwargs)
-    #     context['alumnos'] = Alumno.objects.buscar_alumno('f')
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super(HomePage, self).get_context_data(**kwargs)
+        context['regulares'] = Alumno.objects.filter(estado = '0').count()
+        context['graduados'] = Alumno.objects.filter(estado = '2').count()
+        context['desertores'] = Alumno.objects.filter(estado = '1').count()
+        context['total'] = Alumno.objects.all().count()
+        context['profesores'] = Profesor.objects.all().count()
+        context['apoderados'] = Apoderado.objects.all().count()
+        context['usuarios'] = User.objects.all().count()
+        return context
 
 
         

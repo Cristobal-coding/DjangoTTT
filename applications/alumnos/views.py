@@ -10,7 +10,7 @@ from applications.cursos.models import Curso, Parciales, Asignatura_Curso
 from applications.antecedentes.models import Antecedente
 from django.forms import formset_factory
 #local
-from .forms import AlumnosRegisterForm, ApoderadosRegisterForm, CertificadoForm, Alumno_AntecedenteForm
+from .forms import AlumnoEditForm, AlumnosRegisterForm, ApoderadoEditForm, ApoderadosRegisterForm, CertificadoForm, Alumno_AntecedenteForm
 
 class AlumnosHome(LoginRequiredMixin,TemplateView):
     template_name = 'alumnos/inicio.html'
@@ -128,7 +128,7 @@ class AlumnosRegister(LoginRequiredMixin,FormView):
     model = Alumno
     template_name = "alumnos/regist_alumn.html"
     form_class= AlumnosRegisterForm
-    success_url='.'
+    success_url=reverse_lazy('alumnos_app:filtrar')
     login_url = reverse_lazy('home_app:login')
     
     def form_valid(self, form):
@@ -142,7 +142,8 @@ class AlumnosRegister(LoginRequiredMixin,FormView):
             sexo=form.cleaned_data['sexo'],
             telefono=form.cleaned_data['telefono'],
             direccion=form.cleaned_data['direccion'],
-            estado=form.cleaned_data['estado'],
+            estado='0',
+            # estado=form.cleaned_data['estado'],
 
         )
         messages.success(self.request, 'Alumno ingresado Correctamente.')
@@ -150,10 +151,10 @@ class AlumnosRegister(LoginRequiredMixin,FormView):
 
 class AlumnoEdit(LoginRequiredMixin,UpdateView):
     template_name = "alumnos/edit_alumn.html"
-    form_class = AlumnosRegisterForm
+    form_class = AlumnoEditForm
     model = Alumno
-    # success_url = reverse_lazy('alumnos_app:detailAlumn')
     login_url = reverse_lazy('home_app:login')
+
     def form_valid(self, form):
         messages.success(self.request, 'Alumno actualizado Satisfactoriamente.')
         form.save()
@@ -199,7 +200,7 @@ class CreateApoderado(LoginRequiredMixin, FormView):
 
 class ApoderadoEdit(LoginRequiredMixin,UpdateView):
     template_name = "alumnos/edit_apod.html"
-    form_class = ApoderadosRegisterForm
+    form_class = ApoderadoEditForm
     model = Apoderado
     success_url = reverse_lazy('alumnos_app:apoderados')
     login_url = reverse_lazy('home_app:login')
