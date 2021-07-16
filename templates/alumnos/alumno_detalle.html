@@ -17,10 +17,11 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                     <img src="{% static 'imgs/user.png' %}" alt="" class="img-fluid" style="width:9rem;">
                     <a class="btn btn-primary py-1 my-2 fw-bold" href="{% url 'alumnos_app:actualizar' alumno.rut %}">Editar Alumno</a>
                 </div>
-                <div class="col-10 py-2">
+                <div class="col-10 py-2 d-flex flex-column ">
                     <h4 class="fw-bold my-0">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</h4>
                     <small class="text-warning fw-bold">+56 9 {{alumno.telefono}}</small>
-                    <h6 class="text-muted my-2"><i class="fas fa-map-marker-alt text-muted mx-1"></i>{{alumno.direccion}}</h6>
+                    <h6 class="text-muted my-2 flex-fill"><i class="fas fa-map-marker-alt text-muted mx-1"></i>{{alumno.direccion}}</h6>
+                    <a href="{% url 'alumnos_app:filtrar'%}" class="text-warning align-self-end">Ir a todos los alumnos<i class="far fa-chevron-double-up mx-1"></i></a>
                 </div>
             </div>
         </div>
@@ -30,11 +31,6 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                     <h6 class="fw-bold my-0">Datos Personales</h6>
                 </div>
             </div>
-            <!-- <div class="w-25 h-100">
-                <div class="card-body h-100 py-1 d-flex flex-column align-items-center justify-content-center">
-                    <h6 class="my-0">Datos Personales</h6>
-                </div>
-            </div> -->
             <div class="h-100 w-75">
                 <div class="card-body  h-100 py-1 d-flex flex-column align-items-end justify-content-center">
                     <small>Estado: 
@@ -83,9 +79,11 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
 
                             </div>
                             <div class="mx-0 w-25 text-end">
+                                {% if curso != '' %}
                                 <a class="btn btn-success py-0 px-1 my-0 float-right" href="{% url 'cursos_app:detalleCurso' curso.curso.id_curso %}">
                                     Ver el Curso<i class="far fa-forward mx-1"></i>
                                 </a>
+                                {% endif %}
 
                             </div>
                         </li>
@@ -97,9 +95,11 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
 
                             </div>
                             <div class="mx-0 w-25 text-end">
+                                {% if curso != '' %}
                                 <a class="btn btn-success py-0 px-1 my-0 float-right" href="{% url 'cursos_app:detalleCurso' curso.curso.id_curso %}">
                                     Ver el Curso<i class="far fa-forward mx-1"></i>
                                 </a>
+                                {% endif %}
 
                             </div>
                         </li>
@@ -110,9 +110,11 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
 
                             </div>
                             <div class="mx-0 w-25 text-end">
+                                {% if curso != '' %}
                                 <a class="btn btn-success py-0 px-1 my-0 float-right" href="{% url 'cursos_app:detalleCurso' curso.curso.id_curso %}">
                                     Ver el Curso<i class="far fa-forward mx-1"></i>
                                 </a>
+                                {% endif %}
 
                             </div>
                         </li>
@@ -123,9 +125,14 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
 
                             </div>
                             <div class="mx-0 w-25 text-end">
+                                
+                                {% if curso != '' %}
                                 <a class="btn btn-success py-0 px-1 my-0 float-right" href="{% url 'cursos_app:detalleCurso' curso.curso.id_curso %}">
                                     Ver el Curso<i class="far fa-forward mx-1"></i>
                                 </a>
+                                    
+                                {% endif %}
+                                    
 
                             </div>
                         </li>
@@ -152,6 +159,11 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                    <div class="overflow-auto px-1 mi-scrol" style="height: 83%">
                         <ul class="list-group list-group-flush">
                             
+                            {% if certificados|length == 0 %}
+                            <div class="text-center py-2">
+                                <h5 class="fst-italic">No hay certificados Disponibles...</h5>
+                            </div>
+                            {% endif %}
                             {% for cert in certificados  %}
                             <a href="{% url 'alumnos_app:certificado' alumno.rut cert.0 cert.1 %}" class="list-group-item list-group-item-action py-1">
                                 Certificado de notas {{cert.0}} - {{cert.1}}°Semestre 
@@ -176,42 +188,42 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                        <div class="w-25 h-100 d-flex align-items-center">
                            <button class="btn btn-primary px-2 py-0 align-self-right" data-bs-toggle="modal" data-bs-target="#addAntecedente">
                                Añadir<i class="far fa-plus mx-1"></i>
-                            </button>
-                            <!-- Modal -->
-                            <div class="modal fade" id="addAntecedente" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" style="max-width: 880px !important;">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Registrar Antecedente al Alumno/a 
-                                                <span class="fw-bold">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</span>
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </button>          
+                       </div>
+                       <!-- Modal -->
+                       <div class="modal fade" id="addAntecedente" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable" style="max-width: 880px !important;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Registrar Antecedente al Alumno/a 
+                                        <span class="fw-bold">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</span>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                <form action="{% url 'alumnos_app:addAntecedente'%}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{alumno.rut}}" name="alumno">
+                                    {{form.media}}
+                                    {{form.fecha.label}}
+                                    {{form.fecha}}
+                                    {{form.antecedente.label}}
+                                    {{form.antecedente}}
+                                    {{form.detalle.label}} del asunto:
+                                    {{form.detalle}}
+                                    <div class="row mx-0 w-100 py-2">
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-outline-danger w-100" data-bs-dismiss="modal">Cancelar</button>
                                         </div>
-                                        <div class="modal-body">
-                                        <form action="{% url 'alumnos_app:addAntecedente'%}" method="POST">
-                                            {% csrf_token %}
-                                            <input type="hidden" value="{{alumno.rut}}" name="alumno">
-                                            {{form.media}}
-                                            {{form.fecha.label}}
-                                            {{form.fecha}}
-                                            {{form.antecedente.label}}
-                                            {{form.antecedente}}
-                                            {{form.detalle.label}} del asunto:
-                                            {{form.detalle}}
-                                            <div class="row mx-0 w-100 py-2">
-                                                <div class="col-6">
-                                                    <button type="button" class="btn btn-outline-danger w-100" data-bs-dismiss="modal">Cancelar</button>
-                                                </div>
-                                                <div class="col-6">
-                                                    <button type="submit" class="btn btn-outline-success w-100">Registrar</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                        <div class="col-6">
+                                            <button type="submit" class="btn btn-outline-success w-100">Registrar</button>
                                         </div>
                                     </div>
+                                </form>
                                 </div>
                             </div>
-                       </div>
+                        </div>
+                    </div>
                     </div>
                     <div class="px-1 overflow-auto mi-scrol" style="height:83%">
                         <table class="table table-sm">
@@ -225,6 +237,12 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                             </thead>
                             <tbody>
                                 
+                                {% if alumno.alumno_antecedente_set.all.count == 0 %}
+                                    <tr>
+                                        <td colspan="5" class="text-center">Sin antecedentes</td>
+                                    </tr>
+                                {% endif %}
+                                    
                                 {% for ant in alumno.alumno_antecedente_set.all  %}
                                 <tr>
                                     <td>{{ant.id}}</td>

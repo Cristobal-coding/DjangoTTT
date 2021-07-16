@@ -57,9 +57,11 @@ class AlumnoDetalle(LoginRequiredMixin,DetailView):
         context['certificados'] =Alumno.objects.get_certificados(rut=self.kwargs['pk'])
         context['form'] =Alumno_AntecedenteForm()
         alumno=Alumno.objects.get(rut=self.kwargs['pk'])
+        current_curso = ''
         for curso in alumno.curso_alumno_set.all():
             if curso.is_current:
                 current_curso = curso
+        # if current_curso != '':
         context['curso'] =current_curso
         return context
 
