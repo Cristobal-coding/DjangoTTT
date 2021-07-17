@@ -8,6 +8,12 @@ Cursos del Establecimiento Manheim
 {% block 'content' %}
 <a href=""></a>
 <div class="row mx-0 h-100 w-100">
+   <div class="col-12 d-flex align-items-center justify-content-center" style="height: 10% !important;">
+      <ul class="list-group list-group-horizontal">
+        <a class="list-group-item {% if 'cursos' in request.path and not 'all' in request.path %}active{% endif%}" href="{% url 'cursos_app:all'%}">Cursos actuales</a>
+        <a class="list-group-item {% if 'all' in request.path %}active{% endif%}" href="{% url 'cursos_app:allCursos'%}">Todos los cursos</a>
+      </ul>
+   </div>
     <div class="h-100 py-3 px-5 " style="width: 70%;">
         <table class="table table-sm">
             <thead class="table-dark">

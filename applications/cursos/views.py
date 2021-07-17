@@ -31,6 +31,40 @@ class CursosDetalle(LoginRequiredMixin,DetailView):
         context['profs'] =Profesor.objects.all()
         return context
 
+class CursosAll(LoginRequiredMixin,ListView):
+    template_name = 'cursos/all_cursos.html'
+    model = Curso
+    paginate_by = 9
+    context_object_name = 'cursos'
+
+    def get_queryset(self):
+        todo = True
+        if len(self.request.GET) == 0:
+            pass
+        else:
+            values=[]
+            values.append(self.request.GET['id'])
+            values.append(self.request.GET['year'])
+            values.append(self.request.GET['semestre'])
+            values.append(self.request.GET['jefe'])
+            vacio = 0
+            for value in values:
+                if value == '': 
+                    vacio+=1
+            if not  vacio == 4:
+                todo = False
+        if todo:
+            query = Curso.objects.all()
+            return query
+        else:
+            return Curso.objects.get_cursos_filter(values)
+    def get_context_data(self, **kwargs):
+        context = super(CursosAll, self).get_context_data(**kwargs)
+        context['fechas'] =Fecha.objects.get_years()
+        context['profes'] =Profesor.objects.get_jefes()
+        return context
+
+
 def init_cursos(request):
     if request.method == 'POST':
         check_exists_cursos = Curso.objects.all()

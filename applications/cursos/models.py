@@ -1,7 +1,7 @@
 from django.db import models
 from applications.asignaturas.models import Asignatura, PlanEstudio
 from applications.alumnos.models import Alumno
-from .managers import CursoManager
+from .managers import CursoManager,ProfesorManager, FechaManager
 # Create your models here.
 
 class Fecha(models.Model):
@@ -25,7 +25,7 @@ class Fecha(models.Model):
     fecha_termino=models.DateField('Fecha de Termino',null=True,blank=True)
     semestres=models.CharField('Semestre',max_length=3,choices=semestres)
     year= models.IntegerField('Año')
-   
+    objects = FechaManager()
     def __str__(self):
         return str(self.year)+ ' Semestre ' + self.semestres
     class Meta:
@@ -46,6 +46,7 @@ class Profesor(models.Model):
     apellido_paterno=models.CharField('A.Paterno',max_length=30)
     apellido_materno=models.CharField('A.Materno',max_length=30)
     asig_impartir=models.ForeignKey(Asignatura,on_delete=models.CASCADE, related_name='asignatura')
+    objects= ProfesorManager()
 
 
 class Curso(models.Model):
@@ -69,7 +70,7 @@ class Curso(models.Model):
     numero = models.FloatField('Numero')
     objects = CursoManager()
 
-    id_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='jefe' ,null=True,blank=True)
+    id_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='cursos' ,null=True,blank=True)
     plan_estudio=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE,related_name='cursos')
     alumnos = models.ManyToManyField(Alumno,through='Curso_Alumno', related_name='cursos')
     asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Curso')

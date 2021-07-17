@@ -1,8 +1,69 @@
 from django.db import models
 from django.db.models import Q , Max
 
+class FechaManager(models.Manager):
+    def get_years(self):
+        years = []
+        for fecha in self.all():
+            if not fecha.year in years:
+                years.append(fecha.year)
+        return years
+
+class ProfesorManager(models.Manager):
+    def get_jefes(self):
+        profesores = []
+        for profe in self.all():
+            if profe.cursos.count() > 0:
+                profesores.append(profe)
+        return profesores
 
 class CursoManager(models.Manager):
+
+    def get_cursos_filter(self, values):
+        cursos = self.all()
+        if values[0] != '':
+            if values[1] != '' and values[2] != '':
+                result = cursos.filter(
+                    Q( id_curso__icontains = values[0]) &
+                    Q(cod_fecha__year = values[1]) &
+                    Q(cod_fecha__semestres = values[2]) 
+                )
+            elif values[1] != '' and values[2] == '':
+                result = cursos.filter(
+                    Q( id_curso__icontains = values[0]) &
+                    Q(cod_fecha__year = values[1])
+                )
+            elif values[1] == '' and values[2] != '':
+                result = cursos.filter(
+                    Q( id_curso__icontains = values[0]) &
+                    Q(cod_fecha__semestres = values[2]) 
+                )
+            else:
+                result = cursos.filter(
+                    id_curso__icontains = values[0]
+                )
+            #end
+        elif values[1] != '' and values[2] != '':
+            result = cursos.filter(
+                Q(cod_fecha__year = values[1]) &
+                Q(cod_fecha__semestres = values[2]) 
+            )
+        elif values[1] != '' and values[2] == '':
+            result = cursos.filter(
+                Q(cod_fecha__year = values[1])
+            )
+        elif values[1] == '' and values[2] != '':
+            result = cursos.filter(
+                Q(cod_fecha__semestres = values[2]) 
+            )
+        elif values[3] != '':
+            result = cursos.filter(
+                Q(id_prof_jefe__id = values[3]) 
+            )
+        else:
+            result = self.all()
+        return result
+        # return self.all()
 
     def get_current_cursos(self):
         total = self.all()

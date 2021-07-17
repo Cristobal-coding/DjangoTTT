@@ -27,14 +27,20 @@ def sin_especificar(total, m , f):
 
 @register.simple_tag
 def path_with_filter(path):
-    # if 'csrf' in path:
-    #     path ='&'+path[path.index('csrf'):len(path)]
-    # else:
-    #     path=''
-    # return path
+    print('PATH: ', path)
     if '?' in path and not 'page' in path:
         path = '&'+path[path.index('?')+1:len(path)]
     elif 'page' in path and 'kword' in path and 'fecha1' in path and 'fecha2' in path and 'sexo' in path :
+        path =path[path.index('&'):len(path)]
+    else:
+        path=''
+    return path
+
+@register.simple_tag
+def path_with_filter_cursos(path):
+    if '?' in path and not 'page' in path:
+        path = '&'+path[path.index('?')+1:len(path)]
+    elif 'page' in path and 'id' in path and 'year' in path and 'semestre' in path and 'jefe' in path :
         path =path[path.index('&'):len(path)]
     else:
         path=''
@@ -70,4 +76,32 @@ def keep_filters_apod(path):
         'nombre': nombre,
         'rut': rut
 
+    }
+
+@register.simple_tag
+def keep_filters_cursos(path):
+    id=''
+    jefe=''
+    year=''
+    semestre=''
+    if 'id' in path and 'jefe' in path and 'year' in path and 'semestre' in path :
+        id=path[path.index('id')+3:path.index('year')-1]
+        year=path[path.index('year')+5:path.index('semestre')-1]
+        semestre=path[path.index('semestre')+9:path.index('jefe')-1]
+        jefe=path[len(path)-1:len(path)]
+    if year != '':
+        year = int(year)
+
+    if jefe != '' and jefe != '=' and id == '':
+        jefe = int(jefe)
+        year = ''
+        semestre = ''
+
+    if id != '':
+        jefe = ''
+    return {
+        'id': id,
+        'jefe': jefe,
+        'year': year,
+        'semestre': semestre,
     }

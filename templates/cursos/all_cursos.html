@@ -1,0 +1,140 @@
+{% extends '../layouts/master.html' %}
+
+{% load static %}
+{% load formats %}
+
+{% block 'titulo' %}
+Todos los Cursos del Establecimiento Manheim
+{% endblock 'titulo' %}
+
+
+{% block 'content' %}
+<div class="row mx-0 h-100 w-100">
+    <div class="col-12 d-flex align-items-center justify-content-center" style="height: 10% !important;">
+        <ul class="list-group list-group-horizontal">
+            <a class="list-group-item {% if 'cursos' in request.path and not 'all' in request.path %}active{% endif%}" href="{% url 'cursos_app:all'%}">Cursos actuales</a>
+            <a class="list-group-item {% if 'all' in request.path %}active{% endif%}" href="{% url 'cursos_app:allCursos'%}">Todos los cursos</a>
+        </ul>
+    </div>
+    <div class="col-12" {% if is_paginated %}style="height: 80% !important;"{% else %}style="height: 90% !important;" {% endif %}>
+        <div class="row mx-0 w-100 h-100">
+            <div class="col-9">
+                <table class="table table-hover table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th scope="col">Identificador #</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Año</th>
+                        <th scope="col">Semestre</th>
+                        <th scope="col">Prof.Jefe</th>
+                        <th scope="col">Detalle</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {% for curso in cursos  %}
+                        <tr>  
+                          <th scope="row">{{curso.id_curso}}</th>
+                          <th scope="row">{{curso.nombre}}</th>
+                          <td>{{curso.cod_fecha.year}}</td>
+                          <td>{{curso.cod_fecha.get_semestres_display}}</td>
+                          <td>
+                              
+                              {% if curso.id_prof_jefe == None %}
+                              No definido
+                              {% else %}
+                              {{curso.id_prof_jefe.nombres}}
+                              {% endif %}
+                                  
+                          </td>
+                          <td class="text-center"><a href="{% url 'cursos_app:detalleCurso' curso.id_curso %}"><i class="far fa-search fs-5"></i></a></td>
+                        </tr>
+                        {% endfor %}
+                            
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-3">
+                <div class="w-100 h-100">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h5 class="fw-bold">Buscar Cursos Pasados</h5>
+                            <form method="GET">
+                                {% keep_filters_cursos request.get_full_path as params%} 
+                                
+                                <label for="">Por identificador:</label>
+                                <input type="text" class="form-control" name="id" placeholder="#..." value="{{params.id}}">
+
+                                <label for="">Año:</label>
+                                <select name="year" class="form-select">
+                                    <option value="" {% if params.year == '' %}selected{% endif %} >-----</option>
+                                    {% for fecha in fechas  %}
+                                        <option value="{{fecha}}" {% if params.year == fecha %}selected{% endif %}>{{fecha}}</option>
+                                    {% endfor %}
+                                        
+                                </select>
+
+                                <label for="">Semestre:</label>
+                                <select name="semestre" class="form-select">
+                                    <option value="" {% if params.semestre == '' %}selected{% endif %}>-----</option>
+                                    <option value="1" {% if params.semestre == '1' %}selected{% endif %}>Primer Semestre</option>
+                                    <option value="2" {% if params.semestre == '2' %}selected{% endif %}>Segundo Semestre</option>
+                                </select>
+
+                                <label for="">Profesor Jefe:</label>
+                                <select name="jefe" class="form-select">
+                                    <option value="" >-----</option>
+                                    {% for profe in profes  %}
+                                        {% if params.jefe == profe.id %}
+                                        <option value="{{profe.id}}" selected >{{profe}}</option>
+                                        {%else%}
+                                        <option value="{{profe.id}}" >{{profe}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <div class="w-100 text-center" style="margin-top: 20px !important;">
+                                    <button type="submit" class="btn btn-outline-primary w-50">Filtrar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if is_paginated %}
+    {% path_with_filter_cursos request.get_full_path as filter%} 
+        <div class="col-9" style="height: 10% !important;">
+            <div class="row mx-0 w-100 h-100">
+                <div class="col-12 d-flex flex-column justify-content-center align-items-center">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination my-0">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                            <a class="page-link" href="?page={{page_obj.previous_page_number}}{{filter}}" tabindex="-1" aria-disabled="true">Anterior</a>
+                            </li>
+                            {% endif %} 
+                            {% for pag in paginator.page_range %}
+            
+                            {% ifequal pag page_obj.number  %}
+                            <li class="page-item active"><a class="page-link" href="?page={{pag}}{{filter}}">{{pag}}</a></li>
+                            {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{pag}}{{filter}}">{{pag}}</a></li>
+                            {% endifequal %}
+                                
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                            <a class="page-link" href="?page={{page_obj.next_page_number}}{{filter}}" tabindex="-1" aria-disabled="true">Siguiente</a>
+                            </li>
+                            {% endif %}              
+                        </ul>
+                    </nav>
+                </div>                  
+            </div>   
+        </div>
+    {% endif %}
+</div>
+{% endblock 'content' %}
+    
