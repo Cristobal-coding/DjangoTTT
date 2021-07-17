@@ -20,8 +20,7 @@ Listado de Apoderados
                         <th scope="col">Rut</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Contacto</th>
-                        <th scope="col">Pupilos</th>
-                        <th scope="col" colspan="2" class="text-center">Gestionar</th>      
+                        <th scope="col" class="text-center">Ver</th>      
                     </tr>
                     </thead>
                     <tbody>        
@@ -29,31 +28,8 @@ Listado de Apoderados
                             <tr>
                             <th scope="row"><h6 class="my-0 fw-bold">{{apod.rut}}</h6></th>
                             <td><h6 class="my-0 fw-bold">{{apod.nombre_apoderado}} {{apod.apellido_paterno}} {{apod.apellido_materno}}</h6><small class="my-0 fw-light">{{apod.get_sexo_display}}</small></td>
-
                             <td><h6 class="my-0 fw-bold"> +56 9 {{apod.telefono_apoderado}} </h6><small class="my-0 fw-light">{{apod.correo}}</small></td>
-                            <td><a href="#" class="badge text-decoration-none mx-1 w-50 link">{{apod.alumnos.count}}</a></td>
-                            
-                            <td class="text-end"><a href="{% url 'alumnos_app:editApoderado' apod.rut %}" class="btn p-0"><i class="far fa-edit text-success"></i></a> </td>
-                            <td class="text-start"><a href="#" class="btn  p-0"><i class="far fa-bars text-warning"></i></a></td>
-                            <!-- <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#rut{{alumno.rut}}"><i class="fal fa-times fa-2x"></i></button> -->
-                            <!-- Modal Innesario (borrar) -->
-                            <!-- <div class="modal fade" id="rut{{apod.rut}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title fs-4 fw-bold" id="staticBackdropLabel"><i class="fas fa-exclamation-triangle mx-1 text-danger fs-4"></i>!Cuidado!</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h6>¿Estas de acuerdo con eliminar al apoderado <span class="fw-bold">{{apod.nombre}} {{apod.apellido_paterno}} {{apod.apellido_materno}}</span>?</h6>      
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                        <a href="#" type="submit" class="btn btn-primary">Si, de acuerdo</a>
-                                    </div>
-                                </div>
-                                </div>
-                            </div> -->
+                            <td class="text-center"><a href="{% url 'alumnos_app:detailApod' apod.rut %}" class="btn  p-0"><i class="far fa-bars text-warning"></i></a></td>
                         </tr>             
                         {% endfor %}
                     </tbody>                 

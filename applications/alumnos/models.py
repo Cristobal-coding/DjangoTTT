@@ -57,10 +57,7 @@ class Alumno(models.Model):
         return self.nombre + ' - ' + self.rut
 
     def get_current_curso(self):
-        # alumno = Alumno.objects.get(rut=self.rut)
-        # cursos1 = self.cursos.all()
         cursos = self.curso_alumno_set.all()
-        # cursos = alumno.curso_alumno_set.all()
         cursando = False
         
         if len(cursos) > 0 :
@@ -76,17 +73,6 @@ class Alumno(models.Model):
             return 'Graduado'
         else:
             return 'No Cursando'
-        
-
-                                       
-    #  {% for c in  alumno.curso_alumno_set.all %}
-                                        
-    #     {% if c.is_current %}
-    #         <small>{{c.curso.nombre}}</small>
-    #     {% endif %}
-        
-    # {% endfor %}
-        
 
 
 class Alumno_antecedente(models.Model):

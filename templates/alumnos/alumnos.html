@@ -14,16 +14,15 @@ Filtrar Alumnos por Parametros
             <div class="col-12 text-center py-2" style="height: 10%;">
                 {%include '../includes/actions.html'%}
             </div>           
-            <div class="col-9"  style="height: 90% !important;">
-                <table class="table caption-top table-hover table-sm">     
+            <div class="col-9 d-flex flex-column"  style="height: 90% !important;">
+                <table class="table caption-top table-hover table-sm align-self-center" style="width: 85% !important;">     
                     <thead class="table-dark">
                       <tr>
                         <th scope="col">Rut</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Cursos</th>
                         <th scope="col">Estado</th>
-                        <th scope="col">Apoderado</th>
-                        <th scope="col" colspan="2" class="text-center">Gestionar</th>      
+                        <th scope="col" class="text-center">Perfil</th>      
                       </tr>
                       <tbody>                        
                         {% if  alumnos.count == 0 %}
@@ -34,34 +33,23 @@ Filtrar Alumnos por Parametros
                         {% for alumno in alumnos  %}
                         {% date_to_age alumno.fecha_nacimiento as edad%}           
                             <tr>
-                              <th scope="row"><h6 class="my-0 fw-bold">{{alumno.rut}}</h6><small class="my-0 fw-light">{% if edad == '' %}Edad no ingresada{%else%}{{edad}} Años{%endif%}</small></th>
-                              <td><h6 class="my-0 fw-bold">{{alumno.nombre}}</h6><small class="my-0 fw-light">{{alumno.get_sexo_display}}</small></td>
-                              <td>{{alumno.get_current_curso}}</td>
-                              <td><h6 class="my-0 fw-bold">{{alumno.get_estado_display}}</h6></td>
-                              <td><h6 class="my-0 fw-bold"> {{alumno.rut_apoderado.nombre_apoderado}} </h6></td>
-                              <!-- <td class="text-end"><a href="{% url 'alumnos_app:actualizar' alumno.rut %}" class="btn p-0"><i class="far fa-edit text-success"></i></a> </td>        -->
-                              <td class="text-end"><button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#rut{{alumno.rut}}"><i class="fal fa-times text-danger"></i></button></td>
-                              <td class="text-start"><a href="{% url 'alumnos_app:detailAlumn' alumno.rut %}" class="btn p-0"><i class="fal fa-address-card text-warning"></i> </td>       
-     
+                                <th scope="row"><h6 class="my-0 fw-bold">{{alumno.rut}}</h6><small class="my-0 fw-light">{% if edad == '' %}Edad no ingresada{%else%}{{edad}} Años{%endif%}</small></th>
+                                <td><h6 class="my-0 fw-bold">{{alumno.nombre}}</h6><small class="my-0 fw-light">{{alumno.get_sexo_display}}</small></td>
+                                <td>{{alumno.get_current_curso}}</td>
+                                <td >
+                                    {% if alumno.estado == '0' %}
+                                    <h6 class="my-0 fw-bold text-success" >{{alumno.get_estado_display}}<i class="far fa-check-circle mx-1"></i>
+                                    {% elif alumno.estado == '1' %}
+                                    <h6 class="my-0 fw-bold text-danger" >{{alumno.get_estado_display}}<i class="far fa-times mx-1"></i></h6>
+                                    {% elif alumno.estado == '2' %}
+                                    <h6 class="my-0 fw-bold text-warning" >{{alumno.get_estado_display}} <i class="far fa-graduation-cap mx-1"></i></h6>
+                                    {% else %}
+                                    <h6 class="my-0 fw-bold" >{{alumno.get_estado_display}}</h6>
+                                    {% endif %}
+                                        
+                                </td>
+                                <td class="text-center"><a href="{% url 'alumnos_app:detailAlumn' alumno.rut %}" class="btn p-0"><i class="fal fa-address-card text-warning"></i> </td>       
                             </tr>
-                            <!-- Modal innesecario (borrarlo) -->
-                            <!-- <div class="modal fade" id="rut{{alumno.rut}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title fs-4 fw-bold" id="staticBackdropLabel"><i class="fas fa-exclamation-triangle mx-1 text-danger fs-4"></i>!Cuidado!</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h6>¿Estas de acuerdo con eliminar al alumno <span class="fw-bold">{{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</span>?</h6>      
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                            <a href="{% url 'alumnos_app:eliminar' alumno.rut %}" type="submit" class="btn btn-primary">Si, de acuerdo</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         {% endfor %}
                     </tbody>
                  </table>   

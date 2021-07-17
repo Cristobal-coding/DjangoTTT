@@ -1,0 +1,159 @@
+{% extends '../layouts/master.html' %}
+{% load static %}
+{% load formats %}
+
+{% block 'titulo' %}
+Informacion del apoderado {{apoderado.nombre}} {{apoderado.apellido_paterno}} {{apoderado.apellido_materno}}
+{% endblock 'titulo' %}
+
+
+{% block 'content' %}
+<div class="row mx-0 h-100 w-100">
+    <div class="col-8 offset-2 h-100 p-2">
+        <div class="card w-100 shadow" style="height: 30%;">
+            <div class="row mx-0 w-100 h-100">
+                <div class="col-2 py-2 text-center" style="padding-right: 0;">
+                    <img src="{% static 'imgs/user.png' %}" alt="" class="img-fluid" style="width:9rem;">
+                    
+                </div>
+                <div class="col-10 py-2 d-flex flex-column ">
+                    <h4 class="fw-bold my-0">{{apoderado.nombre_apoderado}} {{apoderado.apellido_paterno}} {{apoderado.apellido_materno}}</h4>                
+                    {% if apoderado.telefono_apoderado == None %}
+                    <small class="text-warning fw-bold"><i class="fas fa-phone-volume mx-1"></i>No definido<i class="far fa-question-circle mx-2"></i></small>
+                    {% else %}
+                    <small class="text-warning fw-bold"><i class="fas fa-phone-volume mx-1"></i>+56 9 {{apoderado.telefono_apoderado}}</small>
+                    {% endif %}
+                    
+                    {% if apoderado.correo == None %}
+                    <h6 class="text-muted my-2 flex-fill"><i class="fas fa-map-marker-alt text-muted mx-1"></i>Correo no definido<i class="far fa-question-circle mx-2"></i></h6>
+                    {% else %}
+                    <h6 class="text-muted my-2 flex-fill"><i class="fal fa-envelope text-muted mx-1"></i>{{apoderado.correo}}</h6>
+                    {% endif %}          
+                </div>
+                <div class="col-12" style="padding-bottom: 10px !important;">
+                    <a class="btn btn-primary py-1 fw-bold fs-6" href="{% url 'alumnos_app:editApoderado' apoderado.rut %}">Editar Apoderado</a>
+                    <a href="{% url 'alumnos_app:apoderados'%}" class="text-warning float-right" style="margin-top: 10px !important;">Ir a todos los Apoderados<i class="far fa-chevron-double-up mx-1"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 d-flex" style="height: 10%;padding-top:15px">
+            <div class="card w-25 h-100">
+                <div class="card-body py-1 d-flex flex-column align-items-center justify-content-center">
+                    <h6 class="fw-bold my-0">Datos Personales</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 " style="height: 40%;">
+            <div class="card shadow h-100 w-100">
+                <div class="card-body">
+                    <ul class="list-group list-group-horizontal w-100">
+                        <li class="list-group-item w-25 text-end">Rut</li>
+                        <li class="list-group-item w-75 fw-light">{{apoderado.rut}}</li>
+                    </ul>
+                    <ul class="list-group list-group-horizontal w-100">
+                        <li class="list-group-item w-25 text-end">Pupilos Totales</li>
+                        
+                        {% if apoderado.alumnos.count == 0  %}
+                        <li class="list-group-item w-75 text-danger fw-bold">{{apoderado.alumnos.count}}</li>
+                        {% else %}
+                        <li class="list-group-item w-75 fw-light">
+                            {{apoderado.alumnos.count}} <button class="btn py-0 btn-outline-primary float-right my-0" style="margin-top: 3px !important;" data-bs-toggle="modal" data-bs-target="#todos">
+                                 Ver Pupilos<i class="far fa-eye"></i></button>
+                        </li>
+                        {% endif %}
+                        <!-- Modal -->
+                        <div class="modal fade" id="todos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Pupilos <span class="fw-bold">Totales</span> del apoderado  {{apoderado.nombre}} {{apoderado.apellido_paterno}} {{apoderado.apellido_materno}}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <ol class="list-group list-group-numbered list-group-flush">
+                                            
+                                            {% for al in apoderado.alumnos.all %}
+                                            {% date_to_age al.fecha_nacimiento as edad%}
+                                                {% if al.estado == '0' %}
+                                                <li class="list-group-item text-success">{{al.nombre}} {{al.apellido_paterno}} {{al.apellido_materno}}
+                                                    <span class="badge bg-primary rounded-pill">
+                                                        {% if edad == '' %}
+                                                            Desconocido
+                                                        {% else %}
+                                                        {{edad}} Años
+                                                        {% endif %}
+                                                    </span>
+                                                    <a href="{% url 'alumnos_app:detailAlumn' al.rut %}" class="float-right text-warning">Perfil<i class="far fa-address-card mx-1"></i></a>
+                                                </li>
+                                                {% elif al.estado == '1' %}
+                                                <li class="list-group-item text-danger">{{al.nombre}} {{al.apellido_paterno}} {{al.apellido_materno}}
+                                                    <span class="badge bg-primary rounded-pill">
+                                                        {% if edad == '' %}
+                                                            Desconocido
+                                                        {% else %}
+                                                        {{edad}} Años
+                                                        {% endif %}
+                                                    </span>    
+                                                    <a href="{% url 'alumnos_app:detailAlumn' al.rut %}" class="float-right text-warning">Perfil<i class="far fa-address-card mx-1"></i></a>
+                                                </li>
+                                                {% elif al.estado == '2' %}
+                                                <li class="list-group-item text-warning">{{al.nombre}} {{al.apellido_paterno}} {{al.apellido_materno}}
+                                                    <span class="badge bg-primary rounded-pill">
+                                                        {% if edad == '' %}
+                                                            Desconocido
+                                                        {% else %}
+                                                        {{edad}} Años
+                                                        {% endif %}
+                                                    </span>   
+                                                    <a href="{% url 'alumnos_app:detailAlumn' al.rut %}" class="float-right text-warning">Perfil<i class="far fa-address-card mx-1"></i></a>
+                                                </li>
+                                                {% endif %}
+                                                    
+                                            {% endfor %}
+                                                
+                                        </ol>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                    </ul>
+                    <ul class="list-group list-group-horizontal w-100">
+                        <li class="list-group-item w-25 text-end">Pupilos Regulares</li>
+                        
+                        {% if regulares.count == 0 %}
+                        <li class="list-group-item w-75 text-danger fw-bold">{{regulares.count}}</li>
+                        {% else %}
+                        <li class="list-group-item w-75 fw-light">
+                            {{regulares.count}} 
+                                
+                        </li> 
+                        {% endif %}
+                            
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock 'content' %}
+
+{% block 'js-select2' %}
+{% if messages %}
+    {% for m in messages %}
+    <script>
+        Swal.fire({
+            'timer':'2000',
+            title: 'Operación Exitosa',
+            text: '{{m}}',
+            icon: 'success',
+            showConfirmButton: false,
+          })
+    </script>
+    {% endfor %}
+{% endif %}
+{% endblock 'js-select2' %}
+    

@@ -3,6 +3,7 @@ from django.views.generic import TemplateView , ListView, UpdateView, DetailView
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import  FormView
 from django.contrib import messages
+from django.db.models import Q
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
 from applications.alumnos.models import Alumno, Apoderado, Alumno_antecedente
@@ -63,6 +64,14 @@ class AlumnoDetalle(LoginRequiredMixin,DetailView):
                 current_curso = curso
         # if current_curso != '':
         context['curso'] =current_curso
+        return context
+class ApoderadoDetalle(LoginRequiredMixin, DetailView):
+    template_name = 'alumnos/apoderado_detalle.html'
+    model = Apoderado
+
+    def get_context_data(self, **kwargs):
+        context = super(ApoderadoDetalle, self).get_context_data(**kwargs)
+        context['regulares'] =Alumno.objects.filter((Q(estado = '0') & Q(rut_apoderado__rut=self.kwargs['pk'])))
         return context
 
 class Certificado(LoginRequiredMixin,FormView):
@@ -207,7 +216,8 @@ class ApoderadoEdit(LoginRequiredMixin,UpdateView):
     def form_valid(self, form):
         messages.success(self.request, 'Apoderado actualizado Satisfactoriamente.')
         form.save()
-        return HttpResponseRedirect(self.get_success_url())
+        url = reverse('alumnos_app:detailApod', kwargs={'pk': self.kwargs['pk']}) # Esto redirecciona al detalle
+        return HttpResponseRedirect(url)
 
 
    
