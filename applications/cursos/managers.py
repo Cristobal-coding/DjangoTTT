@@ -43,6 +43,10 @@ class CursoManager(models.Manager):
                     id_curso__icontains = values[0]
                 )
             #end
+        elif values[3] != '':
+            result = cursos.filter(
+                Q(id_prof_jefe__id = values[3]) 
+            )
         elif values[1] != '' and values[2] != '':
             result = cursos.filter(
                 Q(cod_fecha__year = values[1]) &
@@ -55,10 +59,6 @@ class CursoManager(models.Manager):
         elif values[1] == '' and values[2] != '':
             result = cursos.filter(
                 Q(cod_fecha__semestres = values[2]) 
-            )
-        elif values[3] != '':
-            result = cursos.filter(
-                Q(id_prof_jefe__id = values[3]) 
             )
         else:
             result = self.all()
