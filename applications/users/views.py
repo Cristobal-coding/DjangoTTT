@@ -1,3 +1,5 @@
+from applications.cursos.models import Profesor
+from applications.psicologos.models import Psicologo
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -9,6 +11,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import DeleteView
 from .models import User, Rol
 from .forms import RolRegisterForm, UserRegisterForm
+from datetime import date, datetime
+import psycopg2
+
 
 class UserMainView(LoginRequiredMixin,TemplateView):
     template_name = "usuarios/inicio.html"
@@ -41,13 +46,33 @@ class CreateUser(LoginRequiredMixin,CreateView):
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(userform=form))
 
-    def form_valid(self, form):
+    def form_valid(self, form):   
+        print(form.cleaned_data['rol'])
         User.objects.create_user(
             form.cleaned_data['username'],
             form.cleaned_data['rut'],
             form.cleaned_data['password1'],
-            rol=form.cleaned_data['rol'],
-        )
+            rol=form.cleaned_data['rol'],        
+        ) 
+        if str(form.cleaned_data['rol']).strip() == 'Psicologo':
+            Psicologo.objects.create(
+            rut= form.cleaned_data['rut'],
+            nombre=form.cleaned_data['username'],
+            apellido_paterno="",
+            apellido_materno="",
+            correo="",
+            telefono="",
+            fecha_ingreso=date.today()
+            )
+        elif str(form.cleaned_data['rol']).strip() == 'Profesor':
+            Profesor.objects.create(
+            rut=form.cleaned_data['rut'],
+            nombres=form.cleaned_data['username'],
+            apellido_paterno="",
+            apellido_materno="",
+            asig_impartir=None,
+            )
+            
         return HttpResponseRedirect(reverse('user_app:registrar'),)
         
 class CreateRol(LoginRequiredMixin,CreateView):

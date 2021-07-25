@@ -23,7 +23,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="bg-light">
+
+
+
+<body class="bg-light" {% if 'addinforme' in request.path %} onbeforeunload="return WannaLeave()" {% endif %} >
     <div class="container-fluid p-0 vh-100">
         <div class="row mx-0  h-100">
             <div class="col-2 px-0 h-100">
@@ -53,6 +56,11 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+    </script>
+    <script>
+        function WannaLeave() {
+          return "Verificar Salida";
+        }
     </script>
 </body>
 

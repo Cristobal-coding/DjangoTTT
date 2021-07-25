@@ -1,3 +1,4 @@
+from applications.alumnos.models import Alumno_antecedente
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.http.response import HttpResponseRedirect
@@ -13,8 +14,11 @@ class AntecedentesView(LoginRequiredMixin,ListView):
     model = Antecedente
     context_object_name = 'antecedentes'
     login_url = reverse_lazy('home_app:login')   
-
-
+    paginate_by=12
+    def get_context_data(self, **kwargs):
+        context = super(AntecedentesView, self).get_context_data(**kwargs)
+        context['alumno_antecedente'] = Alumno_antecedente.objects.all()[:20]
+        return context
 
 def antecedente_create(request):
     if request.method == 'POST':

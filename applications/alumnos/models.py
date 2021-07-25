@@ -54,7 +54,7 @@ class Alumno(models.Model):
         db_table= 'Alumnos'
         ordering=['apellido_paterno','apellido_materno']
     def __str__(self):
-        return self.nombre + ' - ' + self.rut
+        return self.nombre + ' ' + self.apellido_paterno + ' - ' + self.rut
 
     def get_current_curso(self):
         cursos = self.curso_alumno_set.all()
@@ -78,7 +78,8 @@ class Alumno(models.Model):
 class Alumno_antecedente(models.Model):
     class Meta:
         db_table= 'Alumno_antecedente'
-        unique_together = (('alumno', 'antecedente'),)
+        # unique_together = (('alumno', 'antecedente'),)
+        ordering = ['-id']
     def __str__(self):
         return str(self.alumno.rut) + ' '+ str(self.antecedente_id)
     #Clave primaria de m2m

@@ -6,8 +6,9 @@ app_name = 'psicologos_app'
 urlpatterns = [
 
     path('psicologos/', views.InformeView.as_view(), name='inicio'),
-
-
+    path('psicologos/addinforme/', views.CreateInformeView.as_view(), name='addinforme'),
+    path('psicologos/addinforme/create', views.create, name='create'),
+    
     # path('usuarios/', views.UserMainView.as_view(), name='registrar'),
     # path('usuarios/register/user', views.CreateUser.as_view(), name='usercreate'),
     # path('usuarios/register/rol', views.CreateRol.as_view(), name='rolcreate'),

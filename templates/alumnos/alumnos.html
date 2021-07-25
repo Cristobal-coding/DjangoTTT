@@ -105,6 +105,14 @@ Filtrar Alumnos por Parametros
                                     <input type="date"  class="form-control rounded-pill form-control-sm" id="fecha2" name="fecha2" placeholder="Ingresa fecha 2" value="{{filters.maximo}}">
                                 </div>
                                 <div class="col-12 py-2">
+                                    <label for="curso" class="form-label fw-bold">Curso:</label>
+                                    <select  class="form-select rounded-pill form-control-sm" id="curso" name="curso">
+                                        <option value="">------------------</option>
+                                        <option value="5.0">Quinto Basica</option>
+                                        <option value="4.0">Curato Basica</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 py-2">
                                     <label for="sexo" class="form-label fw-bold">Género:</label>
                                     <select  class="form-select rounded-pill form-control-sm" id="sexo" name="sexo">
                                         {% if '1' in filters.gender %}selected{% endif %}

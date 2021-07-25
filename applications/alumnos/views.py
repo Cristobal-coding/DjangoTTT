@@ -38,18 +38,23 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
         f1=self.request.GET.get("fecha1",'')
         f2=self.request.GET.get("fecha2",'')
         sexo=self.request.GET.get("sexo",'')
-        if sexo:
-            if f1 and f2 and sexo:
-                return Alumno.objects.buscar_alumno_fecha_s(palabra_clave,f1,f2,sexo)
-            elif f1=="" and f2=="":
-                return Alumno.objects.buscar_alumno_s(palabra_clave,sexo)
-            else:
-                return Alumno.objects.buscar_por_sexo(sexo)
+        curso=self.request.GET.get("curso",'')
+        # if sexo:
+        #     if f1 and f2 and sexo:
+        #         return Alumno.objects.buscar_alumno_fecha_s(palabra_clave,f1,f2,sexo)
+        #     elif f1=="" and f2=="":
+        #         return Alumno.objects.buscar_alumno_s(palabra_clave,sexo)
+        #     else:
+        #         return Alumno.objects.buscar_por_sexo(sexo)
+        # else:
+        #     if f1 and f2:
+        #         return Alumno.objects.buscar_alumno_fecha(palabra_clave,f1,f2)
+        #     else:
+        if curso:
+
+            return Alumno.objects.buscar_curso(curso)
         else:
-            if f1 and f2:
-                return Alumno.objects.buscar_alumno_fecha(palabra_clave,f1,f2)
-            else:
-                return Alumno.objects.buscar_alumno(palabra_clave)
+            return Alumno.objects.buscar_alumno(palabra_clave)
 class AlumnoDetalle(LoginRequiredMixin,DetailView):
     template_name = 'alumnos/alumno_detalle.html'
     model = Alumno

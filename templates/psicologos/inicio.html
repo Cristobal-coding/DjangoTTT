@@ -30,7 +30,14 @@
                                 <td>{{i.rut_alumno.rut}} - {{i.rut_alumno.nombre}}</td>
                                 <td>{{i.id_psicologo.nombre}} {{i.id_psicologo.apellido_paterno}}</td>
                                 <td>{{i.fecha_emision}}</td>   
-                                <td>"Icono IMP""</td> 
+                                <td class="text-center">
+                                   
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><i class="far fa-file-pdf">
+                                        </i>
+                                    </a>
+
+                                   
+                                </td> 
                             </tr>
                             {% endfor %}
                         </tbody>

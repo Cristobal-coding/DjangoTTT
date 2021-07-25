@@ -1,3 +1,4 @@
+
 from django.db import models
 from applications.asignaturas.models import Asignatura, PlanEstudio
 from applications.alumnos.models import Alumno
@@ -9,17 +10,6 @@ class Fecha(models.Model):
         ('1','Primer semestre'),
         ('2','Segundo semestre'),
     )
-    # years = generate_years(2022)
-    # years=(
-    #     ('2021','2021'),('2020','2020'),('2019','2019'),
-    #     ('2018','2018'),('2017','2017'),('2016','2016'),
-    #     ('2015','2015'),('2014','2014'),('2013','2013'),
-    #     ('2012','2012'),('2011','2011'),('2010','2010'),
-    #     ('2009','2009'),('2008','2008'),('2007','2007'),
-    #     ('2006','2006'),('2005','2005'),('2004','2004'),
-    #     ('2003','2003'),('2002','2002'),('2001','2001'),
-    #     ('2000','2000'),     
-    # )
     cod_fecha =models.CharField('Cod_fecha',max_length=5,unique=True,primary_key=True)    
     fecha_inicio=models.DateField('Fecha de inicio')
     fecha_termino=models.DateField('Fecha de Termino',null=True,blank=True)
@@ -41,11 +31,16 @@ class Profesor(models.Model):
         db_table= 'Profesores'  
         ordering = ['nombres']
     def __str__(self):
-        return self.nombres +'(Prof. '+self.asig_impartir.nombre + ')'
+        if (self.asig_impartir is not None):
+            asign=self.asig_impartir.nombre
+        else:
+            asign="Sin Asignatura"
+        return self.nombres +'(Prof. '+ asign + ')'
+    rut=models.CharField('Rut',max_length=13,unique=True,primary_key=True)
     nombres=models.CharField('Nombres',max_length=50)
-    apellido_paterno=models.CharField('A.Paterno',max_length=30)
-    apellido_materno=models.CharField('A.Materno',max_length=30)
-    asig_impartir=models.ForeignKey(Asignatura,on_delete=models.CASCADE, related_name='asignatura')
+    apellido_paterno=models.CharField('A.Paterno',max_length=30,blank=True,null=True)
+    apellido_materno=models.CharField('A.Materno',max_length=30,blank=True,null=True)
+    asig_impartir=models.ForeignKey(Asignatura,on_delete=models.CASCADE, related_name='asignatura',blank=True,null=True)
     objects= ProfesorManager()
 
 
@@ -70,7 +65,7 @@ class Curso(models.Model):
     numero = models.FloatField('Numero')
     objects = CursoManager()
 
-    id_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='cursos' ,null=True,blank=True)
+    rut_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='cursos' ,null=True,blank=True)
     plan_estudio=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE,related_name='cursos')
     alumnos = models.ManyToManyField(Alumno,through='Curso_Alumno', related_name='cursos')
     asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Curso')
@@ -90,7 +85,7 @@ class Asignatura_Curso(models.Model):
     asignatura=models.ForeignKey(Asignatura,on_delete=models.CASCADE)
 
     #foranea hacia profesores
-    id_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='profesor', null=True, blank=True)
+    rut_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='profesor', null=True, blank=True)
 
 class Parciales(models.Model):
     

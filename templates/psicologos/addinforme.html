@@ -1,0 +1,93 @@
+{% extends '../layouts/master.html' %}
+{% load static %}
+{% block 'css-select2' %}
+    <!-- Jquery -->
+    <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
+    <!-- Select2 css y js-->
+    <link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
+    <script src="{% static 'js/select2.min.js' %}"></script>
+    <!-- Select2 theme con Bootstrap4 -->
+    <link rel="stylesheet" href="{% static 'css/select2-bootstrap4.min.css' %}">
+{% endblock 'css-select2' %}
+{% block 'content' %}
+
+
+<div class="row mx-0 my-0 h-100 w-100"> 
+    <div class="col-12 mx-0 my-0 px-0 h-100 w-100 py-0 " >
+        <div class="row mx-0 my-0 w-100 h-100 ">
+            <div class="col-12 text-center py-0 my-0 mx-0 "style="height: 5%;" >
+                {%include '../includes/actionspsicologo.html'%}
+            </div>    
+            <form method="POST" action="{% url 'psicologos_app:create' %}"  class="w-100 d-flex h-100"> 
+                {% csrf_token %}  
+                    <div class="col-8 offset-2 px-0 h-100 ">
+                        <div class="col-12 text-center"> <h1 style="font-weight: bolder; font-size: 40px; text-shadow: black;">Confeccionar un informe</h1></div>
+                       
+                        
+                            <div class="col-12  py-2 px-5 " style="font-size:21px;">
+                                {{form.rut_alumno.label}} :
+                                 {{form.rut_alumno}}
+                            </div>
+                            <div class="col-12  py-2 px-5" style="font-size:21px;">
+                                {{form.rut_psicologo.label}} :
+                                 {{form.rut_psicologo}}
+                            </div>
+
+                            <div class="col-6 offset-3 py-2 " style="font-size:21px;">
+                                {{form.fecha_emision.label}} :
+                                {{form.fecha_emision}}
+                            </div>
+                           
+                            <div class="col-12 py-2 px-5" style="font-size:21px;">
+                                {{form.pruebas_aplicadas.label}} :
+                                <div class="col">{{form.media}}
+                                    {{form.pruebas_aplicadas}}     </div>
+                                                                
+                            </div>
+                            <div class="col-12 py-2 px-5" style="font-size:21px;">
+                                {{form.motivo.label}} :
+                                <div class="col">{{form.media}}
+                                    {{form.motivo}}     </div>
+                                                                
+                            </div>
+   
+                            <div class="col-12 py-2 px-5" style="font-size:21px;">
+                                {{form.comentario.label}} :
+                                <div class="col">{{form.media}}
+                                    {{form.comentario}}     </div>
+                                                                
+                            </div>
+                            <div class="col-8 offset-2 py-2   "style="">
+                                <button type="submit" class="btn btn-primary rounded-pill w-100"><i class="fas fa-sort mx-1"></i>Agregar</button>
+                            </div>
+                        
+                      
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock 'content' %}
+
+{% block 'js-select2' %}
+<script>
+    $(document).ready(function() {
+        $('#id_rut_alumno').select2({
+            theme: 'bootstrap4',
+            placeholder:'Seleccione Alumno',
+            allowClear: true,
+            
+        });
+        $('#id_rut_psicologo').select2({
+            theme: 'bootstrap4',
+            placeholder:'Seleccione Psicologo',
+            allowClear: true,
+            
+        });
+
+    });
+ </script>
+{% endblock 'js-select2' %}
+
