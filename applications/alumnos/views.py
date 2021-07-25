@@ -45,7 +45,7 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
                 if f1 and f2 and sexo:
                     return Alumno.objects.buscar_alumno_fecha_s_curso(palabra_clave,f1,f2,sexo)
                 elif f1=="" and f2=="":
-                    return Alumno.objects.buscar_alumno_s_curso(palabra_clave,sexo)
+                    return Alumno.objects.buscar_alumno_s_curso(palabra_clave,sexo,curso)
                 else:
                     return Alumno.objects.buscar_curso_sexo(curso,sexo)
             else:
