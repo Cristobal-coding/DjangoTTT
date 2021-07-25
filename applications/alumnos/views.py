@@ -21,6 +21,7 @@ class AlumnosHome(LoginRequiredMixin,TemplateView):
         context = super(AlumnosHome, self).get_context_data(**kwargs)
         context['alumnos'] = Alumno.objects.count()
         context['apoderados'] = Apoderado.objects.count()
+        #funciona esto?
         context['fem'] = Alumno.objects.filter(sexo__icontains='0')
         context['masc'] = Alumno.objects.filter(sexo__icontains='1')
         return context
@@ -39,11 +40,11 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
         f2=self.request.GET.get("fecha2",'')
         sexo=self.request.GET.get("sexo",'')
         curso=self.request.GET.get("curso",'')
-        print("Palabra a comparar: " + palabra_clave)
+        #print("Palabra a comparar: " + palabra_clave)
         if curso:
             if sexo:
                 if f1 and f2 and sexo:
-                    return Alumno.objects.buscar_alumno_fecha_s_curso(palabra_clave,f1,f2,sexo)
+                    return Alumno.objects.buscar_alumno_fecha_s_curso(palabra_clave,f1,f2,sexo,curso)
                 elif f1=="" and f2=="":
                     return Alumno.objects.buscar_alumno_s_curso(palabra_clave,sexo,curso)
                 else:
