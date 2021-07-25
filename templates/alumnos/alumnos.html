@@ -20,7 +20,7 @@ Filtrar Alumnos por Parametros
                       <tr>
                         <th scope="col">Rut</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Cursos</th>
+                        <th scope="col">Cursos (Actual)</th>
                         <th scope="col">Estado</th>
                         <th scope="col" class="text-center">Perfil</th>      
                       </tr>
@@ -34,7 +34,7 @@ Filtrar Alumnos por Parametros
                         {% date_to_age alumno.fecha_nacimiento as edad%}           
                             <tr>
                                 <th scope="row"><h6 class="my-0 fw-bold">{{alumno.rut}}</h6><small class="my-0 fw-light">{% if edad == '' %}Edad no ingresada{%else%}{{edad}} Años{%endif%}</small></th>
-                                <td><h6 class="my-0 fw-bold">{{alumno.nombre}}</h6><small class="my-0 fw-light">{{alumno.get_sexo_display}}</small></td>
+                                <td><h6 class="my-0 fw-bold">{{alumno.nombre}} {{alumno.apellido_paterno}}</h6><small class="my-0 fw-light">{{alumno.get_sexo_display}}</small></td>
                                 <td>{{alumno.get_current_curso}}</td>
                                 <td >
                                     {% if alumno.estado == '0' %}
@@ -108,8 +108,22 @@ Filtrar Alumnos por Parametros
                                     <label for="curso" class="form-label fw-bold">Curso:</label>
                                     <select  class="form-select rounded-pill form-control-sm" id="curso" name="curso">
                                         <option value="">------------------</option>
-                                        <option value="5.0">Quinto Basica</option>
-                                        <option value="4.0">Curato Basica</option>
+                                        <option value="1.0">Primero Basico</option>
+                                        <option value="2.0">Segundo Basico</option>
+                                        <option value="3.0">Tercero Basico</option>
+                                        <option value="4.0">Cuarto Basico</option>
+                                        <option value="5.0">Quinto Basico</option>
+                                        <option value="6.0">Sexto Basico</option>
+                                        <option value="7.0">Septimo Basico</option>
+                                        <option value="8.0">Octavo Basico</option>
+                                        <option value="9.0">Primero Medio</option>
+                                        <option value="10.0">Segundo Medio</option>
+                                        <option value="11.0">Tercero Medio Construccion</option>
+                                        <option value="11.1">Tercero Medio Electricidad</option>
+                                        <option value="11.2">Tercero Medio Construcciones Metalicas</option>
+                                        <option value="12.0">Cuarto Medio Construccion</option>
+                                        <option value="12.1">Cuarto Medio Electricidad</option>
+                                        <option value="12.2">Cuarto Medio Construcciones Metalicas</option>
                                     </select>
                                 </div>
                                 <div class="col-12 py-2">

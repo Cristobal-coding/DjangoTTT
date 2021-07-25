@@ -4,8 +4,8 @@ from django.db.models import Q
 
 class AlumnoManager(models.Manager):
     def buscar_alumno(self, kword):
-        resultado =self.filter(
-            Q(nombre__icontains=kword) | Q(apellido_paterno__icontains=kword) | Q(apellido_materno__icontains=kword)
+        resultado =self.filter(        
+            Q(nombre__icontains=kword) | Q(apellido_paterno__icontains=kword) | Q(apellido_materno__icontains=kword)| Q(rut__icontains=kword)
             ).order_by('apellido_paterno')
         return resultado
     def buscar_alumno_fecha(self, kword,fecha1,fecha2):
@@ -33,21 +33,66 @@ class AlumnoManager(models.Manager):
             fecha_nacimiento__range=(f1,f2), sexo=sex
             ).order_by('apellido_paterno')
         return resultado
-    def buscar_curso(self,curso):
-        total = self.all()
+    # Ordenados por  CURSO
+    def buscar_curso(self,kword,curso):
+        total =self.filter(
+            Q(nombre__icontains=kword) | Q(apellido_paterno__icontains=kword) | Q(apellido_materno__icontains=kword)
+            ).order_by('apellido_paterno')
         result=[]
         for a in total:
             cant = a.curso_alumno_set.all()
             for p in cant:
                 if p.curso.numero == float(curso): 
-                    result.append(a)
-                    
-                        
+                    result.append(a)        
+        return result    
+    def buscar_curso_sexo(self,curso,sex):
+        total = self.filter(sexo=sex)
+        result=[]
+        for a in total:
+            cant = a.curso_alumno_set.all()
+            for p in cant:
+                if p.curso.numero == float(curso): 
+                    result.append(a)        
         return result
-    
-
-
-    
+    def buscar_alumno_fecha_curso(self, kword,fecha1,fecha2,curso):
+        f1= datetime.datetime.strptime(fecha1,"%Y-%m-%d").date()
+        f2= datetime.datetime.strptime(fecha2,"%Y-%m-%d").date()
+        total =self.filter(
+            (Q(nombre__icontains=kword) | Q(apellido_paterno__icontains=kword) | Q(apellido_materno__icontains=kword)),
+            fecha_nacimiento__range=(f1,f2)
+            ).order_by('apellido_paterno')
+        result=[]
+        for a in total:
+            cant = a.curso_alumno_set.all()
+            for p in cant:
+                if p.curso.numero == float(curso): 
+                    result.append(a)        
+        return result
+    def buscar_alumno_s_curso(self, kword,sex,curso):
+        total =self.filter(
+            (Q(nombre__icontains=kword) | Q(apellido_paterno__icontains=kword) | Q(apellido_materno__icontains=kword)), sexo=sex
+            ).order_by('apellido_paterno')
+        result=[]
+        for a in total:
+            cant = a.curso_alumno_set.all()
+            for p in cant:
+                if p.curso.numero == float(curso): 
+                    result.append(a)        
+        return result
+    def buscar_alumno_fecha_s_curso(self, kword,fecha1,fecha2,sex,curso):
+        f1= datetime.datetime.strptime(fecha1,"%Y-%m-%d").date()
+        f2= datetime.datetime.strptime(fecha2,"%Y-%m-%d").date()
+        total =self.filter(
+            (Q(nombre__icontains=kword) | Q(apellido_paterno__icontains=kword) | Q(apellido_materno__icontains=kword)),
+            fecha_nacimiento__range=(f1,f2), sexo=sex
+            ).order_by('apellido_paterno')
+        result=[]
+        for a in total:
+            cant = a.curso_alumno_set.all()
+            for p in cant:
+                if p.curso.numero == float(curso): 
+                    result.append(a)        
+        return result
     # from applications.alumnos.models import Alumno
     # result = Alumno.objects.get_alumno_sin_curso()    
     #Retorna alumnos sin curso, y que ademas tengan estado regular
