@@ -65,7 +65,7 @@ class Curso(models.Model):
     numero = models.FloatField('Numero')
     objects = CursoManager()
 
-    rut_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='cursos' ,null=True,blank=True)
+    id_prof_jefe=models.ForeignKey(Profesor,on_delete=models.CASCADE, related_name='cursos' ,null=True,blank=True)
     plan_estudio=models.ForeignKey(PlanEstudio,on_delete=models.CASCADE,related_name='cursos')
     alumnos = models.ManyToManyField(Alumno,through='Curso_Alumno', related_name='cursos')
     asignaturas = models.ManyToManyField(Asignatura, through='Asignatura_Curso')
@@ -85,7 +85,7 @@ class Asignatura_Curso(models.Model):
     asignatura=models.ForeignKey(Asignatura,on_delete=models.CASCADE)
 
     #foranea hacia profesores
-    rut_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='profesor', null=True, blank=True)
+    id_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='profesor', null=True, blank=True)
 
 class Parciales(models.Model):
     
