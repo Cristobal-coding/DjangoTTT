@@ -26,7 +26,7 @@
 
 
 
-<body class="bg-light" {% if 'addinforme' in request.path %} onbeforeunload="return WannaLeave()" {% endif %} >
+<body class="bg-light" {% if 'addinforme' in request.path %} onbeforeunload {% endif %} >
     <div class="container-fluid p-0 vh-100">
         <div class="row mx-0  h-100">
             <div class="col-2 px-0 h-100">
@@ -57,12 +57,8 @@
         return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     </script>
-    <script>
-        function WannaLeave() {
-          return "Verificar Salida";
-        }
-    </script>
-</body>
+
+        </body>
 
 {% block 'js-select2' %}
 

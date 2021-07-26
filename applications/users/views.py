@@ -60,7 +60,7 @@ class CreateUser(LoginRequiredMixin,CreateView):
             nombre=form.cleaned_data['username'],
             apellido_paterno="",
             apellido_materno="",
-            correo="",
+            correo=None,
             telefono="",
             fecha_ingreso=date.today()
             )

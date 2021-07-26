@@ -27,10 +27,19 @@ def antecedente_create(request):
              messages.error(request,'Ya existe ese nombre')
         else:
             Antecedente.objects.create(
-                nombre_antecedente=(request.POST['nombre']).upper(),
+                nombre_antecedente=(request.POST['nombre']).lower(),
             )
             messages.success(request,'!!Antecedente añadido con exito!!')
        
         # print("request: ", request.POST)
         
+    return HttpResponseRedirect(reverse('antecedentes_app:inicio'))
+   
+
+
+def edit_antecedente(request,pk):
+    if request.method == 'POST':
+        query=Antecedente.objects.get(pk=pk)
+        query.nombre_antecedente = request.POST['nombre']
+        query.save()
     return HttpResponseRedirect(reverse('antecedentes_app:inicio'))

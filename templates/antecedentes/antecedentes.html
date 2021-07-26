@@ -12,10 +12,9 @@
                     </li>
                                 
                     {% for a in alumno_antecedente  %}
-                        <li class=" my-1 shadow-sm" style="height: 150px !important; position: relative;">
-                            <h2 class="p-2" style="color:#594F8D; font-size: 25px;font-weight:900; text-decoration: underline;">{{a.antecedente.nombre_antecedente}}</h2>
-                            <h3 class="px-2"><a href="{% url 'alumnos_app:detailAlumn' a.alumno.rut %}">{{a.alumno.nombre}} {{a.alumno.apellido_paterno}}</a></h3>
-                            <sub class="px-2">{{a.alumno.rut}}</sub>
+                        <li class=" my-1 shadow-sm" style="height: 125px !important; position: relative;">
+                            <h2 class="p-2" style="color:#594F8D; font-size: 25px;font-weight:900;   text-transform: capitalize; ">{{a.antecedente.nombre_antecedente}}</h2>
+                            <h4 class="px-2 wrapper" style=" font-size: 20px;text-decoration: underline;"><a href="{% url 'alumnos_app:detailAlumn' a.alumno.rut %}">{{a.alumno.nombre}} {{a.alumno.apellido_paterno}} - {{a.alumno.rut}}</a></h4>
                             <h6 class="float-right sticky-bottom p-2"style="position: absolute;
                                 bottom: 0;
                                 right: 0;">{{a.fecha}}</h6>
@@ -40,7 +39,7 @@
                                             <input type="text" class="form-control rounded-pill form-control-sm" id="nombre" name="nombre"  placeholder="&#xf00e; Nombre del antecedente"  style="font-family:KoHo, FontAwesome">
                                         </div>
                                     </div>
-                                    <div class="col-12 py-2  "style="">
+                                    <div class="col-12 py-2 px-2  "style="">
                                         <button type="submit" class="btn btn-primary rounded-pill w-25"><i class="fas fa-sort mx-1"></i>Agregar</button>
                                     </div>
                                 </div>
@@ -54,19 +53,45 @@
                                 <thead class="table-dark" >      
                                     <tr>
                                     <th>Antecedente</th>
-                                    <th>Repeticiones</th>
-                                    <th>Borrar</th>
+                                    <th>Editar</th>
                                     </tr>    
-                                </thead>                        
-                                <tbody>  
-                                    
+                                </thead>      
+                                                  
+                                <tbody>                                     
                                     {% for s in antecedentes  %}
                                         <tr>
-                                            <th>{{s.nombre_antecedente}}</th>
-                                        
-                                            <th>contador</th>
-
-                                            <th><a href="#"><i class="fas fa-trash-alt"></i></a></th>
+                                            <th style=" text-transform: capitalize;">{{s.nombre_antecedente}}</th>                               
+                                            <th><a  data-bs-toggle="modal" data-bs-target="#editAntecedente{{s.id}}"><i class="fas fa-edit"></i></a></th>
+                                              <!-- Modal -->
+                                              <div class="modal fade"  data-bs-backdrop="static" id="editAntecedente{{s.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-scrollable" style="max-width: 880px !important;">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Editar Nombre del antecedente
+                                                                <span class="fw-bold"></span>
+                                                            </h5>
+                                                            
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{% url 'antecedentes_app:edit' s.id %}" method="POST">
+                                                                {% csrf_token %}
+                                                                {{s.nombre_antecedente}}
+                                                                <label for="nombre" class="form-label fw-bold">Nombre de antecedente:</label>
+                                                                <input type="text" class="form-control rounded-pill form-control-sm" id="nombre" name="nombre"  placeholder="&#xf00e; Nombre del antecedente"  style="font-family:KoHo, FontAwesome">
+                                                                <div class="row mx-0 w-100 py-2">
+                                                                    <div class="col-6">
+                                                                        <button type="button" class="btn btn-outline-danger w-100" data-bs-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <button type="submit" class="btn btn-outline-success w-100">Registrar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
                                     {% endfor %} 
                             </tbody>                  

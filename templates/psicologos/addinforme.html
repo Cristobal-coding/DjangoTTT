@@ -18,7 +18,7 @@
             <div class="col-12 text-center py-0 my-0 mx-0 "style="height: 5%;" >
                 {%include '../includes/actionspsicologo.html'%}
             </div>    
-            <form method="POST" action="{% url 'psicologos_app:create' %}"  class="w-100 d-flex h-100"> 
+            <form method="POST" id="informe" action="{% url 'psicologos_app:create' %}"  class="w-100 d-flex h-100"> 
                 {% csrf_token %}  
                     <div class="col-8 offset-2 px-0 h-100 ">
                         <div class="col-12 text-center"> <h1 style="font-weight: bolder; font-size: 40px; text-shadow: black;">Confeccionar un informe</h1></div>
@@ -28,21 +28,7 @@
                                 {{form.rut_alumno.label}} :
                                  {{form.rut_alumno}}
                             </div>
-                            <div class="col-12  py-2 px-5" style="font-size:21px;">
-                                <label for="">Psicólogo:</label>
-                                <select name="sicologo" id="" class="form-select rounded-pill">
-                                    
-                                    {% for p in psicologo %}
-                                        <option value="{{p.rut}}" {% if p.rut == user.rut %} selected disabled{%endif %}>{{p}}</option>
-                                    {% endfor %}
-                                        
-                                </select>
 
-
-
-                                <!-- {{form.rut_psicologo.label}} :
-                                 {{form.rut_psicologo}} -->
-                            </div>
 
                             <div class="col-6 offset-3 py-2 " style="font-size:21px;">
                                 {{form.fecha_emision.label}} :
@@ -71,6 +57,22 @@
                             <div class="col-8 offset-2 py-2   "style="">
                                 <button type="submit" class="btn btn-primary rounded-pill w-100"><i class="fas fa-sort mx-1"></i>Agregar</button>
                             </div>
+                            
+                            <div class="col-12  py-2 px-5 d-none " style="font-size:21px;" >
+                                <label for="">Psicólogo:</label>
+                                <select name="rut_psicologo" id="rut_psicologo" class="form-select rounded-pill " >
+                                    
+                                    {% for p in psicologos %}
+                                        <option value="{{p.rut}}" {% if p.rut == user.rut %} selected {%endif %}>{{p}}</option>
+                                    {% endfor %}
+                                        
+                                </select>
+
+
+
+                                <!-- {{form.rut_psicologo.label}} :
+                                 {{form.rut_psicologo}} -->
+                            </div>
                         
                       
                     </div>
@@ -78,7 +80,21 @@
         </div>
     </div>
 </div>
+<script>
 
+    $(document).on("submit", "informe", function(event){
+        // disable unload warning
+        $(window).off('beforeunload');
+    });
+
+    $(window).on('beforeunload', function checkf(){
+        return "Any changes will be lost";
+    });
+
+    // Form Submit
+    
+    
+</script>
 
 {% endblock 'content' %}
 
