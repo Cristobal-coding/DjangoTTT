@@ -44,7 +44,7 @@ class CursosAll(LoginRequiredMixin,ListView):
         todo = True
         if len(self.request.GET) == 0:
             pass
-        else:
+        elif 'id' in self.request.get_full_path():
             values=[]
             values.append(self.request.GET['id'])
             values.append(self.request.GET['year'])
@@ -136,6 +136,7 @@ def remove_alumno(request,):
                     al.save()
             curso.alumnos.remove(data[1])
             # Aqui deberia escribir que es repitente en ANTECEDENTES
+            antecedente_repitente(data[1],curso )
 
         elif data[0] == 'abandono':
             print(data)
