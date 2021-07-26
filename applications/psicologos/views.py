@@ -14,7 +14,7 @@ from django.http import HttpResponseRedirect, request
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView, View
-from django.views.generic.edit import  FormView
+from django.views.generic.edit import  CreateView, FormView
 
 # Create your views here.
 
@@ -39,7 +39,7 @@ class InformeView(LoginRequiredMixin,ListView):
             return Informe.objects.buscar_informe_rut(rut)
 
 
-class CreateInformeView(LoginRequiredMixin,FormView):
+class CreateInformeView(LoginRequiredMixin,CreateView):
     template_name = "psicologos/addinforme.html"
     model = Informe
     form_class=InformeForm
@@ -50,16 +50,17 @@ class CreateInformeView(LoginRequiredMixin,FormView):
         context['psicologos'] = Psicologo.objects.all()
         return context
     def form_valid(self, form):
-        #El psicologo no viene del form, lo saco del request
-        sicologo = Psicologo.objects.get(rut=self.request.POST['sicologo'])
-        
-        #Aqui crea el informe ....
-            #....
-
-        #PD: recuerda en el form.py, eliminar el atributo psicologo, ya que lo creamos a mano
-        self.object = form.save() # Esto comentalo
-        messages.success(request,'!!Informe creado con exito!!.')
-        return super().form_valid(form)
+        sicologo = Psicologo.objects.get(rut=self.request.POST['psicologo'])
+        Informe.objects.create(
+            fecha_emision = self.request.POST['fecha_emision'],
+            pruebas_aplicadas = self.request.POST['pruebas_aplicadas'],
+            motivo = self.request.POST['motivo'],
+            comentario=self.request.POST['comentario'],
+            rut_psicologo=sicologo,
+            rut_alumno=Alumno.objects.get(rut=self.request.POST['rut_alumno']),          
+        )
+        messages.success(self.request,'!!Informe creado con exito!!.')
+        return HttpResponseRedirect(reverse('psicologos_app:addinforme'))
     
 class InformeDetailView(DetailView):
     model= Informe
@@ -73,25 +74,11 @@ class InformeDetailView(DetailView):
 class InformePDFView(View):
 
     def get(self,request,*args,**kwargs):
-        informes = Informe.objects.all()
         data={
-            'informe' :informes
+            'informes' :Informe.objects.get(id=self.kwargs['pk'])
         }
         pdf = render_to_pdf("psicologos/informe.html",data)
         return HttpResponse(pdf, content_type='application/pdf')
         
 
 
-def create(request):
-    if request.method == 'POST':
-        rut_alumno = Alumno.objects.get(rut = request.POST['rut_alumno'])
-        psicologo = Psicologo.objects.get(rut = request.POST['rut_psicologo'])
-        Informe.objects.create(
-            fecha_emision = request.POST['fecha_emision'],
-            pruebas_aplicadas = request.POST['pruebas_aplicadas'],
-            motivo = request.POST['motivo'],
-            comentario=request.POST['comentario'],
-            rut_psicologo=psicologo,
-            rut_alumno=rut_alumno,          
-        )
-    return HttpResponseRedirect(reverse('psicologos_app:inicio'))
