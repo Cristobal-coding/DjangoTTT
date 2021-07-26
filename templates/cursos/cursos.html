@@ -4,6 +4,11 @@
 Cursos del Establecimiento Manheim
 {% endblock 'titulo' %}
 
+{% block 'css-select2' %}
+<link rel="stylesheet"  href="{% static 'css/multi-select(pathern).css' %}">
+{% endblock 'css-select2' %}
+
+
 
 {% block 'content' %}
 <a href=""></a>
@@ -176,6 +181,17 @@ Cursos del Establecimiento Manheim
                     <label for="">Fecha de inicio del próximo semestre:</label>
                     <input type="date" class="form-control" name="semestre_new" id="fasemestre_new">
                   </div>
+                  <div class="w-100 d-flex flex-column align-items-center justify-content-center">
+                    <label for="">Alumnos repitentes de 4°Medio:</label>
+                    <select id="alumnos-repitentes" name="repitentes" multiple="multiple">
+                      
+                      {% for alumno in alumnos_cuarto  %}
+                        <option value="{{alumno.rut}}">{{alumno}}</option>
+                      {% endfor %}
+                        
+                    </select>
+
+                  </div>
                   <div class="m-2">
                     <h6><span class="text-decoration-underline text-danger">Información:</span> El siguiente año, se tomará como el <span>{{current_año_new}}</span></h6>
                   </div>
@@ -258,7 +274,48 @@ Cursos del Establecimiento Manheim
     
     {% endfor %}
 {% endif %}
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="{% static 'js/jquery.quicksearch.js' %}"></script> 
+<script src="{% static 'js/jquery.multi-select.js' %}"></script> 
+<script>
+  $(document).ready(function() {
+    $('#alumnos-repitentes').multiSelect({
+      selectableHeader: "<input type='text' class='search-input form-control my-2' autocomplete='off' placeholder='Búsqueda...'>",
+      selectionHeader: "<div style='margin-bottom: 55px !important;'></div>",
+      afterInit: function(ms){
+        var that = this,
+            $selectableSearch = that.$selectableUl.prev(),
+            $selectionSearch = that.$selectionUl.prev(),
+            selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+            selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+    
+        that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+        .on('keydown', function(e){
+          if (e.which === 40){
+            that.$selectableUl.focus();
+            return false;
+          }
+        });
+    
+        that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+        .on('keydown', function(e){
+          if (e.which == 40){
+            that.$selectionUl.focus();
+            return false;
+          }
+        });
+      },
+      afterSelect: function(){
+        this.qs1.cache();
+        this.qs2.cache();
+      },
+      afterDeselect: function(){
+        this.qs1.cache();
+        this.qs2.cache();
+      }
+    });
+  });
+</script>
 
 {% endblock 'js-select2' %}
 

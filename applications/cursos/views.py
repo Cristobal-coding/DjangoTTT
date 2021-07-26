@@ -1,4 +1,5 @@
-from applications.alumnos.models import Alumno
+from applications.alumnos.models import Alumno,Alumno_antecedente
+from applications.antecedentes.models import Antecedente
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -7,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 from .models import Curso , Fecha, PlanEstudio, Profesor
 from .logicas import cursos_base , get_curso_anterior_pk
+from datetime import datetime
 # Create your views here.
 class CursosHome(LoginRequiredMixin,TemplateView):
     template_name = 'cursos/cursos.html'
@@ -15,8 +17,9 @@ class CursosHome(LoginRequiredMixin,TemplateView):
     login_url = reverse_lazy('home_app:login')
     def get_context_data(self, **kwargs):
         context = super(CursosHome, self).get_context_data(**kwargs)
-        cursos, current_año, current_semestre = Curso.objects.get_all_data()
+        cursos, current_año, current_semestre = Curso.objects.get_all_data()      
         context['current_cursos'] =cursos
+        context['alumnos_cuarto'] =Curso.objects.alumnos_cuarto(current_año,current_semestre)
         if cursos:
             context['current_año'] = int(current_año)
             context['current_año_new'] = int(current_año)+1
@@ -196,6 +199,7 @@ def finalizar_semestre(request):
                     alumno.save()
                     if not alumno.abandono:
                         this_curso.alumnos.add(alumno.alumno.rut)
+                        
                 linked_asignaturas_to_curso(this_curso)
                 #Finalmente fijamos como el curso actual a los alumnos
                 for current_al in this_curso.curso_alumno_set.all():
@@ -211,6 +215,7 @@ def finalizar_año(request,):
         fecha_inicio_old = request.POST['semestre_old']
         fecha_inicio_new = request.POST['semestre_new']
         if rol == 'Administrador' or rol == 'Director':
+            repitentes = request.POST.getlist('repitentes')
             cursos, current_año, current_semestre = Curso.objects.get_all_data()
             new_year = create_new_fecha(
                 current_año=current_año,
@@ -257,18 +262,23 @@ def finalizar_año(request,):
                             alumno.save() 
                             if not alumno.abandono:
                                 this_curso.alumnos.add(alumno.alumno.rut)
-                        #Este curso es el actual de los alumnos
-                        for a in this_curso.curso_alumno_set.all():
-                            a.is_current=True
-                            a.save()
                         linked_asignaturas_to_curso(this_curso)
                         #Cambia el estado a Finalizado de los alumnos que salen de 4to
                         cuarto_actual = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
                         for alumno in cuarto_actual.curso_alumno_set.all():
-                            alumno.alumno.estado = '2'
-                            alumno.alumno.save()
+                            if not alumno.alumno.rut in repitentes:
+                                alumno.alumno.estado = '2'
+                                alumno.alumno.save()
+                            for repitente in repitentes:
+                                if repitente == alumno.alumno.rut:
+                                    this_curso.alumnos.add(repitente)
+                                    antecedente_repitente(repitente,cuarto_actual)
                             alumno.is_current= False
                             alumno.save()          
+                        #Este curso es el actual de los alumnos
+                        for a in this_curso.curso_alumno_set.all():
+                            a.is_current=True
+                            a.save()
                     #Acciones para Tercero medio
                     elif i in [10,11,12]:
                         base = cursos_base[i]
@@ -358,6 +368,20 @@ def profe_to_curso(request,):
             curso.save()
         messages.success(request,'!!Profesor Jefe actualizado con exito!!')
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+def antecedente_repitente(rut,curso):
+    alumno = Alumno.objects.get(rut=rut)
+    cant = Antecedente.objects.filter(nombre_antecedente = 'Repitente').count()
+    if cant == 0:
+        Antecedente.objects.create(
+            nombre_antecedente = 'Repitente'
+        )
+    Alumno_antecedente.objects.create(
+        alumno = alumno,
+        fecha = datetime.now(),
+        detalle='Alumno repitente del curso ' + curso.nombre + ' del año ' + str(curso.cod_fecha.year),
+        antecedente =Antecedente.objects.get(nombre_antecedente = 'Repitente')
+    )
 
 def validate_cursos(cursos):
     proceder= True

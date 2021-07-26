@@ -115,12 +115,18 @@ class CursoManager(models.Manager):
                     curso = c
         return curso
 
-    # def prove_Asign(self):
-    #     result= self.all()
-    #     for i in result:
-    #         print(i.asignatura_curso_set.all())
-            # from applications.cursos.models import Curso
-            # asign = Curso.objects.prove_Asign()
-
-   
+    def alumnos_cuarto(self, year, semestre):
+        total= self.all()
+        cuartos = total.filter(
+            Q(numero__in = [12.0,12.1,12.2]) &
+            Q(cod_fecha__year = year) &
+            Q(cod_fecha__semestres = semestre)
+        )
+        alumnos=[]
+        for curso in cuartos:
+            for alumno in curso.alumnos.all():
+                alumnos.append(alumno)
+        return alumnos
+    # from applications.cursos.models import Curso
+#    curso = Curso.objects.alumnos_cuarto(2021,'1')
     
