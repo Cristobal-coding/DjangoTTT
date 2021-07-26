@@ -29,8 +29,19 @@
                                  {{form.rut_alumno}}
                             </div>
                             <div class="col-12  py-2 px-5" style="font-size:21px;">
-                                {{form.rut_psicologo.label}} :
-                                 {{form.rut_psicologo}}
+                                <label for="">Psicólogo:</label>
+                                <select name="sicologo" id="" class="form-select rounded-pill">
+                                    
+                                    {% for p in psicologo %}
+                                        <option value="{{p.rut}}" {% if p.rut == user.rut %} selected disabled{%endif %}>{{p}}</option>
+                                    {% endfor %}
+                                        
+                                </select>
+
+
+
+                                <!-- {{form.rut_psicologo.label}} :
+                                 {{form.rut_psicologo}} -->
                             </div>
 
                             <div class="col-6 offset-3 py-2 " style="font-size:21px;">

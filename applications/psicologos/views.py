@@ -38,8 +38,23 @@ class CreateInformeView(LoginRequiredMixin,FormView):
     template_name = "psicologos/addinforme.html"
     model = Informe
     form_class=InformeForm
-    context_object_name = 'informe'
     login_url = reverse_lazy('home_app:login') 
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateInformeView, self).get_context_data(**kwargs)
+        context['psicologos'] = Psicologo.objects.all()
+        return context
+    def form_valid(self, form):
+        #El psicologo no viene del form, lo saco del request
+        sicologo = Psicologo.objects.get(rut=self.request.POST['sicologo'])
+        
+        #Aqui crea el informe ....
+            #....
+
+        #PD: recuerda en el form.py, eliminar el atributo psicologo, ya que lo creamos a mano
+        self.object = form.save() # Esto comentalo
+        messages.success(request,'!!Informe creado con exito!!.')
+        return super().form_valid(form)
     
 
 
