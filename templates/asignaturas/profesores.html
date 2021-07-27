@@ -22,6 +22,7 @@
                 <table class="table table-sm">
                     <thead class="table-dark">
                         <tr>
+                            <td>Rut</td>
                             <td>Nombres</td>
                             <td>Apellido Paterno</td>
                             <td>Apellido Materno</td>
@@ -39,12 +40,17 @@
                             
                         {% for prof in profesores %}
                             <tr>
+                                <td>{{prof.rut}}</td>
                                 <td>{{prof.nombres}}</td>
                                 <td>{{prof.apellido_paterno}}</td>
                                 <td>{{prof.apellido_materno}}</td>
                                 <td>{{prof.asig_impartir.nombre}}</td>
                                 <td class="text-center">
+                                    
                                     <!-- Button trigger modal -->
+                                    <button type="button" class="btn p-0">
+                                        <i class="far fa-books fs-5 text-warning"></i>
+                                    </button>
                                     <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#edit{{prof.id}}">
                                         <i class="far fa-user-edit text-success fs-5"></i>
                                     </button>
@@ -62,7 +68,7 @@
                                     <div class="modal-body">
                                         <form action="{% url 'asignaturas_app:editProfesor' %}" method="POST">
                                             {% csrf_token %}
-                                            <input type="hidden" name="profesor" value="{{prof.id}}">
+                                            <input type="hidden" name="profesor" value="{{prof.rut}}">
                                             <label for="">Nombre del Profesor:</label>
                                             <input type="text" name="nombre" value="{{prof.nombres}}" class="form-control rounded-pill">
                                             <label for="">Apellido Paterno:</label>
@@ -107,6 +113,8 @@
                         <form action="{% url 'asignaturas_app:createProfesor' %}" method="POST">
                             {% csrf_token %}
                             <h4 class="fw-bold">Añadir Profesor</h4>
+                            <label for="">Rut del Profesor:</label>
+                            <input type="text" name="rut" class="form-control rounded-pill">
                             <label for="">Nombre del Profesor:</label>
                             <input type="text" name="nombre" class="form-control rounded-pill">
                             <label for="">Apellido Paterno:</label>

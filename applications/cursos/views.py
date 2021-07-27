@@ -358,6 +358,7 @@ def linked_asignaturas_to_curso(curso):
 
 def profe_to_curso(request,):
     if request.method == 'POST':
+        print(request.POST)
         key_profe = request.POST['prof_jefe']
         key_curso = request.POST['curso']
         curso = Curso.objects.get(id_curso = key_curso)
@@ -365,7 +366,7 @@ def profe_to_curso(request,):
             curso.id_prof_jefe =None
             curso.save()
         else:
-            curso.id_prof_jefe = Profesor.objects.get(id = key_profe)
+            curso.id_prof_jefe = Profesor.objects.get(rut = key_profe)
             curso.save()
         messages.success(request,'!!Profesor Jefe actualizado con exito!!')
     return HttpResponseRedirect(request.META['HTTP_REFERER'])

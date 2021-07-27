@@ -280,10 +280,10 @@ Cursos del Establecimiento Manheim
                                                             
                                                             {% for pr in profs %}
                                                                 
-                                                                {% if curso.id_prof_jefe.id == pr.id %}
-                                                                <option value="{{pr.id}}" selected>{{pr}}</option>
+                                                                {% if curso.id_prof_jefe.rut == pr.rut %}
+                                                                <option value="{{pr.rut}}" selected>{{pr}}</option>
                                                                 {% else %}
-                                                                <option value="{{pr.id}}">{{pr}}</option>
+                                                                <option value="{{pr.rut}}">{{pr}}</option>
                                                                 {% endif %}
                                                                     
                                                             {% endfor %}
@@ -411,9 +411,9 @@ Cursos del Establecimiento Manheim
                                                                             <select class="form-select" name="profesor" aria-label="Floating label select example">
                                                                                 <option value="">---------</option>
                                                                                 {% for prof in profs %}
-                                                                                <option value="{{prof.id}}"
+                                                                                <option value="{{prof.rut}}"
                                                                                 
-                                                                                {% if a.id_profesor.id == prof.id %}
+                                                                                {% if a.rut_profesor.rut == prof.rut %}
                                                                                     selected
                                                                                 {% endif %}
                                                                                     

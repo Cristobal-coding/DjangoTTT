@@ -76,7 +76,6 @@ class PlanesView(LoginRequiredMixin, FormView):
 
 def profe_to_asign(request,):
     if request.method == 'POST':
-        print(request.POST)
         key_asign = request.POST['asignatura']
         key_prof = request.POST['profesor']
         key_curso = request.POST['curso']
@@ -88,7 +87,7 @@ def profe_to_asign(request,):
                     asign.id_profesor =None
                     asign.save()
                 else:
-                    asign.id_profesor =Profesor.objects.get(id=key_prof)
+                    asign.id_profesor =Profesor.objects.get(rut=key_prof)
                     asign.save()
         messages.success(request,'!!Profesor actualizado con exito!!')
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -116,6 +115,7 @@ def profesor_create(request):
     if request.method == 'POST':
 
         Profesor.objects.create(
+            rut=request.POST['rut'],
             nombres=request.POST['nombre'],
             apellido_paterno=request.POST['paterno'],
             apellido_materno=request.POST['materno'],
@@ -125,7 +125,7 @@ def profesor_create(request):
     return HttpResponseRedirect(reverse('asignaturas_app:profesores'))
 def profesor_edit(request):
     if request.method == 'POST':
-        profesor = Profesor.objects.get(id=request.POST['profesor'])
+        profesor = Profesor.objects.get(rut=request.POST['profesor'])
 
         profesor.nombres=request.POST['nombre']
         profesor.apellido_paterno=request.POST['paterno']
