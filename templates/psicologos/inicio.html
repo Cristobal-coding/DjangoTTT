@@ -31,8 +31,7 @@
                                 <td>{{i.rut_psicologo.nombre}} {{i.rut_psicologo.apellido_paterno}}</td>
                                 <td>{{i.fecha_emision}}</td>   
                                 <td class="text-center">
-                                   
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><i class="far fa-file-pdf">
+                                        <a class="page-link" href="{% url 'psicologos_app:informe_mostrar' i.id %}"  tabindex="-1" aria-disabled="true"><i class="far fa-file-pdf">
                                         </i>
                                     </a>
 

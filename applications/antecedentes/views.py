@@ -14,7 +14,7 @@ class AntecedentesView(LoginRequiredMixin,ListView):
     model = Antecedente
     context_object_name = 'antecedentes'
     login_url = reverse_lazy('home_app:login')   
-    paginate_by=12
+    paginate_by=11
     def get_context_data(self, **kwargs):
         context = super(AntecedentesView, self).get_context_data(**kwargs)
         context['alumno_antecedente'] = Alumno_antecedente.objects.all()[:20]
@@ -25,6 +25,8 @@ def antecedente_create(request):
         nombreAdd=request.POST['nombre']
         if Antecedente.objects.filter(nombre_antecedente__iexact=nombreAdd):            
              messages.error(request,'Ya existe ese nombre')
+        elif nombreAdd=="":
+            messages.error(request,'Ingrese un antecedente.') 
         else:
             Antecedente.objects.create(
                 nombre_antecedente=(request.POST['nombre']).lower(),
@@ -39,7 +41,13 @@ def antecedente_create(request):
 
 def edit_antecedente(request,pk):
     if request.method == 'POST':
-        query=Antecedente.objects.get(pk=pk)
-        query.nombre_antecedente = request.POST['nombre']
-        query.save()
+        nombreAdd=request.POST['nombre']
+        if Antecedente.objects.filter(nombre_antecedente__iexact=nombreAdd):            
+            messages.error(request,'Ya existe ese nombre')
+        elif nombreAdd=="":
+            messages.error(request,'Ingrese un antecedente.') 
+        else:
+            query=Antecedente.objects.get(pk=pk)
+            query.nombre_antecedente = request.POST['nombre']
+            query.save()
     return HttpResponseRedirect(reverse('antecedentes_app:inicio'))

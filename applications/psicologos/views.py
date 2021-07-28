@@ -23,7 +23,7 @@ class InformeView(LoginRequiredMixin,ListView):
     template_name = "psicologos/inicio.html"
     model = Informe
     context_object_name = 'informe'
-    paginate_by=10
+    paginate_by=9
     login_url = reverse_lazy('home_app:login')   
     def get_queryset(self):
         rut=self.request.GET.get("rut",'')
