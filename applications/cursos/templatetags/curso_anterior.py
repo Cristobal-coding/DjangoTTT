@@ -1,6 +1,7 @@
 from applications.cursos.logicas import curso_anterior
 from django import template
 from applications.cursos.models import Curso
+from applications.cursos.logicas import check_cursos
 register = template.Library()
 
 @register.simple_tag
@@ -30,4 +31,13 @@ def get_all_pks(alumnos, rut):
     for i in alumnos:
         ruts.append(i.alumno.rut)
     return rut in ruts
+
+@register.simple_tag
+def check_validations(curso):
+    errors = check_cursos(curso=curso)
+    ok=True
+    if len(errors) > 0:
+        ok=False
+
+    return ok
     

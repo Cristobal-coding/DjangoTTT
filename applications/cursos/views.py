@@ -1,13 +1,14 @@
 from applications.alumnos.models import Alumno,Alumno_antecedente
 from applications.antecedentes.models import Antecedente
 from django.urls import reverse_lazy, reverse
+from django.utils.safestring import mark_safe
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 from .models import Curso , Fecha, PlanEstudio, Profesor
-from .logicas import cursos_base , get_curso_anterior_pk
+from .logicas import cursos_base , get_curso_anterior_pk, check_cursos
 from datetime import datetime
 # Create your views here.
 class CursosHome(LoginRequiredMixin,TemplateView):
@@ -158,55 +159,59 @@ def finalizar_semestre(request):
         fecha_inicio_new = request.POST['semestre_new']
         if rol == 'Administrador' or rol == 'Director':
             cursos, current_año, current_semestre = Curso.objects.get_all_data()
-            proceder = validate_cursos(cursos=cursos)
-            # if proceder:
-                 
-            # messages.error(request,'Lo cursos deben contar con profesor jefe, para finalizar semestre.') 
-            #aqui retorna el mismo año
-            new_year = create_new_fecha(
-            current_año=current_año,
-            current_semestre=current_semestre,
-            fecha_inicio_new=fecha_inicio_new,
-            fecha_inicio_old=fecha_inicio_old,
-            what='fsemestre'
-            )
-            for i in range(0, len(cursos_base)):
-                #creamos el curso del segundo semestre
-                base = cursos_base[i]
-                key = base[0]+str(new_year)+'2'
-                #Aqui obtenemos el curso pasado (el del 1°er semestre)
-                curso_semestre_pasado = Curso.objects.get(id_curso=base[0]+str(current_año)+str(current_semestre))
-                if i in [10,11,12,13,14,15]:
-                    Curso.objects.create(
-                        id_curso=key,
-                        cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'2'),
-                        nombre=base[1],
-                        numero=base[2],
-                        electivo=base[3],
-                        plan_estudio = curso_semestre_pasado.plan_estudio
-                    )
-                else:
-                    Curso.objects.create(
-                        id_curso=key,
-                        cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'2'),
-                        nombre=base[1],
-                        numero=base[2],
-                        plan_estudio = PlanEstudio.objects.get(nombre = 'Educación General')
-                    )
-                #Aqui copiamos los alumnos del antiguo curso al nuevo curso
-                this_curso = Curso.objects.get(id_curso=key)
-                for alumno in curso_semestre_pasado.curso_alumno_set.all():
-                    alumno.is_current = False
-                    alumno.save()
-                    if not alumno.abandono:
-                        this_curso.alumnos.add(alumno.alumno.rut)
-                        
-                linked_asignaturas_to_curso(this_curso)
-                #Finalmente fijamos como el curso actual a los alumnos
-                for current_al in this_curso.curso_alumno_set.all():
-                    current_al.is_current = True
-                    current_al.save()
-            messages.success(request,'!!Semestre finalizado con exito!!.')
+            proceder, errors = validate_cursos(cursos=cursos)
+            if proceder:
+                #aqui retorna el mismo año
+                new_year = create_new_fecha(
+                current_año=current_año,
+                current_semestre=current_semestre,
+                fecha_inicio_new=fecha_inicio_new,
+                fecha_inicio_old=fecha_inicio_old,
+                what='fsemestre'
+                )
+                for i in range(0, len(cursos_base)):
+                    #creamos el curso del segundo semestre
+                    base = cursos_base[i]
+                    key = base[0]+str(new_year)+'2'
+                    #Aqui obtenemos el curso pasado (el del 1°er semestre)
+                    curso_semestre_pasado = Curso.objects.get(id_curso=base[0]+str(current_año)+str(current_semestre))
+                    if i in [10,11,12,13,14,15]:
+                        Curso.objects.create(
+                            id_curso=key,
+                            cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'2'),
+                            nombre=base[1],
+                            numero=base[2],
+                            electivo=base[3],
+                            plan_estudio = curso_semestre_pasado.plan_estudio
+                        )
+                    else:
+                        Curso.objects.create(
+                            id_curso=key,
+                            cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'2'),
+                            nombre=base[1],
+                            numero=base[2],
+                            plan_estudio = PlanEstudio.objects.get(nombre = 'Educación General')
+                        )
+                    #Aqui copiamos los alumnos del antiguo curso al nuevo curso
+                    this_curso = Curso.objects.get(id_curso=key)
+                    for alumno in curso_semestre_pasado.curso_alumno_set.all():
+                        alumno.is_current = False
+                        alumno.save()
+                        if not alumno.abandono:
+                            this_curso.alumnos.add(alumno.alumno.rut)
+                            
+                    linked_asignaturas_to_curso(this_curso)
+                    #Finalmente fijamos como el curso actual a los alumnos
+                    for current_al in this_curso.curso_alumno_set.all():
+                        current_al.is_current = True
+                        current_al.save()
+                messages.success(request,'!!Semestre finalizado con exito!!.')
+            else:
+                errores=''
+                for e in errors:
+                    errores+=e+'<br />'
+                messages.error(request, 'No se cumplen todas las condiciones para cerrar este periodo')
+                messages.info(request, mark_safe(errores)) 
 
     return HttpResponseRedirect(reverse('cursos_app:all'))
 
@@ -216,123 +221,131 @@ def finalizar_año(request,):
         fecha_inicio_old = request.POST['semestre_old']
         fecha_inicio_new = request.POST['semestre_new']
         if rol == 'Administrador' or rol == 'Director':
-            repitentes = request.POST.getlist('repitentes')
             cursos, current_año, current_semestre = Curso.objects.get_all_data()
-            new_year = create_new_fecha(
-                current_año=current_año,
-                current_semestre=current_semestre,
-                fecha_inicio_new=fecha_inicio_new,
-                fecha_inicio_old=fecha_inicio_old,
-                what='faño'
-            )
-            
-            for i in range(0, len(cursos_base)):
-                base = cursos_base[i]
-                #Acciones para Primero Basico
-                if i == 0 :
-                    key = base[0]+str(new_year)+'1'
-                    Curso.objects.create(
-                        id_curso=key,
-                        cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
-                        nombre=base[1],
-                        numero=base[2],
-                        plan_estudio = PlanEstudio.objects.get(nombre='Educación General')                        
-                    )
-                    this_curso = Curso.objects.get(id_curso = key)
-                    linked_asignaturas_to_curso(this_curso)
-                else:
-                    #Acciones para Cuarto medio
-                    if i in [13,14,15]:
-                        base = cursos_base[i-3]
-                        curso_anterior = Curso.objects.get(id_curso=base[0]+str(current_año)+str(current_semestre))
-                        base = cursos_base[i]
-                        #Crea el nuevo curso
+            proceder, errors = validate_cursos(cursos=cursos)
+            if True:
+                repitentes = request.POST.getlist('repitentes')
+                new_year = create_new_fecha(
+                    current_año=current_año,
+                    current_semestre=current_semestre,
+                    fecha_inicio_new=fecha_inicio_new,
+                    fecha_inicio_old=fecha_inicio_old,
+                    what='faño'
+                )
+                
+                for i in range(0, len(cursos_base)):
+                    base = cursos_base[i]
+                    #Acciones para Primero Basico
+                    if i == 0 :
                         key = base[0]+str(new_year)+'1'
                         Curso.objects.create(
                             id_curso=key,
                             cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
                             nombre=base[1],
                             numero=base[2],
-                            electivo=base[3],
-                            plan_estudio = PlanEstudio.objects.get(nombre='Técnico Profesional')
-                        )
-                        #Añade los alumnos del curso anterior al nuevo
-                        this_curso = Curso.objects.get(id_curso=key)
-                        for alumno in curso_anterior.curso_alumno_set.all():
-                            alumno.is_current=False
-                            alumno.save() 
-                            if not alumno.abandono:
-                                this_curso.alumnos.add(alumno.alumno.rut)
-                        linked_asignaturas_to_curso(this_curso)
-                        #Cambia el estado a Finalizado de los alumnos que salen de 4to
-                        cuarto_actual = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
-                        for alumno in cuarto_actual.curso_alumno_set.all():
-                            if not alumno.alumno.rut in repitentes:
-                                alumno.alumno.estado = '2'
-                                alumno.alumno.save()
-                            for repitente in repitentes:
-                                if repitente == alumno.alumno.rut:
-                                    this_curso.alumnos.add(repitente)
-                                    antecedente_repitente(repitente,cuarto_actual)
-                            alumno.is_current= False
-                            alumno.save()          
-                        #Este curso es el actual de los alumnos
-                        for a in this_curso.curso_alumno_set.all():
-                            a.is_current=True
-                            a.save()
-                    #Acciones para Tercero medio
-                    elif i in [10,11,12]:
-                        base = cursos_base[i]
-                        key = base[0]+str(new_year)+'1'
-                        Curso.objects.create(
-                            id_curso=key,
-                            cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
-                            nombre=base[1],
-                            numero=base[2],
-                            electivo=base[3],
-                            plan_estudio = PlanEstudio.objects.get(nombre='Técnico Profesional')
+                            plan_estudio = PlanEstudio.objects.get(nombre='Educación General')                        
                         )
                         this_curso = Curso.objects.get(id_curso = key)
                         linked_asignaturas_to_curso(this_curso)
-                    #Acciones de Segundo medio hasta segundo basico
                     else:
-                        #Crea el nuevo curso
-                        key = base[0]+str(new_year)+'1'
-                        Curso.objects.create(
-                            id_curso=key,
-                            cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
-                            nombre=base[1],
-                            numero=base[2],
-                            plan_estudio = PlanEstudio.objects.get(nombre='Educación General')
-                        )
-                        base = cursos_base[i-1]
-                        anteriores = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
-                        
-                        if anteriores.count() > 0 :
-                            curso_anterior = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
-                            base = cursos_base[i]            
+                        #Acciones para Cuarto medio
+                        if i in [13,14,15]:
+                            base = cursos_base[i-3]
+                            curso_anterior = Curso.objects.get(id_curso=base[0]+str(current_año)+str(current_semestre))
+                            base = cursos_base[i]
+                            #Crea el nuevo curso
+                            key = base[0]+str(new_year)+'1'
+                            Curso.objects.create(
+                                id_curso=key,
+                                cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
+                                nombre=base[1],
+                                numero=base[2],
+                                electivo=base[3],
+                                plan_estudio = PlanEstudio.objects.get(nombre='Técnico Profesional')
+                            )
                             #Añade los alumnos del curso anterior al nuevo
-                            this_curso = Curso.objects.get(id_curso=key)  
+                            this_curso = Curso.objects.get(id_curso=key)
                             for alumno in curso_anterior.curso_alumno_set.all():
                                 alumno.is_current=False
-                                alumno.save()
+                                alumno.save() 
                                 if not alumno.abandono:
                                     this_curso.alumnos.add(alumno.alumno.rut)
+                            linked_asignaturas_to_curso(this_curso)
+                            #Cambia el estado a Finalizado de los alumnos que salen de 4to
+                            cuarto_actual = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
+                            for alumno in cuarto_actual.curso_alumno_set.all():
+                                if not alumno.alumno.rut in repitentes:
+                                    alumno.alumno.estado = '2'
+                                    alumno.alumno.save()
+                                for repitente in repitentes:
+                                    if repitente == alumno.alumno.rut:
+                                        this_curso.alumnos.add(repitente)
+                                        antecedente_repitente(repitente,cuarto_actual)
+                                alumno.is_current= False
+                                alumno.save()          
                             #Este curso es el actual de los alumnos
                             for a in this_curso.curso_alumno_set.all():
                                 a.is_current=True
                                 a.save()
-                            # Accion unica para segundo medio
-                            if i == 9 :
-                                check = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
-                                if check.count() > 0:
-                                    curso_Actual = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
-                                    for alumno in curso_Actual.curso_alumno_set.all():
-                                        alumno.is_current=False
-                                        alumno.save()
+                        #Acciones para Tercero medio
+                        elif i in [10,11,12]:
+                            base = cursos_base[i]
+                            key = base[0]+str(new_year)+'1'
+                            Curso.objects.create(
+                                id_curso=key,
+                                cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
+                                nombre=base[1],
+                                numero=base[2],
+                                electivo=base[3],
+                                plan_estudio = PlanEstudio.objects.get(nombre='Técnico Profesional')
+                            )
+                            this_curso = Curso.objects.get(id_curso = key)
                             linked_asignaturas_to_curso(this_curso)
-            messages.success(request,'!!Año finalizado con exito!!.')                   
-             
+                        #Acciones de Segundo medio hasta segundo basico
+                        else:
+                            #Crea el nuevo curso
+                            key = base[0]+str(new_year)+'1'
+                            Curso.objects.create(
+                                id_curso=key,
+                                cod_fecha=Fecha.objects.get(cod_fecha=str(new_year)+'1'),
+                                nombre=base[1],
+                                numero=base[2],
+                                plan_estudio = PlanEstudio.objects.get(nombre='Educación General')
+                            )
+                            base = cursos_base[i-1]
+                            anteriores = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
+                            
+                            if anteriores.count() > 0 :
+                                curso_anterior = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
+                                base = cursos_base[i]            
+                                #Añade los alumnos del curso anterior al nuevo
+                                this_curso = Curso.objects.get(id_curso=key)  
+                                for alumno in curso_anterior.curso_alumno_set.all():
+                                    alumno.is_current=False
+                                    alumno.save()
+                                    if not alumno.abandono:
+                                        this_curso.alumnos.add(alumno.alumno.rut)
+                                #Este curso es el actual de los alumnos
+                                for a in this_curso.curso_alumno_set.all():
+                                    a.is_current=True
+                                    a.save()
+                                # Accion unica para segundo medio
+                                if i == 9 :
+                                    check = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
+                                    if check.count() > 0:
+                                        curso_Actual = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
+                                        for alumno in curso_Actual.curso_alumno_set.all():
+                                            alumno.is_current=False
+                                            alumno.save()
+                                linked_asignaturas_to_curso(this_curso)
+                messages.success(request,'!!Año finalizado con exito!!.')                   
+            else:
+                errores=''
+                for e in errors:
+                    errores+=e+'<br />'
+                messages.error(request, 'No se cumplen todas las condiciones para cerrar este periodo')
+                messages.info(request, mark_safe(errores))
+                    
     
     return HttpResponseRedirect(reverse('cursos_app:all'))
 
@@ -386,11 +399,15 @@ def antecedente_repitente(rut,curso):
     )
 
 def validate_cursos(cursos):
-    proceder= True
+    proceder = True
+    errors=[]
     for curso in cursos:
-        if not curso.id_prof_jefe:
-            proceder = False
-    return proceder
+        errors = check_cursos(curso)
+        if len(errors) > 0:
+            proceder= False
+            break
+    
+    return proceder, errors
 def create_new_fecha(current_año, current_semestre, fecha_inicio_old, fecha_inicio_new, what):
     #Seteamos la fecha de termino a traves de la busqueda get
     print(current_año, current_semestre)

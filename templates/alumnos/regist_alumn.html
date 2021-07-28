@@ -36,9 +36,20 @@ Registrar
                 <label for="" class="text-primary">Apellido Materno: {% for e in  form.apellido_materno.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
                 {{form.apellido_materno}}
             </div>
-            <div class="col-6" class="text-primary">
+            <div class="col-5" class="text-primary">
                 <label for="">Género: {% for e in  form.sexo.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
                 {{form.sexo}}
+            </div>
+            <div class="col-7" class="text-primary">
+                <label for="">Curso:</label>
+                <select name="curso" class="form-select rounded-pill" id="cursos">
+                    <option value="">-----</option>
+                    
+                    {% for curso in cursos  %}
+                        <option value="{{curso.id_curso}}">{{curso.nombre}}</option>
+                    {% endfor %}
+                        
+                </select>
             </div>
         </div>                    
     </div>

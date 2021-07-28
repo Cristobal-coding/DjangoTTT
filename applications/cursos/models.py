@@ -77,6 +77,7 @@ class Asignatura_Curso(models.Model):
     class Meta:
         db_table= 'Asignatura_Curso'
         unique_together = (('curso', 'asignatura'),)
+        # ordering = ['id']
     def __str__(self):
         # return self.asignatura.nombre
         return  str(self.curso.numero) + '..' + self.asignatura.nombre + ' -- '+ str(self.curso.cod_fecha.year) + ' ' + str(self.curso.cod_fecha.semestres)
@@ -99,7 +100,7 @@ class Parciales(models.Model):
         verbose_name = 'Parcial'
         verbose_name_plural = 'Parciales'
         db_table= 'Paraciales'
-        ordering = ['-id']
+        ordering = ['id']
     def __str__(self):
         # return self.asignatura.asignatura.nombre 
         return str(self.id)+' -  ' +str(self.calificacion)+ '( ' + str(self.asignatura.asignatura.nombre) + ')'

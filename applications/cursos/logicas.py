@@ -44,3 +44,32 @@ def get_curso_anterior_pk(numero):
                 if cursos_base[i][2] == numero:
                     number = i-3
                     return cursos_base[i-3][0]
+
+def check_cursos(curso):
+    errors=[]
+    #si hay alumnos
+    if curso.alumnos.all().count() == 0 :
+        errors.append('-Faltan alumnos en uno o mas cursos')
+    #Si hay profe jefe
+    if curso.id_prof_jefe is None :
+        errors.append('-No hay profesor jefe en uno o mas cursos')
+    #Si las asignaturas, tienen profesor que las imparta
+    for asign in curso.asignatura_curso_set.all():
+        if  asign.id_profesor is None:
+            errors.append('-Faltan profesores de asignaturas en los cursos')
+            break
+    #Si cada alumnos regular del curso tiene mas de 10 notas
+    romper=False
+    for alumno in curso.alumnos.all():
+        if alumno.estado == '0':
+            cont=0
+            for asign in curso.asignatura_curso_set.all():
+                for parcial in asign.parciales.all():
+                    if parcial.alumno.rut == alumno.rut:
+                        cont+=1
+            if cont < 10 :
+                errors.append('-Hay alumnos en los cursos, que no cumplen el minimo de notas')
+                break
+
+    
+    return errors

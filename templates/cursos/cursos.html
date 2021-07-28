@@ -1,5 +1,6 @@
 {% extends '../layouts/master.html' %}
 {% load static %}
+{% load curso_anterior %}
 {% block 'titulo' %}
 Cursos del Establecimiento Manheim
 {% endblock 'titulo' %}
@@ -19,10 +20,11 @@ Cursos del Establecimiento Manheim
         <a class="list-group-item {% if 'all' in request.path %}active{% endif%}" href="{% url 'cursos_app:allCursos'%}">Todos los cursos</a>
       </ul>
    </div>
-    <div class="h-100  px-5 " style="width: 70%;">
+    <div class="h-100  px-3 " style="width: 70%;">
         <table class="table table-sm">
             <thead class="table-dark">
               <tr>
+                <th scope="col"></th>
                 <th scope="col">Identificador</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Electivo</th>
@@ -79,7 +81,9 @@ Cursos del Establecimiento Manheim
                 {% endif %}
                      
                 {% for c in current_cursos  %}
-                    <tr>
+                {% check_validations c as ok%}
+                    <tr class="{% if ok %}table-success{% else %}table-danger{% endif %}">
+                      <th scope="row">{% if ok %}<i class="fas fa-check-circle text-success fs-5"></i>{% else %}<i class="fas fa-exclamation-circle text-danger fs-5"></i>{% endif %}</th>
                       <th scope="row">{{c.id_curso}}</th>
                       <td>{{c.nombre}}</td>
                       <td>
@@ -140,19 +144,39 @@ Cursos del Establecimiento Manheim
             {% if m.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
             <div class="card shadow-sm my-2">
               <div class="card-header">
-                <i class="far fa-comment-alt-exclamation mx-1 text-danger fs-5"></i>Informacion con respecto al año {{current_año}}
+                <i class="far fa-comment-alt-exclamation mx-1 text-danger fs-5"></i>Informacion con respecto al nuevo periodo
               </div>
               <div class="card-body p-0">
                 <div class="text-center">
-                  <h5 class="card-title text-decoration-underline text-danger m-1">En este nuevo año usted debe:</h5>
+                  <h5 class="card-title text-decoration-underline text-danger m-1">En este nuevo período usted debe:</h5>
                 </div>
                 <ul class="list-group list-group-flush list-group-numbered">
                   <li class="list-group-item my-0">Añadir nuevos profesores jefes a los cursos</li>
                   <li class="list-group-item my-0">Actualizar el listado de alumnos en cada curso</li>
-                  <li class="list-group-item my-0">Actualizar electivo del nuevo 3ro Medio</li>
-                  <li class="list-group-item my-0">Actualizar datos del nuevo 1ro Basico</li>
+                  <!-- <li class="list-group-item my-0">Actualizar el listado de alumnos en cada curso</li>         -->
+                  {% if current_semestre == 1 %}
+                  <li class="list-group-item my-0">Verificar alumnos repitentes</li>
+                  <li class="list-group-item my-0">Añadir los alumnos nuevos de 3ro a los electivos correspondientes</li>
+                  {% endif %}
+                    
                   
                 </ul>
+              </div>
+            </div>  
+            {% endif %}
+            {% if m.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+            <div class="card shadow-sm my-2">
+              <div class="card-header">
+                <i class="far fa-comment-alt-exclamation mx-1 text-danger fs-5"></i>Información
+              </div>
+              <div class="card-body p-0">
+                <div class="text-center">
+                  <h5 class="card-title text-decoration-underline text-danger m-1">Condiciones Incumplidas:</h5>
+                </div>
+                <div class="text-center w-100 p-2">
+                  <h6>{{m|safe}}</h6>
+                </div>
+                
               </div>
             </div>  
             {% endif %}

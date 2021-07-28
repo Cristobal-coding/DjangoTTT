@@ -138,18 +138,6 @@ class Certificado(LoginRequiredMixin,FormView):
             rut=self.kwargs['pk']
         )
         return context
-    # def get_form_kwargs(self):
-
-    #     kwargs = {
-    #         'initial': self.kwargs, #Lo unico que cambie de la herencia
-    #         'prefix': self.get_prefix(),
-    #     }
-    #     if self.request.method in ('POST', 'PUT'):
-    #         kwargs.update({
-    #             'data': self.request.POST,
-    #             'files': self.request.FILES,
-    #         })
-    #     return kwargs
             
 class AlumnosRegister(LoginRequiredMixin,FormView):
     model = Alumno
@@ -157,6 +145,12 @@ class AlumnosRegister(LoginRequiredMixin,FormView):
     form_class= AlumnosRegisterForm
     success_url=reverse_lazy('alumnos_app:filtrar')
     login_url = reverse_lazy('home_app:login')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cursos, current_año, current_semestre = Curso.objects.get_all_data()
+        context['cursos'] = cursos
+        return context
     
     def form_valid(self, form):
         Alumno.objects.create(
@@ -171,8 +165,16 @@ class AlumnosRegister(LoginRequiredMixin,FormView):
             direccion=form.cleaned_data['direccion'],
             estado='0',
             # estado=form.cleaned_data['estado'],
-
         )
+        if self.request.POST['curso'] != "":
+            curso = Curso.objects.get(id_curso= self.request.POST['curso'])
+            curso.alumnos.add(form.cleaned_data['rut'])
+            for alum in curso.curso_alumno_set.all():
+                if alum.alumno.rut == form.cleaned_data['rut']:
+                    alum.is_current=True
+                    alum.save()
+                    break
+
         messages.success(self.request, 'Alumno ingresado Correctamente.')
         return HttpResponseRedirect(self.get_success_url())
 
