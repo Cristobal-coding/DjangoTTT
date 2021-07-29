@@ -4,6 +4,18 @@ from django import template
 register = template.Library()
 
 @register.simple_tag
+def days_periodo(inicio, termino):
+    current = date.today()
+    if termino is None:
+        return 'En curso'
+    else:
+        result = inicio - termino
+        result= str(result)
+        result = result.split(" ",1)
+        days = result[0]        
+        return math.floor(int(days))
+
+@register.simple_tag
 def date_to_age(nacimiento):
     age=''
     if nacimiento:

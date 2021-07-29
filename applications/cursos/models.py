@@ -31,16 +31,12 @@ class Profesor(models.Model):
         db_table= 'Profesores'  
         ordering = ['nombres']
     def __str__(self):
-        if (self.asig_impartir is not None):
-            asign=self.asig_impartir.nombre
-        else:
-            asign="Sin Asignatura"
-        return self.nombres +'(Prof. '+ asign + ')'
+        return self.nombres +'(Prof. '+ self.asig_impartir.nombre + ')'
     rut=models.CharField('Rut',max_length=13,unique=True,primary_key=True)
     nombres=models.CharField('Nombres',max_length=50)
     apellido_paterno=models.CharField('A.Paterno',max_length=30,blank=True,null=True)
     apellido_materno=models.CharField('A.Materno',max_length=30,blank=True,null=True)
-    asig_impartir=models.ForeignKey(Asignatura,on_delete=models.CASCADE, related_name='asignatura',blank=True,null=True)
+    asig_impartir=models.ForeignKey(Asignatura,on_delete=models.CASCADE, related_name='profesores',blank=True,null=True)
     objects= ProfesorManager()
 
 
@@ -86,7 +82,7 @@ class Asignatura_Curso(models.Model):
     asignatura=models.ForeignKey(Asignatura,on_delete=models.CASCADE)
 
     #foranea hacia profesores
-    id_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='profesor', null=True, blank=True)
+    id_profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE,related_name='impartidas', null=True, blank=True)
 
 class Parciales(models.Model):
     

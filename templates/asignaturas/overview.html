@@ -15,35 +15,6 @@ Asignaturas del Colegio Manheim
         <div class="card w-100 h-100 shadow" style="border-radius: 1rem !important;" >
             <div class="w-100 p-4 d-flex align-items-center justify-content-center">
                 <h3 class="card-title d-inline my-0 fw-bold">Asignaturas</h3>
-                <!-- <button class="mx-2 btn btn-outline-secondary py-1" id="añadirAsignatura" data-bs-toggle="modal" data-bs-target="#añadirAsign">
-                    Añadir <i class="far fa-plus mx-1"></i>
-                </button> -->
-                <!-- Modal añadir asignatura -->
-                <!-- <div class="modal fade" id="añadirAsign" data-bs-backdrop="static" tabindex="-1" aria-labelledby="añadirAsign" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Añadir nueva asignatura</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body" style="padding-bottom: 0 !important;">
-                            <form action="" class="w-100" method="POST">
-                                {% csrf_token %}
-                                <label for="">{{form.cod_asign.label}}</label>
-                                {{form.cod_asign}}
-                                <small class="text-danger"> {{form.errors.cod_asign}}</small>
-                                <label for="">{{form.nombre.label}}</label>
-                                {{form.nombre}}
-                                <small class="text-danger"> {{form.errors.nombre}}</small>
-                                <div class="modal-footer" style="margin-top: 20px;">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" class="btn btn-primary">Añadir</button>
-                                </div>
-                            </form>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
             <hr class="my-0 text-primary">
             <div class="card-body d-flex flex-wrap align-items-start justify-content-start py-2 overflow-auto">
@@ -64,17 +35,15 @@ Asignaturas del Colegio Manheim
                     
                 {% for asign in asignaturas  %}
                 {% random_number as num%}
-                    <div class="card my-2 mx-2 shadow" style="width: 16rem; height: 316.4px">
-                        <!-- <div class="card-img-top bg-secondary w-100" style="height: 7rem;">
-                        </div> -->
+                    <div class="card my-2 mx-2 shadow" style="width: 16rem; height: 23rem">
                         <img src="
                         {% with 'imgs/asign'|add:num|add:'.jpg' as image_static %}
                             {% static image_static %}
                         {% endwith %}" 
                       class="card-img-top" style="height: 150px !important;">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column">
                             <h5 class="card-title">{{asign.nombre}}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Incorporada en: 
+                            <h6 class="card-subtitle mb-2 text-muted flex-fill">Incorporada en: 
                                 <span class=" fst-italic">
                                     
                                     {% if asign.nombre == 'Matemáticas' or asign.nombre == 'Inglés' %}
@@ -85,6 +54,34 @@ Asignaturas del Colegio Manheim
                                         
                                 </span>
                             </h6>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#verprofes{{asign.cod_asign}}" {% if asign.profesores.count == 0 %}disabled{% endif %} class="shadow-sm btn d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                  <div class="fw-bold">Profesores</div>
+                                </div>
+                                <span class="badge bg-primary rounded-pill">{{asign.profesores.count}}</span>
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="verprofes{{asign.cod_asign}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Profesores que imparten esa asignatura</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <ol class="list-group list-group-numbered">
+                                                {% for prof in asign.profesores.all %}
+                                                    <li class="list-group-item">{{prof.nombres}} {{prof.apellido_paterno}} {{prof.apellido_materno}}</li>
+                                                {% endfor %}
+                                                    
+                                            </ol>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>             
                 {% endfor %} 

@@ -1,6 +1,12 @@
 {% extends '../layouts/master.html' %}
 {% load static %}
 
+
+{% block 'titulo' %}
+Administrar profesores del colegio Manheim  
+{% endblock 'titulo' %}
+    
+
 {% block 'css-select2' %}
     <!-- Jquery -->
     <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
@@ -48,7 +54,7 @@
                                 <td class="text-center">
                                     
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn p-0">
+                                    <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#impartidas{{prof.rut}}">
                                         <i class="far fa-books fs-5 text-warning"></i>
                                     </button>
                                     <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#edit{{prof.id}}">
@@ -56,8 +62,35 @@
                                     </button>
                                 </td>
                             </tr>
-
-                            <!-- Modal -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="impartidas{{prof.rut}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Cursos donde imparte la asignatura <strong>{{prof.asig_impartir.nombre}}</strong></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <ul class="list-group list-group-flush">     
+                                            
+                                            {% if prof.impartidas.count  == 0 %}
+                                                <h6 class="fst-italic text-muted">Aún no ha comenzado a impartir en ningún curso</h6>
+                                            {% endif %}
+                                                                                   
+                                            {% for asign in prof.impartidas.all %}
+                                            
+                                            <li class="list-group-item">{{asign.curso.nombre}} - {{asign.asignatura.nombre}}</li>
+                                            {% endfor %}
+                                                
+                                          </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal Editar-->
                         <div class="modal fade" id="edit{{prof.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">

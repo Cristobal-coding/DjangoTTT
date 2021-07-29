@@ -16,4 +16,7 @@ urlpatterns = [
     path('apoderados/informacion/<pk>/', views.ApoderadoDetalle.as_view(), name='detailApod'),
     path('alumnos/certificados/<pk>/<year>/<semestre>', views.Certificado.as_view(), name='certificado'),
     path('alumnos/register/antecedente', views.add_antecedente, name='addAntecedente'),
+
+    path('alumnos/certificados-pdf-prueba/<pk>/<year>/<semestre>', views.CertificadoDetailView.as_view(), name='informePrueba'),
+    path('alumnos/certificados-pdf/<pk>/<year>/<semestre>', views.CertificadoPDFView.as_view(), name='certPDF'),
 ]

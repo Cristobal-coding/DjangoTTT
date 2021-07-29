@@ -1,7 +1,10 @@
 from django.urls import reverse_lazy, reverse
+from django.http.response import HttpResponse
+from applications.psicologos.utils import render_to_pdf
 from django.views.generic import TemplateView , ListView, UpdateView, DetailView
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import  FormView
+from django.views.generic import  View
 from django.contrib import messages
 from django.db.models import Q
 # Create your views here.
@@ -12,7 +15,7 @@ from applications.antecedentes.models import Antecedente
 from django.forms import formset_factory
 #local
 from .forms import AlumnoEditForm, AlumnosRegisterForm, ApoderadoEditForm, ApoderadosRegisterForm, CertificadoForm, Alumno_AntecedenteForm
-
+from datetime import datetime
 class AlumnosHome(LoginRequiredMixin,TemplateView):
     template_name = 'alumnos/inicio.html'
     login_url = reverse_lazy('home_app:login')
@@ -258,3 +261,38 @@ def add_antecedente(request):
             fecha = request.POST['fecha']
         )
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+class CertificadoDetailView(TemplateView):
+    template_name= "alumnos/certificadoPDF.html"
+    context_object_name='informes'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['now'] =datetime.now()
+        context['semestre'] =self.kwargs['semestre']
+        context['año'] =self.kwargs['year']
+        context['range'] =range(20)
+        context['alumno'] =Alumno.objects.get(rut= self.kwargs['pk'])
+        context['curso'] =Curso.objects.get_curso_with_fecha(
+            year=self.kwargs['year'],
+            semestre=self.kwargs['semestre'],
+            rut=self.kwargs['pk']
+        )
+        return context
+
+class CertificadoPDFView(View):
+
+    def get(self,request,*args,**kwargs):
+        data={
+            'now' :datetime.now(),
+            'semestre' : self.kwargs['semestre'],
+            'año' : self.kwargs['year'],
+            'range' :range(20),
+            'alumno' :Alumno.objects.get(rut= self.kwargs['pk']),
+            'curso' :Curso.objects.get_curso_with_fecha(
+                year=self.kwargs['year'],
+                semestre=self.kwargs['semestre'],
+                rut=self.kwargs['pk']
+            )
+        }
+        pdf = render_to_pdf("alumnos/certificadoPDF.html",data)
+        return HttpResponse(pdf, content_type='application/pdf')

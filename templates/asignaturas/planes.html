@@ -22,40 +22,6 @@ Planes de estudio del Colegio Manheim
         <div class="card w-100 h-100 shadow" style="border-radius: 1rem !important;" >
             <div class="w-100 p-4 d-flex align-items-center justify-content-center">
                 <h3 class="card-title d-inline my-0 fw-bold">Planes de estudio</h3>
-                <!-- <button class="mx-2 btn btn-outline-secondary py-1" id="añadirAsignatura" data-bs-toggle="modal" data-bs-target="#añadirAsign">
-                    Añadir <i class="far fa-plus mx-1"></i>
-                </button> -->
-                <!-- Modal añadir asignatura -->
-                <!-- <div class="modal fade" id="añadirAsign" data-bs-backdrop="static" tabindex="-1" aria-labelledby="añadirAsign" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Añadir nueva asignatura</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body" style="padding-bottom: 0 !important;">
-                            <form action="" class="w-100" method="POST">
-                                {% csrf_token %}
-                                <label for="">{{form.nombre.label}}</label>
-                                {{form.nombre}}
-                                <small class="text-danger"> {{form.errors.nombre}}</small>
-                                <label for="">{{form.detalle_url.label}}</label>
-                                {{form.detalle_url}}
-                                <small class="text-danger"> {{form.errors.detalle_url}}</small>
-                                <label for="">{{form.asignaturas.label}}</label>
-                                <div class="d-flex flex-column align-items-center justify-content-center">
-                                    {{form.asignaturas}}
-                                    <small class="text-danger"> {{form.errors.asignaturas}}</small>
-                                </div>
-                                <div class="modal-footer" style="margin-top: 20px;">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" class="btn btn-primary">Añadir</button>
-                                </div>
-                            </form>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
             <hr class="my-0 text-primary">
             <div class="card-body d-flex flex-wrap align-items-start justify-content-start py-2 overflow-auto">
@@ -74,7 +40,7 @@ Planes de estudio del Colegio Manheim
                 {% endif %}
                 {% for plan in planes  %}
                 {% random_number as num%}
-                    <div class="card my-2 mx-2 shadow" style="width: 18rem;">
+                    <div class="card my-2 mx-2 shadow" style="width: 18rem; height: 21rem;">
                         <img src="
                         {% with 'imgs/asign'|add:num|add:'.jpg' as image_static %}
                             {% static image_static %}
@@ -83,7 +49,15 @@ Planes de estudio del Colegio Manheim
                         <div class="card-body" style="padding-bottom: 10px !important;">
                             <h5 class="card-title">{{plan.nombre}}</h5>
                             <h6 class="card-subtitle mb-2 text-muted"><a href="{{plan.detalle_url}}" target="_blank">Ver detalles</a></h6>
+                            
+                            
+                            {% if plan.nombre == 'Técnico Profesional' %}
+                            <h6 class="card-subtitle mb-2 text-muted">Asignaturas: 9</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Plan común: 6</h6>
+                            {% else %}
                             <h6 class="card-subtitle mb-2 text-muted">Asignaturas: {{plan.asignaturas.count}}</h6>
+                            {% endif %}
+                                
                         </div>
                         <div class="text-center" style="margin-bottom: 10px;">
                             
@@ -91,7 +65,36 @@ Planes de estudio del Colegio Manheim
                                 <a href="#" class="btn py-0 my-1 disabled border"  style="color: rgba(52, 58, 64, 0.5);" aria-disabled="true"><i class="far fa-tasks mx-1"></i>Asignaturas</a>    
 
                             {% else %}
-                                <a href="#" class="btn btn-success py-0 my-1" ><i class="far fa-tasks mx-1"></i> Ver Asignaturas</a>    
+                                <button type="button" class="btn btn-success py-0 my-1" data-bs-toggle="modal" data-bs-target="#verAsigns{{plan.id}}">
+                                    <i class="far fa-tasks mx-1"></i> Ver Asignaturas
+                                </button> 
+                                <!-- Modal -->
+                                <div class="modal fade" id="verAsigns{{plan.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Asignaturas del plan</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item">Matemáticas 3°Medio y 4°Medio</li>
+                                                    <li class="list-group-item">Inglés 3°Medio y 4°Medio</li>
+                                                    
+                                                    {% for asign in plan.asignaturas.all %}
+                                                    
+                                                    <li class="list-group-item">{{asign.nombre}}</li>
+                                                    {% endfor %}
+                                                        
+                                                   
+                                                </ul>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
                             {% endif %}
                                 
                         </div>
@@ -105,16 +108,6 @@ Planes de estudio del Colegio Manheim
 {% endblock 'content' %}
 
 {% block 'js-select2' %}
-
-{% if form.errors %}
-<script>
-    window.onload = function(){
-        var button = document.getElementById('añadirAsignatura');
-        button.click();
-    };
-</script>
-    
-{% endif %}
 
 {% if messages %}
    {% for m in messages %}  
@@ -131,48 +124,5 @@ Planes de estudio del Colegio Manheim
         {% endif %}      
     {% endfor %}
 {% endif %}
-<script src="{% static 'js/jquery.quicksearch.js' %}"></script> 
-<script src="{% static 'js/jquery.multi-select.js' %}"></script> 
-<script>
-    $(document).ready(function() {
-      $('#select-asigns').multiSelect({
-        selectableHeader: "<input type='text' class='search-input form-control my-2' autocomplete='off' placeholder='Buscar disponibles'>",
-        selectionHeader: "<input type='text' class='search-input form-control my-2' autocomplete='off' placeholder='Buscar añadidos'>",
-        afterInit: function(ms){
-          var that = this,
-              $selectableSearch = that.$selectableUl.prev(),
-              $selectionSearch = that.$selectionUl.prev(),
-              selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
-              selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
-      
-          that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-          .on('keydown', function(e){
-            if (e.which === 40){
-              that.$selectableUl.focus();
-              return false;
-            }
-          });
-      
-          that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
-          .on('keydown', function(e){
-            if (e.which == 40){
-              that.$selectionUl.focus();
-              return false;
-            }
-          });
-        },
-        afterSelect: function(){
-          this.qs1.cache();
-          this.qs2.cache();
-        },
-        afterDeselect: function(){
-          this.qs1.cache();
-          this.qs2.cache();
-        }
-      });
-  });
-    
-    
-  </script>  
-    
+     
 {% endblock 'js-select2' %}

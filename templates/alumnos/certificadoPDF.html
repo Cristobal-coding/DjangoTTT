@@ -1,0 +1,165 @@
+{% load static %}
+{% load index %}
+{% load promedio %}
+{% load formats %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="icon" href="{% static 'imgs/escudo.ico' %}"/>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://kit-pro.fontawesome.com/releases/v5.15.3/css/pro.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    
+    <link rel="stylesheet"  href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+
+    
+</head>
+<body>
+    <div class="container">
+        <div class="row mx-0 w-100">
+            <div class="col-12 d-flex flex-column align-items-center">
+               <div class="row mx-0" style="width: 954px !important;">
+                   <div class="col-10" >
+                        <ul class="list-group list-group-horizontal" style="width: 60% !important;">
+                            <li class="list-group-item border-0 lh-1 py-1" style="width: 45% !important;">Institución</li>
+                            <li class="list-group-item border-0 lh-1 py-1 px-0 fw-light" style="width: 300px !important">: Colegio Manheim</li>
+                        </ul>
+                        <ul class="list-group list-group-horizontal" style="width: 60% !important;">
+                            <li class="list-group-item border-0 lh-1 py-1" style="width: 45% !important;">Año escolar</li>
+                            <li class="list-group-item border-0 lh-1 py-1 px-0 fw-light" style="width: 300px !important">: {{año}}</li>
+                        </ul>
+                        <ul class="list-group list-group-horizontal" style="width: 60% !important;">
+                            <li class="list-group-item border-0 lh-1 py-1" style="width: 45% !important;">Curso</li>
+                            <li class="list-group-item border-0 lh-1 py-1 px-0 fw-light" style="width: 300px !important">: {{curso.nombre}}</li>
+                        </ul>
+                        <ul class="list-group list-group-horizontal" style="width: 60% !important;">
+                            <li class="list-group-item border-0 lh-1 py-1" style="width: 45% !important;">Alumno/a</li>
+                            <li class="list-group-item border-0 lh-1 py-1 px-0 fw-light" style="width: 300px !important">: {{alumno.apellido_paterno}} {{alumno.apellido_materno}} {{alumno.nombre}}</li>
+                        </ul>
+                        <ul class="list-group list-group-horizontal" style="width: 60% !important;">
+                            <li class="list-group-item border-0 lh-1 py-1" style="width: 45% !important;">Profesor(A) Jefe</li>
+                            <li class="list-group-item border-0 lh-1 py-1 px-0 fw-light" style="width: 300px !important">: {{curso.id_prof_jefe.nombres}}</li>
+                        </ul>
+                   </div>
+                   <div class="col-2 py-2" >
+                        <img src="{% static 'imgs/MANNHEIM.png' %}" alt="" class="img-fluid" style="height: 7rem; width:6rem">
+                   </div>
+               </div>
+            </div>
+            <div class="col-12 d-flex flex-column align-items-center">
+                <h4 class="fw-bold">Informe de Notas Parciales</h4>
+                {% if semestre == '1' %}
+                <h5>Primer semestre del {{año}}</h5>
+                {% else %}
+                <h5>Segundo semestre del {{año}}</h5>
+                {% endif %}
+                <table class="table table-sm table-bordered w-75">
+                    <thead>
+                        <tr>
+                            <td colspan="1" class="text-center lh-1">Subsector del Aprendizaje <br>
+                            (Formación General)
+                            </td>
+                            <td colspan="20" class="text-center ">Notas</td>
+                            <td colspan="1">{{semestre}}°SE</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {% for asign in curso.asignatura_curso_set.all %}
+                        <tr>
+                            <td class="lh-sm" style="width:45.5% !important;">{{asign.asignatura.nombre}}</td>
+                            
+                            {% get_notas asign alumno as notas%}
+                            
+                            
+                            {% for n in range %}
+                                {% if notas|index:n >= 4 %}
+                                        
+                                    {% if notas|index:n != '' %}     
+                                    <td class="lh-sm fs-6 text-warning" style="width:2.5% !important;" data-bs-toggle="tooltip" data-bs-placement="right" title="{{notas|fecha:n}}">{{ notas|index:n }}</td>
+                                    {% else %}
+                                    <td class="lh-sm fs-6 text-warning" style="width:2.5% !important;">{{ notas|index:n }}</td>
+                                    {% endif %}
+                                    
+                                {% else %}
+                                
+                                    {% if notas|index:n != '' %}
+                                    <td class="lh-sm fs-6 text-danger" style="width:2.5% !important;" data-bs-toggle="tooltip" data-bs-placement="right" title="{{notas|fecha:n}}">{{ notas|index:n }}</td>   
+                                    {% else %}
+                                    <td class="lh-sm fs-6 text-danger" style="width:2.5% !important;">{{ notas|index:n }}</td>
+                                    {% endif %}
+                                    
+                                {% endif %}
+                                
+                            {% endfor %}
+                            {% prom_especifico notas as especifico%}
+                            
+                            {% if especifico >= 4 %}
+                            <td class="lh-sm fs-6 text-warning" style="width:2.5% !important;">{{especifico}}</td>
+                            
+                            {% else %}
+                            <td class="lh-sm fs-6 text-danger" style="width:2.5% !important;">{{especifico}}</td>
+                                
+                            {% endif %}
+                            
+                                
+                            
+                                
+                        </tr>          
+                        {% endfor %}
+                        {% prom_global curso.asignatura_curso_set.all alumno as global%}
+                        <tr>
+                            <td class="text-end" colspan="21">PROMEDIO</td>
+                            
+                            {% if global >= 4 %}
+                            <td class="text-warning">{{global}}</td>
+                            
+                            {% else %}
+                            <td class="text-danger">{{global}}</td>
+                                
+                            {% endif %}
+                                
+                        </tr>
+                    </tbody>
+                </table>
+                {% days_periodo curso.cod_fecha.fecha_inicio curso.cod_fecha.fecha_termino as dias%}
+                <h6 class="fw-bold">Total dias periodo: <span class="fw-light">{{dias}}</span></h6>
+            </div>
+            <div class="col-12 d-flex flex-column align-items-center py-2">
+                <div class="row mx-0 py-2" style="width: 954px !important;">
+                    <div class="col-6 d-flex flex-column align-items-center justify-content-center" >
+                        <div class="w-50 " style="height: 7rem !important;">
+                            <div class="bg-dark rounded" style="height: 5px;"></div>
+                            <div class="text-center">
+                                <h6 class="lh-1 my-0">{{curso.id_prof_jefe.nombres}} {{curso.id_prof_jefe.apellido_paterno}} {{curso.id_prof_jefe.apellido_materno}}</h6>
+                                <h6 class="lh-1">Profesor(a) Jefe</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 d-flex flex-column align-items-center justify-content-center" >
+                        <div class="w-50 " style="height: 7rem !important;">
+                            <div class="bg-dark rounded" style="height: 5px;"></div>
+                            <div class="text-center">
+                                <h6 class="lh-1 my-0">Renato Hernan Plaza Berroeta</h6>
+                                <h6 class="lh-1">Director(a)</h6>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <h5>Quilpue, {{now}}</h5>
+                </div>
+             </div>
+        </div>
+    </div>
+    
+</body>
+</html>
+

@@ -101,7 +101,7 @@ Certificados de notas {{año}} {{semestre}}°Semestre
                 {% endif %}
             </div>
             <div class="col-2 text-end">
-                <i class="fas fa-file-pdf fs-3 text-danger"></i>
+                <a href="{% url 'alumnos_app:informePrueba' alumno.rut año semestre %}"><i class="fas fa-file-pdf fs-3 text-danger"></i></a>
             </div>
         </div>
        
