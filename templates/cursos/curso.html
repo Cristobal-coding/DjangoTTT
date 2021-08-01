@@ -37,6 +37,8 @@ Cursos del Establecimiento Manheim
                                     <h5 class="card-title fw-bold">Alumnos del Curso</h5>
                                 </div>
                                 <div class="col-4">
+                                    
+                                    {% if year == curso.cod_fecha.year and semestre == curso.cod_fecha.semestres %}
                                     <button class="btn btn-outline-primary py-0" data-bs-toggle="modal" data-bs-target="#gestionar">
                                         Gestionar
                                     </button>
@@ -96,6 +98,12 @@ Cursos del Establecimiento Manheim
                                             </div>
                                         </div>
                                     </div>
+                                    {% else %} 
+                                    <button class="btn btn-outline-primary py-0" disabled>
+                                        Gestionar
+                                    </button>
+                                    {% endif %}
+                                        
                                 </div>
                             </div>
                             <div class="w-100" style="height: 90%;">
@@ -126,67 +134,79 @@ Cursos del Establecimiento Manheim
                                             </button>
                                         </td>
                                         {% else %}
-                                        <td class="fw-light ">
-                                            <button class="btn p-0 text-danger" type="button" data-bs-toggle="modal" data-bs-target="#drop{{a.alumno.rut}}">
-                                                <i class="fal fa-times"></i>
-                                            </button>
-                                        </td>
-                                            
+                                            <td class="fw-light ">
+                                                
+                                                {% if year == curso.cod_fecha.year and semestre == curso.cod_fecha.semestres %}
+                                                <button class="btn p-0 text-danger" type="button" data-bs-toggle="modal" data-bs-target="#drop{{a.alumno.rut}}">
+                                                    <i class="fal fa-times"></i>
+                                                </button>
+                                                
+                                                {% else %}  
+                                                <button class="btn p-0 text-danger" type="button" disabled>
+                                                    <i class="fal fa-times"></i>
+                                                </button> 
+                                                {% endif %}
+                                                    
+                                            </td>
+                                            {% if year == curso.cod_fecha.year and semestre == curso.cod_fecha.semestres %}
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="drop{{a.alumno.rut}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="staticBackdropLabel"><i class="fad fa-window-restore text-danger"></i> Remover alumno del curso</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearAll(this);" id={{a.alumno.rut}}></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                        <p class="fw-light">¿Porque desea remover a 
+                                                            <span class="fw-bold">{{a.alumno.nombre}} {{a.alumno.apellido_paterno}} {{a.alumno.apellido_materno}}</span>
+                                                            del curso?</p>
+                                                            <form action="{% url 'cursos_app:removerAlum' %}" method="POST" id="formRazon" >
+                                                                {% csrf_token %}
+                                                                <input type="hidden" value="{{curso.id_curso}}" name="curso">
+                                                                {% if curso.numero > 1 %}
+                                                                <div class="form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="repitente_{{a.alumno.rut}}" id="radrepitente{{a.alumno.rut}}">
+                                                                    <label class="form-check-label" for="flexRadioDefault1">
+                                                                    Repitente
+                                                                    </label>
+                                                                </div>
+                                                                {% endif %}
+                                                                    
+                                                                <div class="form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="abandono_{{a.alumno.rut}}" id="radabandono{{a.alumno.rut}}">
+                                                                    <label class="form-check-label" for="flexRadioDefault2">
+                                                                        Abandono
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="error_{{a.alumno.rut}}" id="raderror{{a.alumno.rut}}">
+                                                                    <label class="form-check-label" for="flexRadioDefault2">
+                                                                        Por error
+                                                                    </label>
+                                                                </div>
+                                                                <div class="my-2">
+                                                                    <h6 class="d-none" id="repitente_{{a.alumno.rut}}">El alumno sera movido al curso <span class="fw-bold text-danger">{{curso_ant}}</span></h6>
+                                                                    <h6 class="d-none" id="error_{{a.alumno.rut}}">El alumno quedara <span class="fw-bold text-danger">sin curso</span></h6>
+                                                                    <h6 class="d-none" id="abandono_{{a.alumno.rut}}">El alumno quedara como <span class="fw-bold text-danger">no regular</span></h6>
+                                                                    <h6 class="d-none text-danger" id="validar">Si quiere remover al alumno, debe seleccionar Razón.</h6>
+                                                                </div>
+                                                                <div class="modal-footer py-0">
+                                                                    <button type="button" onclick="clearAll(this);" id={{a.alumno.rut}} class="btn btn-secondary float-left py-1" data-bs-dismiss="modal">Cancelar</button>
+                                                                    <button type="submit" class="btn btn-danger py-1">Remover</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endif %}
                                         {% endif %}
                                             
                                         <td class="fw-light"><a href="{% url 'alumnos_app:detailAlumn' a.alumno.rut %}" class="p-0"><i class="fad fa-address-card"></i></a></td>
                                       </tr>
-                                      <!-- Modal -->
-                                    <div class="modal fade" id="drop{{a.alumno.rut}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="staticBackdropLabel"><i class="fad fa-window-restore text-danger"></i> Remover alumno del curso</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearAll(this);" id={{a.alumno.rut}}></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                <p class="fw-light">¿Porque desea remover a 
-                                                    <span class="fw-bold">{{a.alumno.nombre}} {{a.alumno.apellido_paterno}} {{a.alumno.apellido_materno}}</span>
-                                                    del curso?</p>
-                                                    <form action="{% url 'cursos_app:removerAlum' %}" method="POST" id="formRazon">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" value="{{curso.id_curso}}" name="curso">
-                                                        {% if curso.numero > 1 %}
-                                                        <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="repitente_{{a.alumno.rut}}" id="radrepitente{{a.alumno.rut}}">
-                                                            <label class="form-check-label" for="flexRadioDefault1">
-                                                              Repitente
-                                                            </label>
-                                                        </div>
-                                                        {% endif %}
-                                                            
-                                                        <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="abandono_{{a.alumno.rut}}" id="radabandono{{a.alumno.rut}}">
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Abandono
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="razon" onclick="handleClick(this);" value="error_{{a.alumno.rut}}" id="raderror{{a.alumno.rut}}">
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Por error
-                                                            </label>
-                                                        </div>
-                                                        <div class="my-2">
-                                                            <h6 class="d-none" id="repitente_{{a.alumno.rut}}">El alumno sera movido al curso <span class="fw-bold text-danger">{{curso_ant}}</span></h6>
-                                                            <h6 class="d-none" id="error_{{a.alumno.rut}}">El alumno quedara <span class="fw-bold text-danger">sin curso</span></h6>
-                                                            <h6 class="d-none" id="abandono_{{a.alumno.rut}}">El alumno quedara como <span class="fw-bold text-danger">no regular</span></h6>
-                                                            <h6 class="d-none text-danger" id="validar">Si quiere remover al alumno, debe seleccionar Razón.</h6>
-                                                        </div>
-                                                        <div class="modal-footer py-0">
-                                                            <button type="button" onclick="clearAll(this);" id={{a.alumno.rut}} class="btn btn-secondary float-left py-1" data-bs-dismiss="modal">Cancelar</button>
-                                                            <button type="submit" class="btn btn-danger py-1">Remover</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                      
+                                     
                                       {% endfor %}
                                           
                                     </tbody>
@@ -245,21 +265,23 @@ Cursos del Establecimiento Manheim
                                             {% else %}
                                             <p class="card-text my-0">Profesor Jefe<i class="fas fa-question-circle text-danger mx-1"></i></p>
                                             {% endif %}
-                                                
+                                            
+                                            
+                                           
                                             {% if curso.id_prof_jefe  %}
-                                            <button type="button" class="btn btn-success p-0" data-bs-toggle="modal" data-bs-target="#newProf">
+                                            <button type="button" class="btn btn-success p-0" {% if year == curso.cod_fecha.year and semestre == curso.cod_fecha.semestres %}data-bs-toggle="modal" data-bs-target="#newProf"{% else %}disabled{% endif %}>
                                                
                                                 {{curso.id_prof_jefe.nombres}} {{curso.id_prof_jefe.apellido_paterno}}
                                                     
                                             </button>
                                             {% else %}
-                                            <button type="button" class="btn btn-danger p-0" data-bs-toggle="modal" data-bs-target="#newProf">
+                                            <button type="button" class="btn btn-danger p-0" {% if year == curso.cod_fecha.year and semestre == curso.cod_fecha.semestres %}data-bs-toggle="modal" data-bs-target="#newProf"{% else %}disabled{% endif %}>
                                                 
                                                 Añadir profesor
                                                     
                                             </button>
-                                            
                                             {% endif %}
+                                            
                                         </div>
                                     </div>
                                     <!-- Modal añadir Profesor -->
@@ -366,11 +388,11 @@ Cursos del Establecimiento Manheim
                                                     <div class="col-6 text-end">
                                                         
                                                         {% if a.id_profesor %}
-                                                        <button class="btn btn-success py-0" data-bs-toggle="modal" data-bs-target="#adminProf{{a.asignatura.cod_asign}}">
+                                                        <button class="btn btn-success py-0" {% if year == curso.cod_fecha.year and semestre == curso.cod_fecha.semestres %}data-bs-toggle="modal" data-bs-target="#adminProf{{a.asignatura.cod_asign}}"{% else %}disabled{% endif %}>
                                                            Profesor<i class="far fa-check-circle mx-1"></i>
                                                         </button> 
                                                         {% else %}
-                                                        <button class="btn btn-danger py-0" data-bs-toggle="modal" data-bs-target="#adminProf{{a.asignatura.cod_asign}}">
+                                                        <button class="btn btn-danger py-0" {% if year == curso.cod_fecha.year and semestre == curso.cod_fecha.semestres %}data-bs-toggle="modal" data-bs-target="#adminProf{{a.asignatura.cod_asign}}"{% else %}disabled{% endif %}>
                                                            Profesor<i class="far fa-question-circle mx-1"></i>
                                                         </button> 
                                                         {% endif %}
@@ -413,7 +435,7 @@ Cursos del Establecimiento Manheim
                                                                                 {% for prof in profs %}
                                                                                 <option value="{{prof.rut}}"
                                                                                 
-                                                                                {% if a.rut_profesor.rut == prof.rut %}
+                                                                                {% if a.id_profesor.rut == prof.rut %}
                                                                                     selected
                                                                                 {% endif %}
                                                                                     
