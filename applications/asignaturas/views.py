@@ -112,16 +112,29 @@ def init_all(request,):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 def profesor_create(request):
+    errorstring=""
     if request.method == 'POST':
-
-        Profesor.objects.create(
-            rut=request.POST['rut'],
-            nombres=request.POST['nombre'],
-            apellido_paterno=request.POST['paterno'],
-            apellido_materno=request.POST['materno'],
-            asig_impartir=Asignatura.objects.get(cod_asign=request.POST['asignatura'],)
-        )
-        messages.success(request,'!!Profesor añadido con exito!!')
+        if request.POST['rut']== None or request.POST['rut'] == "":
+            errorstring=errorstring+"-Rut, "
+        if request.POST['nombre']== None or request.POST['nombre'] == "":
+            errorstring=errorstring+"-Nombre, "
+        if request.POST['paterno']== None or request.POST['paterno'] == "":
+            errorstring=errorstring+"-Apellido Paterno, "
+        if request.POST['materno']== None or request.POST['materno'] == "":
+            errorstring=errorstring+"-Apellido Materno, "
+        if request.POST['asignatura']== None or request.POST['asignatura'] == "":
+            errorstring=errorstring+"-Asignatura "
+        if errorstring=="":
+            Profesor.objects.create(
+                rut=request.POST['rut'],
+                nombres=request.POST['nombre'],
+                apellido_paterno=request.POST['paterno'],
+                apellido_materno=request.POST['materno'],
+                asig_impartir=Asignatura.objects.get(cod_asign=request.POST['asignatura'],)
+            )
+            messages.success(request,'!!Profesor añadido con exito!!')
+        else:
+            messages.error(request,errorstring)
     return HttpResponseRedirect(reverse('asignaturas_app:profesores'))
 def profesor_edit(request):
     if request.method == 'POST':

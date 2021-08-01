@@ -1,3 +1,4 @@
+
 from django import forms
 from django.db.models import fields
 from applications.errors import DivErrorList
@@ -30,9 +31,9 @@ class CertificadoForm(forms.Form):
         ['1', 'Coficiente 1'],
         ['2', 'Coficiente 2'],
     ]
-    nota = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-    coeficiente = forms.CharField(widget=forms.Select(attrs={'class':'form-select'}, choices=coeficientes))
-    fecha = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type':'date'}, format='%Y-%m-%d'))
+    nota = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control ', 'required' : 'true', 'min': 1 , 'max' : 7.0 , 'oninput': 'limite()',}, ))
+    coeficiente = forms.CharField(widget=forms.Select(attrs={'class':'form-select', 'required' : 'true' }, choices=coeficientes))
+    fecha = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type':'date' , 'required' : 'true'  },  format='%Y-%m-%d'))
 
 class AlumnosPathern(forms.ModelForm):
     def __init__(self, *args, **kwargs):

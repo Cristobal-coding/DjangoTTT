@@ -275,7 +275,7 @@ Cursos del Establecimiento Manheim
                                                         {% csrf_token %}
                                                         <input type="hidden" value="{{curso.id_curso}}" name="curso">
                                                         <label for="">Seleccione Profesor Jefe:</label>
-                                                        <select name="prof_jefe" class="form-select">
+                                                        <select name="prof_jefe" class="form-select" required>
                                                             <option value="">-------</option>
                                                             
                                                             {% for pr in profs %}
@@ -408,7 +408,7 @@ Cursos del Establecimiento Manheim
                                                                     </div>
                                                                     <div class="col-6">
                                                                         <div class="form-floating">
-                                                                            <select class="form-select" name="profesor" aria-label="Floating label select example">
+                                                                            <select class="form-select" name="profesor" aria-label="Floating label select example" required>
                                                                                 <option value="">---------</option>
                                                                                 {% for prof in profs %}
                                                                                 <option value="{{prof.rut}}"

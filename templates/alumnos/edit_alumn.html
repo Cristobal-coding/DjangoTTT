@@ -4,7 +4,8 @@ Actualizar de Alumno
 {% endblock 'title' %}
 
 {% block 'formtitle' %}
-Perfil del alumno: {{alumno.nombre}} - {{alumno.get_current_curso}}
+<h4 >Alumno: <span style="font-weight: bold;"> {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}- {{alumno.rut}}</span></h4> 
+<h5>Estado: <span style="font-weight: bold;">{{alumno.get_current_curso}}</span></h5>
 {% endblock 'formtitle' %}
 
 {% block 'go_list' %}

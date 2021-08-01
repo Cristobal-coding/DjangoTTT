@@ -27,7 +27,7 @@ Certificados de notas {{año}} {{semestre}}°Semestre
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body" style="padding-bottom: 10px;">
-                                <form  method="POST">
+                                <form  method="POST" onsubmit="return validateForm()">
                                     {% csrf_token %}
                                     <div class="row w-100 mx-0  my-0 py-0">
                                         <div class="col-6 lh-1 px-0 d-flex flex-column align-items-start justify-content-end">
@@ -37,18 +37,18 @@ Certificados de notas {{año}} {{semestre}}°Semestre
                                             <button onclick="deleteInput()" type="button" class="btn btn-danger d-inline lh-1 px-2 py-1 my-1">
                                                 Nota<i class="fas fa-minus mx-1"></i>
                                             </button>
-                                            <button onclick="addInput()" type="button" class="btn btn-primary d-inline lh-1 px-2 py-1 my-1">
+                                            <button onclick="addInput()" type="button" class=" btn btn-primary d-inline lh-1 px-2 py-1 my-1">
                                                 Nota<i class="far fa-plus mx-1"></i>
                                             </button>
                                         </div>
                                     </div>
                                     <input type="hidden" value="{{alumno.rut}}" name="alumno">
                                     
-                                    <select name="asignatura" id="id_asignatura" class="form-select">
+                                    <select name="asignatura" id="id_asignatura" class="form-select" required>
                                         <option value="">-------</option>
                                         
                                         {% for asign in curso.asignatura_curso_set.all  %}
-                                        <option value="{{asign.id}}">{{asign.asignatura.nombre}}</option>
+                                            <option value="{{asign.id}}">{{asign.asignatura.nombre}}</option>
                                             
                                         {% endfor %}
                                             
@@ -196,6 +196,26 @@ Certificados de notas {{año}} {{semestre}}°Semestre
     
 
 {% block 'js-select2' %}
+<script type="text/javascript">
+    function limite() {
+        var field = document.getElementById("id_form-0-nota");
+        var max_length = 3;
+        if (field.value.length > max_length) {
+            field.value = field.value.slice(0, max_length); 
+        }
+    }
+    function validateForm() {
+        if(id_form-0-nota.value) {
+
+            return true;
+        }else{
+            print("HOLA");
+            document.getElementById('id_form-0-nota').classList.add('is-invalid');
+            return false;
+        }
+    }
+    
+</script>
 <script>
     function addInput() {
         var forms = document.querySelector('#id_form-TOTAL_FORMS')

@@ -110,21 +110,14 @@ Administrar profesores del colegio Manheim
                                             <input type="text" name="materno" value="{{prof.apellido_materno}}" class="form-control rounded-pill">
                                             <label for="">Asignatura que imparte:</label>
                                             <select name="asignatura"  class="form-select">
-                                                <option value="">---------</option>
-                                                
+                                                <option value="">---------</option>                                               
                                                 {% for asign in asignaturas  %}
                                                 <option value="{{asign.cod_asign}}"
-                                                
-                                                
                                                 {% if asign.cod_asign == prof.asig_impartir.cod_asign %}
                                                 selected
-                                                {% endif %}
-                                                    
-                                                
-                                                >{{asign.nombre}}</option>
-                                                
-                                                {% endfor %}
-                                                    
+                                                {% endif %}                                    
+                                                >{{asign.nombre}}</option>                                  
+                                                {% endfor %}                             
                                             </select>
                                             <div class="modal-footer" style="padding-bottom: 0;margin-top:20px">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -143,19 +136,19 @@ Administrar profesores del colegio Manheim
             <div class="col-4">
                 <div class="card shadow">
                     <div class="card-body">
-                        <form action="{% url 'asignaturas_app:createProfesor' %}" method="POST">
+                        <form action="{% url 'asignaturas_app:createProfesor' %}" id="formularioprofes" method="POST">
                             {% csrf_token %}
                             <h4 class="fw-bold">Añadir Profesor</h4>
                             <label for="">Rut del Profesor:</label>
-                            <input type="text" name="rut" class="form-control rounded-pill">
+                            <input type="text" name="rut" id="rut" class="form-control rounded-pill">
                             <label for="">Nombre del Profesor:</label>
-                            <input type="text" name="nombre" class="form-control rounded-pill">
+                            <input type="text" name="nombre" id="nombre" class="form-control rounded-pill">
                             <label for="">Apellido Paterno:</label>
-                            <input type="text" name="paterno" class="form-control rounded-pill">
+                            <input type="text" name="paterno" id="paterno" class="form-control rounded-pill">
                             <label for="">Apellido Materno:</label>
-                            <input type="text" name="materno" class="form-control rounded-pill">
+                            <input type="text" name="materno" id="materno" class="form-control rounded-pill">
                             <label for="">Asignatura que imparte:</label>
-                            <select name="asignatura" id="asignaturas" class="form-select">
+                            <select name="asignatura" id="asignaturas" class="form-select" >
                                 <option value="">---------</option>
                                 
                                 {% for asign in asignaturas  %}
@@ -165,9 +158,12 @@ Administrar profesores del colegio Manheim
                                     
                             </select>
                             <div class="w-100 text-center" style="padding-top: 20px;">
-                                <button type="submit" class="btn btn-outline-primary w-50">Añadir</button>
+                                <button type="submit"  class="btn btn-outline-primary w-50">Añadir</button>
                             </div>
                         </form>
+                        <div id ='error'>
+
+                        </div>
 
                     </div>
                 </div>
@@ -175,11 +171,28 @@ Administrar profesores del colegio Manheim
         </div>
     </div>
 </div>
+
 {% endblock 'content' %}
-
-
-
 {% block 'js-select2' %}
+<script>
+    var form = document.getElementById('formularioprofes');
+    form.addEventListener('submit', function(evt){
+        var rut=document.getElementById("rut");
+        var nombre=document.getElementById("nombre");
+        var paterno=document.getElementById('paterno');
+        var materno=document.getElementById('materno');
+        var error=document.getElementById('asignaturas');     
+        console.log('submit');
+        if(rut.value === null || rut.value ===' '){
+            console.log('rut Invalido...');
+            evt.preventDefault();
+        }
+        if(nombre.value === null || nombre.value ===' '){
+            console.log('nombre...');
+            evt.preventDefault();
+        }
+    });
+</script>
 <script>
     $(document).ready(function() {
         $('#asignaturas').select2({
@@ -221,8 +234,18 @@ Administrar profesores del colegio Manheim
                 icon: 'success',
                 showConfirmButton: false,
             })
+            
         </script>
-        {% endif %}      
+        {% endif %}   
+        {% if m.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <script>
+          Swal.fire({
+            icon: 'error',
+            title: 'Se debe completar todos los campos.',
+            text: '{{m}}',
+          })
+      </script>
+      {% endif %}   
     {% endfor %}
 {% endif %}
 {% endblock 'js-select2' %}
