@@ -31,6 +31,9 @@ class CursosDetalle(LoginRequiredMixin,DetailView):
     model = Curso
     def get_context_data(self, **kwargs):
         context = super(CursosDetalle, self).get_context_data(**kwargs)
+        cursos, current_año, current_semestre = Curso.objects.get_all_data()
+        context['semestre'] =current_semestre
+        context['year'] =current_año
         context['alumnos'] =Alumno.objects.get_alumno_sin_curso()
         context['profs'] =Profesor.objects.all()
         return context
@@ -127,8 +130,9 @@ def remove_alumno(request,):
         data = data.split('_')
         curso = Curso.objects.get(id_curso=request.POST['curso'])
         año, semestre = Curso.objects.get_año_semestre()
-        pk = get_curso_anterior_pk(curso.numero) + str(año) + str(semestre)
-        c_anterior = Curso.objects.get(id_curso=pk)
+        if curso.numero > 1.0 :
+            pk = get_curso_anterior_pk(curso.numero) + str(año) + str(semestre)
+            c_anterior = Curso.objects.get(id_curso=pk)
         if data[0] == 'repitente':
             c_anterior.alumnos.add(data[1])
             for al in c_anterior.curso_alumno_set.all():
