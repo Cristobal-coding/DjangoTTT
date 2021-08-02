@@ -20,12 +20,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = "usuarios/profile.html"
     login_url = reverse_lazy('home_app:login')
 
-<<<<<<< HEAD
 class UserMainView(UsersPermisoMixin,TemplateView):
-=======
-
-class UserMainView(LoginRequiredMixin,TemplateView):
->>>>>>> d890d819ded3e8d8a75573ac757d89a2682fc969
     template_name = "usuarios/inicio.html"
     login_url = reverse_lazy('home_app:login')
 
