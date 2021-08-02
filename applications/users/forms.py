@@ -4,6 +4,7 @@ from applications.errors import DivErrorList
 from .models import User, Rol
 from applications.validators import validar_rut
 
+
 class UserRegisterForm(forms.ModelForm):
     password1 = forms.CharField(
         label='Contraseña',
