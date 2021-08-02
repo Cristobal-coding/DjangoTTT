@@ -10,4 +10,5 @@ urlpatterns = [
     path('usuarios/edit/rol/<pk>', views.EditRol.as_view(), name='roledit'),
     path('usuarios/delete/rol/<pk>', views.DeleteRol, name='roldelete'),
     path('usuarios/profile/', views.ProfileView.as_view(), name='profile'),
+    path('usuarios/profile/edit', views.edit_profile, name='editprofile'),
 ]

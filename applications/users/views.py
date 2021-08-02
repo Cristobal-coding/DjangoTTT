@@ -12,15 +12,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import DeleteView
 from .models import User, Rol
 from .forms import RolRegisterForm, UserRegisterForm
-from datetime import date, datetime
-import psycopg2
-
-
+from datetime import date
+from django.core.files.storage import FileSystemStorage
+from TrabajoTitulo.settings.base import BASE_DIR
+from django.core.files.storage import default_storage
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = "usuarios/profile.html"
     login_url = reverse_lazy('home_app:login')
 
+<<<<<<< HEAD
 class UserMainView(UsersPermisoMixin,TemplateView):
+=======
+
+class UserMainView(LoginRequiredMixin,TemplateView):
+>>>>>>> d890d819ded3e8d8a75573ac757d89a2682fc969
     template_name = "usuarios/inicio.html"
     login_url = reverse_lazy('home_app:login')
 
@@ -135,24 +140,22 @@ def DeleteRol(request, pk):
     query.delete()
     messages.add_message(request, messages.INFO, 'Rol elminado Satisfactoriamente.')
     return HttpResponseRedirect(reverse('user_app:registrar'))
-    # def get_template_names(self):
-    #     return 'user_app:registrar'
-# def unlock(request, pk):
-#     query = User.objects.get(pk=pk)
-#     if(request.user.rut != query.rut):
-#         query.activo=True
-#         query.save()
-#     else:
-#         messages.add_message(request, messages.INFO, 'No puedes Aplicar estas acciones sobre ti Mismo.')
-#     # query.delete()
-#     return HttpResponseRedirect(reverse('user_app:registrar'))
 
-# def lock(request, pk):
-#     query = User.objects.get(pk=pk)
-#     if(request.user.rut != query.rut):
-#         query.activo=False
-#         query.save()
-#     else:
-#         messages.add_message(request, messages.INFO, 'No puedes Aplicar estas acciones sobre ti Mismo.')
-#     # query.delete()
-#     return HttpResponseRedirect(reverse('user_app:registrar'))
+def edit_profile(request):
+    if request.method == 'POST':
+        user = User.objects.get(rut=request.user.rut)
+        if request.FILES:
+            myfile = request.FILES['image']
+            fs = FileSystemStorage(location='media/usuarios', base_url='/usuarios')
+            filename = fs.save(myfile.name, myfile)
+            url = fs.url(filename)
+            user.image = url
+            user.username = request.POST['username']
+            user.save()
+        else:
+            if request.POST['borrar']:
+                default_storage.delete(BASE_DIR+user.image.url)
+                user.image=None
+            user.username = request.POST['username']
+            user.save()
+    return HttpResponseRedirect(reverse('user_app:profile'))
