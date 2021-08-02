@@ -1,0 +1,74 @@
+{% extends '../layouts/master.html' %}
+{% load static %}
+
+{% block 'titulo' %}
+Mi perfil
+{% endblock 'titulo' %}
+
+
+
+{% block 'content' %}
+    <div class="row mx-0 w-100 h-100">
+        <div class="col-12 py-3 h-100">
+            <div class="row mx-0 h-100 w-100">
+                <div class="col-12 d-flex justify-content-center" style="height: 40% !important;">
+                    <div class="card shadow w-75" style="height:14rem;">
+                        <div class="row mx-0 w-100 h-100">
+                            <div class="col-4 d-flex align-items-center justify-content-center">
+                                
+                                {% if user.image %}
+                                <img src="{{user.image.url}}"  class="rounded-circle img-fluid" style="width: 12rem !important;">
+                                {%else%}
+                                <img src="{% static 'imgs/man-300x300.png' %}"  class="rounded-circle img-fluid" style="width: 12rem !important;">
+                                {% endif %}
+                                    
+                            </div>
+                            <div class="col-8 py-4 d-flex flex-column">
+                                <h5 class="text-primary">Nombre de usuario: <span>{{user.username}}</span></h5>
+                                <h6 class="text-primary flex-fill">Rut: <span>{{user.rut}}</span></h6>
+                                <small class="text-primary fw-bold">Superusuario: 
+                                    
+                                    {% if user.is_staff %}
+                                    <span class="text-success">Si</span>
+                                    {% else %}
+                                    <span class="text-danger">No</span>
+                                    {% endif %}
+                                        
+                                </small>
+                                <small class="text-primary fw-bold">Rol: <span class="fw-light">{{user.rol.nombre}}</span></small>
+                                <small class="text-primary fw-bold">Ingresos: <span class="fw-light">{{user.ingresos.count}}</span> <a href="#" class="text-warning float-right">Editar Perfil</a></small>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-center" style="height: 60% !important;">
+                    <div class="card w-25 h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Actividad reciente</h5>
+                            <div class="overflow-auto" style="height: 90% !important;">
+                                <ul class="list-group list-group-flush">
+                                
+                                    {% if user.ingresos.count == 0 %}
+                                    <div class="text-center w-100">
+                                        <small>No hay ingresos recientes.</small>
+                                    </div>
+                                    {% else %}
+                                        
+                                        {% for ingreso in user.ingresos.all  %}
+                                        <li class="list-group-item py-1">{{ingreso.fecha}} - {{ingreso.hora}}</li>
+                                            
+                                        {% endfor %}
+                                            
+                                    {% endif %}
+                                        
+                                  </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock 'content' %}
+    

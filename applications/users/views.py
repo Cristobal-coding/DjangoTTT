@@ -15,6 +15,10 @@ from datetime import date, datetime
 import psycopg2
 
 
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = "usuarios/profile.html"
+    login_url = reverse_lazy('home_app:login')
+
 class UserMainView(LoginRequiredMixin,TemplateView):
     template_name = "usuarios/inicio.html"
     login_url = reverse_lazy('home_app:login')

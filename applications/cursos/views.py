@@ -227,7 +227,7 @@ def finalizar_año(request,):
         if rol == 'Administrador' or rol == 'Director':
             cursos, current_año, current_semestre = Curso.objects.get_all_data()
             proceder, errors = validate_cursos(cursos=cursos)
-            if True:
+            if proceder:
                 repitentes = request.POST.getlist('repitentes')
                 new_year = create_new_fecha(
                     current_año=current_año,

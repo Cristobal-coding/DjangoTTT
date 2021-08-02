@@ -34,3 +34,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         db_table= 'Usuarios'
         ordering=['username']
 
+class Ingresos(models.Model):
+    fecha = models.DateField('Fecha')
+    hora = models.CharField('Hora', max_length=10)
+    usuario = models.ForeignKey(User,on_delete=models.CASCADE,related_name='ingresos')
+
+    class Meta:
+        verbose_name = 'Ingreso'
+        verbose_name_plural = 'Ingresos'
+        db_table= 'Ingresos'
+        ordering=['-id']

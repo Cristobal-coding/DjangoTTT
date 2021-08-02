@@ -3,8 +3,8 @@
         <h2>leftbar</h2>
         <ul>
             <li class="{% if request.resolver_match.app_name == 'home_app'%}active-now{% endif %}"><a class="text-decoration-none" href="{% url 'home_app:home' %}"><i class="fas fa-home"></i>Home</a></li>
-            <li><a class="text-decoration-none" href="#"><i class="fas fa-id-card"></i>Mi Perfil</a></li>
-            <li class="{% if request.resolver_match.app_name == 'user_app'%}active-now{% endif %}"><a class="text-decoration-none" href="{% url 'user_app:registrar' %}"><i class="fas fa-users"></i>Usuarios</a></li>
+            <li class="{% if 'profile' in request.path  %}active-now{% endif %}"><a class="text-decoration-none" href="{% url 'user_app:profile' %}"><i class="fas fa-id-card"></i>Mi Perfil</a></li>
+            <li class="{% if request.resolver_match.app_name == 'user_app' and not 'profile' in request.path %}active-now{% endif %}"><a class="text-decoration-none" href="{% url 'user_app:registrar' %}"><i class="fas fa-users"></i>Usuarios</a></li>
             <li class="{% if request.resolver_match.app_name == 'alumnos_app'%}active-now{% endif %}"><a class="text-decoration-none" href="{% url 'alumnos_app:filtrar'%}"><i class="fas fa-child"></i>Alumnos</a></li>
             <li class="{% if request.resolver_match.app_name == 'antecedentes_app'%}active-now{% endif %}"> <a class="text-decoration-none" href="{% url 'antecedentes_app:inicio'%}"><i class="fas fa-history" ></i>Antecedentes</a></li>
             <li class="{% if request.resolver_match.app_name == 'psicologos_app'%}active-now{% endif %}"><a class="text-decoration-none" href="{% url 'psicologos_app:inicio'%}" ><i class="fas fa-brain"></i>Psicologia</a></li>

@@ -6,10 +6,11 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 from django.views.generic.edit import FormView
 from django.views.generic import TemplateView, View
-from applications.users.models import User
+from applications.users.models import User, Ingresos
 from .forms import LoginForm
 from applications.alumnos.models import Alumno, Apoderado
 from applications.cursos.models import Profesor
+from datetime import datetime
 
 class LoginPage(FormView):
     model = User
@@ -24,7 +25,12 @@ class LoginPage(FormView):
         password = self.request.POST['password']
         user = authenticate(rut=rut,password=password)
         login(self.request,user)
-
+        fecha = datetime.now()
+        Ingresos.objects.create(
+            usuario= user,
+            fecha=fecha,
+            hora=str(fecha.hour)+':'+str(fecha.minute)
+        )
         if len(path) !=2:
             return super(LoginPage,self).form_valid(form)
         else:
@@ -36,7 +42,6 @@ class LogoutView(View):
 
     def get(self, request, *args, **kwargs):
         logout(request)
-        print('Sesión expirada')
         return HttpResponseRedirect(reverse('home_app:login'))
 
 
@@ -52,6 +57,8 @@ class HomePage(LoginRequiredMixin,TemplateView):
         context['profesores'] = Profesor.objects.all().count()
         context['apoderados'] = Apoderado.objects.all().count()
         context['usuarios'] = User.objects.all().count()
+        context['ingresos'] = Ingresos.objects.all()
+
         return context
 
 
