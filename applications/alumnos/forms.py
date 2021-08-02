@@ -58,13 +58,10 @@ class AlumnosRegisterForm(AlumnosPathern):
         # self.fields['fecha_nacimiento'].required = False
         # self.fields['rut_apoderado'].required = False
         # self.fields['sexo'].required = False
-        # self.fields['telefono'].required = False
+
         # self.fields['rut_apoderado'].required = False
         # self.fields['direccion'].required = False
         # self.fields['estado'].required = False
-
-
-
     class Meta:
         model=Alumno
         fields= ('nombre','apellido_paterno','apellido_materno','fecha_nacimiento','rut_apoderado','sexo',
@@ -184,6 +181,9 @@ class AlumnoEditForm(AlumnosRegisterForm):
         }
 
 class ApoderadosRegisterForm(AlumnosPathern):
+    def __init__(self, *args, **kwargs):
+        super(ApoderadosRegisterForm, self).__init__(*args, **kwargs)
+        self.fields['telefono_apoderado'].required = False
     class Meta:
         model=Apoderado
         fields= ('nombre_apoderado','apellido_paterno','apellido_materno','telefono_apoderado','correo','rut')
@@ -223,17 +223,16 @@ class ApoderadosRegisterForm(AlumnosPathern):
                 }
             ),     
         }
-    def clean_telefono_apoderado(self):
-        if not self.cleaned_data.get("telefono_apoderado").isdigit():
-            self.add_error('telefono_apoderado', ' *Telefono invalido*')
-            self.fields['telefono_apoderado'].widget.attrs.update({'class': 'form-control rounded-pill my-2 is-invalid'})
-        return self.cleaned_data.get("telefono_apoderado")
-    def clean_correo(self):
-        correo =self.cleaned_data.get("correo")
-        if not 'gmail' in correo and not 'hotmail' in correo :
-            self.add_error('correo', ' *Correo invalido*')
-            self.fields['correo'].widget.attrs.update({'class': 'form-control rounded-pill my-2 is-invalid'})
-        return self.cleaned_data.get("correo")
+    # def clean_telefono_apoderado(self):
+    #     if not self.cleaned_data.get("telefono_apoderado").isdigit():
+    #         self.add_error('telefono_apoderado', ' *Telefono invalido*')
+    #         self.fields['telefono_apoderado'].widget.attrs.update({'class': 'form-control rounded-pill my-2 is-invalid'})
+    #     return self.cleaned_data.get("telefono_apoderado")
+    # def clean_correo(self):
+    #     correo =self.cleaned_data.get("correo")
+    #     if not 'gmail' in correo and not 'hotmail' in correo :
+    #         self.fields['correo'].widget.attrs.update({'class': 'form-control rounded-pill my-2 is-invalid'})
+    #     return self.cleaned_data.get("correo")
 
 class ApoderadoEditForm(ApoderadosRegisterForm):
     class Meta:

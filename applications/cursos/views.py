@@ -216,7 +216,9 @@ def finalizar_semestre(request):
                     errores+=e+'<br />'
                 messages.error(request, 'No se cumplen todas las condiciones para cerrar este periodo')
                 messages.info(request, mark_safe(errores)) 
-
+        else:
+            messages.error(request,'No tienes los permisos de usuario para realizar esta acción.')
+        
     return HttpResponseRedirect(reverse('cursos_app:all'))
 
 def finalizar_año(request,):
@@ -317,8 +319,7 @@ def finalizar_año(request,):
                                 plan_estudio = PlanEstudio.objects.get(nombre='Educación General')
                             )
                             base = cursos_base[i-1]
-                            anteriores = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)
-                            
+                            anteriores = Curso.objects.get_cursos_by_id(base[0],current_año,current_semestre)                       
                             if anteriores.count() > 0 :
                                 curso_anterior = Curso.objects.get(id_curso = base[0]+str(current_año)+str(current_semestre))
                                 base = cursos_base[i]            
@@ -349,25 +350,23 @@ def finalizar_año(request,):
                     errores+=e+'<br />'
                 messages.error(request, 'No se cumplen todas las condiciones para cerrar este periodo')
                 messages.info(request, mark_safe(errores))
-                    
+        else:
+            messages.error(request,'No tienes los permisos de usuario para realizar esta acción.')
     
     return HttpResponseRedirect(reverse('cursos_app:all'))
 
 def linked_asignaturas_to_curso(curso):
-
     if curso.numero > 10:
         curso.asignaturas.add('MA')
         curso.asignaturas.add('ING')
     for asig in curso.plan_estudio.asignaturas.all():
         if asig.nombre == 'Inglés' and curso.numero < 5 :
-            pass # Solamente para saltarse la asignatura y no Añadirla
-                                                    
+            pass # Solamente para saltarse la asignatura y no Añadirla                                                    
         elif asig.nombre == 'Lengua indígena':
             if curso.numero < 3 or curso.numero > 8:
                 pass # Solamente para saltarse la asignatura y no Añadirla
             else:
                 curso.asignaturas.add(asig.cod_asign)
-
         elif  asig.cod_asign == 'LCP' and curso.numero > 6 :
             pass # Solamente para saltarse la asignatura y no Añadirla
         else:

@@ -142,6 +142,9 @@ Administrar profesores del colegio Manheim
                             <h4 class="fw-bold">Añadir Profesor</h4>
                             <label for="">Rut del Profesor:</label>
                             <input type="text" name="rut" id="rut" class="form-control rounded-pill">
+                            <div class=" d-none" id="rutinvalido" style="padding-top: 0px;">
+                                <h6 style="color: red;">Debe ingresar un rut valido.</h6>
+                            </div>
                             <label for="">Nombre del Profesor:</label>
                             <input type="text" name="nombre" id="nombre" class="form-control rounded-pill">
                             <label for="">Apellido Paterno:</label>
@@ -160,6 +163,9 @@ Administrar profesores del colegio Manheim
                             </select>
                             <div class="w-100 text-center" style="padding-top: 20px;">
                                 <button type="submit" onclick="return validateForm()"  class="btn btn-outline-primary w-50">Añadir</button>
+                            </div>
+                            <div class="w-100 text-center d-none" id="errorCampo" style="padding-top: 20px;">
+                                <h6 style="color: red;">Debe completar los campos</h6>
                             </div>
                         </form>
                         <div id ='error'>
@@ -196,6 +202,8 @@ Administrar profesores del colegio Manheim
     }
     function validateForm() {
         // console.log("Hola");
+        var rutinv = document.getElementById("rutinvalido");
+        var erroresdiv = document.getElementById("errorCampo");
         var inputs = document.getElementById("formularioprofes").elements;
         // console.log(inputs);
         var rut =inputs[1];
@@ -219,9 +227,11 @@ Administrar profesores del colegio Manheim
         }
         if(Fn.validaRut((rut.value))){
             rut.classList.remove('is-invalid');
+            rutinv.classList.add('d-none');
         }else{
             rut.classList.add('is-invalid'); 
             errores= errores+1;
+            rutinv.classList.remove('d-none');      
         }
         if (nombre.value == ""|| nombre.value==null) {
             console.log("nombre vacio");
@@ -251,13 +261,14 @@ Administrar profesores del colegio Manheim
         }else{
             asign.classList.remove('is-invalid');
         }
-        if(errores!=0){
+        if(errores!=0){   
+            console.log("Error lol");
+            erroresdiv.classList.remove('d-none');
             return false;
-        }
-        
+        }else{      
+            erroresdiv.classList.add('d-none');
+        }       
     }     
-  
-
 </script>
 <script>
     $(document).ready(function() {

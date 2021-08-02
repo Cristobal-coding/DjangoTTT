@@ -43,10 +43,13 @@
                     {% endblock 'formulario' %}
                     <div class="row mx-0 w-100 my-2">
                         <div class="col-12 text-center">
-                            <button class="btn btn-outline-primary w-25">{% block 'accion' %}{% endblock 'accion' %}</button>
+                            <button class="btn btn-outline-primary w-25" {% if 'alumnos/registrar' in request.path %} onclick="return validateForm1()" {%elif '/listado/edit/' in request.path %} onclick="return validateForm2()" {%elif '/apoderados/register/' in request.path %} onclick="return validateForm3()" {%elif '/apoderados/edit/' in request.path %} onclick="return validateForm4()" {%endif%}>{% block 'accion' %}{% endblock 'accion' %}</button>
                         </div>
                     </div>
                 </form>
+            </div>
+            <div class="px-3 py-3 d-none" id="erroresdiv">
+                <h5 style="color: red;">Debe completar los campos en rojo.</h5>
             </div>
         </div>
        
@@ -88,6 +91,33 @@
         });
     });
  </script>
+
+ {% if messages %}
+   {% for m in messages %}  
+        {% if m.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <script>
+            Swal.fire({
+                'timer':'2000',
+                title: 'Operación Exitosa',
+                text: '{{m}}',
+                icon: 'success',
+                showConfirmButton: false,
+            })
+            
+        </script>
+        {% endif %}   
+        {% if m.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <script>
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al ingresar.',
+            text: '{{m}}',
+          })
+      </script>
+      {% endif %}   
+    {% endfor %}
+ {% endif %}
+
 {% endblock 'js-select2' %}
     
 

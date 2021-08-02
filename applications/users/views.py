@@ -1,3 +1,4 @@
+from applications.users.mixins import UsersPermisoMixin
 from applications.cursos.models import Profesor
 from applications.psicologos.models import Psicologo
 from django.urls import reverse_lazy
@@ -19,7 +20,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = "usuarios/profile.html"
     login_url = reverse_lazy('home_app:login')
 
-class UserMainView(LoginRequiredMixin,TemplateView):
+class UserMainView(UsersPermisoMixin,TemplateView):
     template_name = "usuarios/inicio.html"
     login_url = reverse_lazy('home_app:login')
 

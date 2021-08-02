@@ -19,19 +19,19 @@ Registrar
 {% block 'formulario' %}
 <div class="row mx-0">
     <div class="col-6">
-        <label for="" class="text-primary">Nombre: {% for e in  form.nombre_apoderado.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+        <label for="" class="text-primary">Nombre: </label>
         {{form.nombre_apoderado}} 
-        <label for="" class="text-primary">Apellido Paterno: {% for e in  form.apellido_paterno.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+        <label for="" class="text-primary">Apellido Paterno:</label>
         {{form.apellido_paterno}} 
-        <label for="" class="text-primary">Apellido Materno: {% for e in  form.apellido_materno.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+        <label for="" class="text-primary">Apellido Materno:</label>
         {{form.apellido_materno}} 
     </div>
     <div class="col-6" style="border-left: 1px solid #dee2e6;">
-        <label for="" class="text-primary">Rut: {% for e in  form.rut.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+        <label for="" class="text-primary">Rut: </label>
         {{form.rut}} 
-        <label for="" class="text-primary">Correo: {% for e in  form.correo.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+        <label for="" class="text-primary">Correo:</label>
         {{form.correo}} 
-        <label for="" class="text-primary">Telefóno: {% for e in  form.telefono_apoderado.errors %} <small class="text-danger fs-6"> {{e}}</small> {% endfor %}</label>
+        <label for="" class="text-primary">Telefóno:</label>
         {{form.telefono_apoderado}} 
     </div>
 </div>

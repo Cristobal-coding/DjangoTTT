@@ -1,3 +1,4 @@
+from applications.psicologos.mixins import PsicologosPermisoMixin
 from applications.alumnos.models import Alumno_antecedente
 from django.contrib import messages
 from django.core.exceptions import ValidationError
@@ -9,7 +10,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 
 # Create your views here.
-class AntecedentesView(LoginRequiredMixin,ListView):
+class AntecedentesView(PsicologosPermisoMixin,ListView):
     template_name = "antecedentes/antecedentes.html"
     model = Antecedente
     context_object_name = 'antecedentes'
@@ -37,8 +38,6 @@ def antecedente_create(request):
         
     return HttpResponseRedirect(reverse('antecedentes_app:inicio'))
    
-
-
 def edit_antecedente(request,pk):
     if request.method == 'POST':
         nombreAdd=request.POST['nombre']

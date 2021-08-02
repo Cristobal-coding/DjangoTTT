@@ -2,7 +2,7 @@ from django.urls import reverse_lazy, reverse
 from django.http.response import HttpResponse
 from applications.psicologos.utils import render_to_pdf
 from django.views.generic import TemplateView , ListView, UpdateView, DetailView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, request
 from django.views.generic.edit import  FormView
 from django.views.generic import  View
 from django.contrib import messages
@@ -154,7 +154,11 @@ class AlumnosRegister(LoginRequiredMixin,FormView):
         cursos, current_año, current_semestre = Curso.objects.get_all_data()
         context['cursos'] = cursos
         return context
-    
+
+    def form_invalid(self, form):
+        if Alumno.objects.filter(rut__iexact=self.request.POST['rut']).exists():
+            messages.error(self.request,"Ya existe un alumno con ese rut.")
+        return self.render_to_response(self.get_context_data(userform=form))
     def form_valid(self, form):
         Alumno.objects.create(
             rut=form.cleaned_data['rut'],
@@ -218,6 +222,14 @@ class CreateApoderado(LoginRequiredMixin, FormView):
     form_class= ApoderadosRegisterForm
     success_url='.'
     login_url = reverse_lazy('home_app:login')
+    def form_invalid(self, form):
+        if Apoderado.objects.filter(rut__iexact=self.request.POST['rut']).exists():
+            messages.error(self.request,"Ya existe un apoderado con ese rut.")
+        elif Apoderado.objects.filter(correo__iexact=self.request.POST['correo']).exists():
+            messages.error(self.request,"Ya existe un apoderado con ese correo.")
+        else:
+            messages.error(self.request,"Error al ingresar usuario.")
+        return self.render_to_response(self.get_context_data(userform=form))
     def form_valid(self, form):
         Apoderado.objects.create(
             rut=form.cleaned_data['rut'],

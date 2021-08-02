@@ -1,3 +1,4 @@
+from applications.psicologos.mixins import PsicologosPermisoMixin
 from django.http.response import HttpResponse
 from applications.psicologos.utils import render_to_pdf
 from typing import List
@@ -5,6 +6,7 @@ from applications.psicologos.forms import InformeForm
 from applications.alumnos.models import Alumno
 from applications import alumnos
 from applications.cursos.models import  Curso_Alumno
+
 
 from applications.psicologos.models import Informe, Psicologo
 from django.urls import reverse_lazy, reverse
@@ -19,7 +21,7 @@ from django.views.generic.edit import  CreateView, FormView
 # Create your views here.
 
 
-class InformeView(LoginRequiredMixin,ListView):
+class InformeView(PsicologosPermisoMixin,ListView):
     template_name = "psicologos/inicio.html"
     model = Informe
     context_object_name = 'informe'
@@ -39,7 +41,7 @@ class InformeView(LoginRequiredMixin,ListView):
             return Informe.objects.buscar_informe_rut(rut)
 
 
-class CreateInformeView(LoginRequiredMixin,CreateView):
+class CreateInformeView(PsicologosPermisoMixin,CreateView):
     template_name = "psicologos/addinforme.html"
     model = Informe
     form_class=InformeForm
