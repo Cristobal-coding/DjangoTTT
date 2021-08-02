@@ -124,15 +124,19 @@ def profesor_create(request):
             errorstring=errorstring+"-Apellido Materno, "
         if request.POST['asignatura']== None or request.POST['asignatura'] == "":
             errorstring=errorstring+"-Asignatura "
+
         if errorstring=="":
-            Profesor.objects.create(
-                rut=request.POST['rut'],
-                nombres=request.POST['nombre'],
-                apellido_paterno=request.POST['paterno'],
-                apellido_materno=request.POST['materno'],
-                asig_impartir=Asignatura.objects.get(cod_asign=request.POST['asignatura'],)
-            )
-            messages.success(request,'!!Profesor añadido con exito!!')
+            if Profesor.objects.filter(rut__iexact=request.POST['rut']).exists():
+                messages.error(request,"Ya existe un profesor con ese rut.")
+            else:
+                Profesor.objects.create(
+                    rut=request.POST['rut'],
+                    nombres=request.POST['nombre'].capitalize(),
+                    apellido_paterno=request.POST['paterno'].capitalize(),
+                    apellido_materno=request.POST['materno'].capitalize(),
+                    asig_impartir=Asignatura.objects.get(cod_asign=request.POST['asignatura'],)
+                )
+                messages.success(request,'!!Profesor añadido con exito!!')
         else:
             messages.error(request,errorstring)
     return HttpResponseRedirect(reverse('asignaturas_app:profesores'))
@@ -143,7 +147,10 @@ def profesor_edit(request):
         profesor.nombres=request.POST['nombre']
         profesor.apellido_paterno=request.POST['paterno']
         profesor.apellido_materno=request.POST['materno']
-        profesor.asig_impartir=Asignatura.objects.get(cod_asign=request.POST['asignatura'],)
+        if request.POST['asignatura']=="":
+            profesor.asig_impartir=None
+        else:     
+            profesor.asig_impartir=Asignatura.objects.get(cod_asign=request.POST['asignatura'],)
         profesor.save()
         messages.success(request,'!!Profesor actualizado con exito!!')
     return HttpResponseRedirect(reverse('asignaturas_app:profesores'))

@@ -225,7 +225,7 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                <form action="{% url 'alumnos_app:addAntecedente'%}" method="POST">
+                                <form action="{% url 'alumnos_app:addAntecedente'%}"  id="formdetalle" method="POST">
                                     {% csrf_token %}
                                     <input type="hidden" value="{{alumno.rut}}" name="alumno">
                                     {{form.media}}
@@ -240,7 +240,7 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                                             <button type="button" class="btn btn-outline-danger w-100" data-bs-dismiss="modal">Cancelar</button>
                                         </div>
                                         <div class="col-6">
-                                            <button type="submit" class="btn btn-outline-success w-100">Registrar</button>
+                                            <button type="submit" onclick="return validateForm()" class="btn btn-outline-success w-100">Registrar</button>
                                         </div>
                                     </div>
                                 </form>
@@ -309,7 +309,7 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                                                 </ul>  
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-danger"  data-bs-dismiss="modal">Cerrar</button>
                                             </div>
                                         </div>
                                         </div>
@@ -332,6 +332,45 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
 {% endblock 'content' %}
   
 {% block 'js-select2' %}
+<script>
+    function validateForm() {
+        // console.log("Hola");
+        var inputs = document.getElementById("formdetalle").elements;
+        // console.log(inputs);
+        var fecha =inputs[2];
+        var antecedente =inputs[3];
+        var detalle =inputs[4];
+        var errores = 0 ;
+        // var detalle =document.getElementById('cke_1_contents');
+        if (fecha.value == ""|| fecha.value==null) {
+            console.log("Fecha vacio");
+            fecha.classList.add('is-invalid');
+            errores= errores+1;
+        }else{
+            fecha.classList.remove('is-invalid');
+        }
+        if (antecedente.value == ""|| antecedente.value==null) {
+            console.log("antecednte vacio");
+            antecedente.classList.add('is-invalid');
+            errores= errores+1;
+        }else{
+            antecedente.classList.remove('is-invalid');
+        }
+        if(errores != 0){
+            console.log('Errores en el form ',errores);
+            return false;
+        }
+        else{
+            if (confirm('Estas seguro que deseas guardar este antecedente?')) {
+            
+                console.log('guardado en DB');
+            } else {
+                return false;
+                console.log('no guardado en DB');
+            }
+        } 
+}
+</script>
 {% if messages %}
     {% for m in messages %}
     <script>

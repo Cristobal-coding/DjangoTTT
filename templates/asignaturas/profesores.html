@@ -57,7 +57,7 @@ Administrar profesores del colegio Manheim
                                     <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#impartidas{{prof.rut}}">
                                         <i class="far fa-books fs-5 text-warning"></i>
                                     </button>
-                                    <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#edit{{prof.id}}">
+                                    <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#edit{{prof.rut}}">
                                         <i class="far fa-user-edit text-success fs-5"></i>
                                     </button>
                                 </td>
@@ -91,7 +91,7 @@ Administrar profesores del colegio Manheim
                             </div>
                         </div>
                         <!-- Modal Editar-->
-                        <div class="modal fade" id="edit{{prof.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="edit{{prof.rut}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -99,7 +99,8 @@ Administrar profesores del colegio Manheim
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{% url 'asignaturas_app:editProfesor' %}" method="POST">
+                                        <h5>Rut: <span style="font-weight: bold;">{{prof.rut}}</span></h5>
+                                        <form action="{% url 'asignaturas_app:editProfesor' %}"  method="POST">
                                             {% csrf_token %}
                                             <input type="hidden" name="profesor" value="{{prof.rut}}">
                                             <label for="">Nombre del Profesor:</label>
@@ -109,8 +110,8 @@ Administrar profesores del colegio Manheim
                                             <label for="">Apellido Materno:</label>
                                             <input type="text" name="materno" value="{{prof.apellido_materno}}" class="form-control rounded-pill">
                                             <label for="">Asignatura que imparte:</label>
-                                            <select name="asignatura"  class="form-select">
-                                                <option value="">---------</option>                                               
+                                            <select name="asignatura"  class="form-select" >
+                                                <option value="">Sin asignatura</option>                                               
                                                 {% for asign in asignaturas  %}
                                                 <option value="{{asign.cod_asign}}"
                                                 {% if asign.cod_asign == prof.asig_impartir.cod_asign %}
@@ -158,7 +159,7 @@ Administrar profesores del colegio Manheim
                                     
                             </select>
                             <div class="w-100 text-center" style="padding-top: 20px;">
-                                <button type="submit"  class="btn btn-outline-primary w-50">Añadir</button>
+                                <button type="submit" onclick="return validateForm()"  class="btn btn-outline-primary w-50">Añadir</button>
                             </div>
                         </form>
                         <div id ='error'>
@@ -175,23 +176,88 @@ Administrar profesores del colegio Manheim
 {% endblock 'content' %}
 {% block 'js-select2' %}
 <script>
-    var form = document.getElementById('formularioprofes');
-    form.addEventListener('submit', function(evt){
-        var rut=document.getElementById("rut");
-        var nombre=document.getElementById("nombre");
-        var paterno=document.getElementById('paterno');
-        var materno=document.getElementById('materno');
-        var error=document.getElementById('asignaturas');     
-        console.log('submit');
-        if(rut.value === null || rut.value ===' '){
-            console.log('rut Invalido...');
-            evt.preventDefault();
+    var Fn = {
+	// Valida el rut con su cadena completa "XXXXXXXX-X"
+        validaRut : function (rutCompleto) {
+            if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( rutCompleto ))
+                return false;
+            var tmp 	= rutCompleto.split('-');
+            var digv	= tmp[1]; 
+            var rut 	= tmp[0];
+            if ( digv == 'K' ) digv = 'k' ;
+            return (Fn.dv(rut) == digv );
+        },
+        dv : function(T){
+            var M=0,S=1;
+            for(;T;T=Math.floor(T/10))
+                S=(S+T%10*(9-M++%6))%11;
+            return S?S-1:'k';
         }
-        if(nombre.value === null || nombre.value ===' '){
-            console.log('nombre...');
-            evt.preventDefault();
+    }
+    function validateForm() {
+        // console.log("Hola");
+        var inputs = document.getElementById("formularioprofes").elements;
+        // console.log(inputs);
+        var rut =inputs[1];
+        var nombre =inputs[2];
+        var paterno =inputs[3];
+        var materno =inputs[4];
+        var asign =inputs[5];
+        console.log(rut);
+        console.log("valor ", rut.value);
+        // var antecedente =inputs[3];
+        // var detalle =inputs[4];
+        var errores = 0 ;
+        // var detalle =document.getElementById('cke_1_contents');
+        console.log(inputs);
+        if (rut.value == ""|| rut.value==null) {
+            console.log("rut vacio");
+            rut.classList.add('is-invalid');
+            errores= errores+1;
+        }else{
+            rut.classList.remove('is-invalid');
         }
-    });
+        if(Fn.validaRut((rut.value))){
+            rut.classList.remove('is-invalid');
+        }else{
+            rut.classList.add('is-invalid'); 
+            errores= errores+1;
+        }
+        if (nombre.value == ""|| nombre.value==null) {
+            console.log("nombre vacio");
+            nombre.classList.add('is-invalid');
+            errores= errores+1;
+        }else{
+            nombre.classList.remove('is-invalid');
+        }
+        if (paterno.value == ""|| paterno.value==null) {
+            console.log("paterno vacio");
+            paterno.classList.add('is-invalid');
+            errores= errores+1;
+        }else{
+            paterno.classList.remove('is-invalid');
+        }
+        if (materno.value == ""|| materno.value==null) {
+            console.log("materno vacio");
+            materno.classList.add('is-invalid');
+            errores= errores+1;
+        }else{
+            materno.classList.remove('is-invalid');
+        }
+        if (asign.value == ""|| asign.value==null) {
+            console.log("asign vacio");
+            asign.classList.add('is-invalid');
+            errores= errores+1;
+        }else{
+            asign.classList.remove('is-invalid');
+        }
+        if(errores!=0){
+            return false;
+        }
+        
+    }     
+  
+
 </script>
 <script>
     $(document).ready(function() {
@@ -241,7 +307,7 @@ Administrar profesores del colegio Manheim
         <script>
           Swal.fire({
             icon: 'error',
-            title: 'Se debe completar todos los campos.',
+            title: 'Error al ingresar profesor.',
             text: '{{m}}',
           })
       </script>
