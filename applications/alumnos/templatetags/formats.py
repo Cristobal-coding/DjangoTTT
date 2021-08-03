@@ -65,16 +65,19 @@ def keep_filters(path):
     minimo=''
     maximo=''
     gender=''
-    if 'kword' in path and 'fecha1' in path and 'fecha2' in path and 'sexo' in path :
+    curso=''
+    if 'kword' in path and 'fecha1' in path and 'fecha2' in path and 'curso' in path and 'sexo' in path :
         key=path[path.index('kword')+6:path.index('fecha1')-1]
         minimo=path[path.index('fecha1')+7:path.index('fecha2')-1]
-        maximo=path[path.index('fecha2')+7:path.index('sexo')-1]
+        maximo=path[path.index('fecha2')+7:path.index('curso')-1]
+        curso=path[path.index('curso')+6:path.index('sexo')-1]
         gender=path[len(path)-1:len(path)]
     return {
         'key': key,
         'minimo': minimo,
         'maximo': maximo,
         'gender': gender,
+        'curso': curso,
     }
 #?csrfmiddlewaretoken=vrsLtK0JYQLobkcj0tAkrbD9kSYrex6p1ROGBJW6a9omyMAGoWTjYNywcIakXgQQ&nombre=a&rut=2    
 @register.simple_tag
