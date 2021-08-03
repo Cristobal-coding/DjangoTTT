@@ -2,7 +2,7 @@ from applications.users.mixins import UsersPermisoMixin
 from applications.cursos.models import Profesor
 from applications.psicologos.models import Psicologo
 from django.urls import reverse_lazy
-from django.contrib import messages
+
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 # Create your views here.

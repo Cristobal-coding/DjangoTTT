@@ -11,6 +11,7 @@ from .forms import LoginForm
 from applications.alumnos.models import Alumno, Apoderado
 from applications.cursos.models import Profesor
 from datetime import datetime
+from django.contrib import messages
 
 class LoginPage(FormView):
     model = User
@@ -24,17 +25,22 @@ class LoginPage(FormView):
         rut = self.request.POST['username']
         password = self.request.POST['password']
         user = authenticate(rut=rut,password=password)
-        login(self.request,user)
-        fecha = datetime.now()
-        Ingresos.objects.create(
-            usuario= user,
-            fecha=fecha,
-            hora=str(fecha.hour)+':'+str(fecha.minute)
-        )
-        if len(path) !=2:
-            return super(LoginPage,self).form_valid(form)
+        if user.activo:
+            login(self.request,user)
+            fecha = datetime.now()
+            Ingresos.objects.create(
+                usuario= user,
+                fecha=fecha,
+                hora=str(fecha.hour)+':'+str(fecha.minute)
+            )
+            if len(path) !=2:
+                return super(LoginPage,self).form_valid(form)
+            else:
+                return HttpResponseRedirect(path[1])
         else:
-            return HttpResponseRedirect(path[1])
+            print('User bloqueado')
+            messages.error(self.request,'Este usuario esta actualmente bloqueado del sistema.')
+            return HttpResponseRedirect(reverse('home_app:login'))
 
 
 
@@ -61,6 +67,21 @@ class HomePage(LoginRequiredMixin,TemplateView):
 
         return context
 
+def unlock_user(request,pk):
+    if request.method == 'POST':
+        user = User.objects.get(rut=pk)
+        user.activo=True
+        user.save()
+        messages.success(request,'El usuario ' + user.username + ' ha sido bloqueado correctamente.')
+    return HttpResponseRedirect(reverse('user_app:registrar'))
+
+def lock_user(request,pk):
+    if request.method == 'POST':
+        user = User.objects.get(rut=pk)
+        user.activo=False
+        user.save()
+        messages.success(request,'El usuario ' + user.username + ' ha sido desbloqueado correctamente.')
+    return HttpResponseRedirect(reverse('user_app:registrar'))
 
         
            
