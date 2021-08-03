@@ -45,7 +45,7 @@ Cursos del Establecimiento Manheim
                       </button>
                     </td>
                   </tr>
-                  <!-- Modal -->
+                  <!-- Modal  Crear Cursos -->
                 <div class="modal fade" id="initCursos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -58,20 +58,20 @@ Cursos del Establecimiento Manheim
                           <h5 class="text-primary text-decoration-underline">Porfavor rellene estos datos para continuar</h5>
                         </div>
 
-                        <form action="{% url 'cursos_app:initCursos'%}" method="POST">
+                        <form action="{% url 'cursos_app:initCursos'%}" id="crearCursos" method="POST">
                           {% csrf_token %}
                           <label for="">Semestre: <span class="text-danger">*</span></label>
-                          <select name="semestre" id="" class="form-control">
+                          <select name="semestre" id="semestre" class="form-control">
                             <option value="1" selected>Primer Semestre</option>
                             <option value="2">Segundo Semestre</option>
                           </select>
                           <label for="">Fecha de inicio del semestre: <span class="text-danger">*</span></label>
-                          <input type="date"  name="inicio" class="form-control">
-                          <label for="">Año: <span class="text-danger">*</span></label>
-                          <input type="number" max="9999" id="añoInput" name="año" class="form-control">
+                          <input type="date" id="fecha"  name="inicio" class="form-control">
+                          <label class="d-none" for="">Año: <span class="text-danger">*</span></label>
+                          <input class="d-none" type="number " max="9999" id="añoInput" name="año" class="form-control">
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Iniciar</button>
+                            <button type="submit" class="btn btn-primary" onclick="return validateForm()">Iniciar</button>
                           </div>
                         </form>
                       </div>
@@ -301,6 +301,62 @@ Cursos del Establecimiento Manheim
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <script src="{% static 'js/jquery.quicksearch.js' %}"></script> 
 <script src="{% static 'js/jquery.multi-select.js' %}"></script> 
+<script>
+  function validateForm() {
+        console.log("validate crear cursos");
+
+        var inputs = document.getElementById("crearCursos").elements;
+        console.log(inputs);
+        var sem =inputs[1];
+        var fecha =inputs[2];
+        var aoinput =inputs[3];
+        var errores = 0 ;
+
+        if (sem.value == ""|| sem.value==null) {
+            console.log("sem vacio");
+            sem.classList.add('is-invalid');
+            errores= errores+1;
+        }else{
+            sem.classList.remove('is-invalid');
+        }
+        if (fecha.value == ""|| fecha.value==null) {
+            console.log("fecha vacio");
+            fecha.classList.add('is-invalid');
+            errores= errores+1;
+        }else{
+            fecha.classList.remove('is-invalid');
+            console.log(fecha.value);
+            var d = new String(fecha.value);
+            console.log(d);
+            var y = d.substring(0,4);
+            console.log(y);
+            aoinput.value=y;
+        }
+        if (aoinput.value == ""|| aoinput.value==null) {
+            console.log("aoinput vacio");
+            aoinput.classList.add('is-invalid');
+            errores= errores+1;
+        }else{
+            aoinput.classList.remove('is-invalid');
+        }
+        // if (asign.value == ""|| asign.value==null) {
+        //     console.log("asign vacio");
+        //     asign.classList.add('is-invalid');
+        //     errores= errores+1;
+        // }else{
+        //     asign.classList.remove('is-invalid');
+        // }
+        // if(errores!=0){   
+        //     console.log("Error lol");
+        //     erroresdiv.classList.remove('d-none');
+        //     return false;
+        // }else{      
+        //     erroresdiv.classList.add('d-none');
+        // }       
+        
+    }  
+
+</script>
 <script>
   $(document).ready(function() {
     $('#alumnos-repitentes').multiSelect({

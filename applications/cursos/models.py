@@ -31,7 +31,12 @@ class Profesor(models.Model):
         db_table= 'Profesores'  
         ordering = ['nombres']
     def __str__(self):
-        return self.nombres +'(Prof. '+ self.asig_impartir.nombre + ')'
+        nomasign=""
+        if self.asig_impartir == None:
+            nomasign="Sin asignatura."
+        else:
+            nomasign=self.asig_impartir.nombre
+        return self.nombres +'(Prof. '+ nomasign + ')'
     rut=models.CharField('Rut',max_length=13,unique=True,primary_key=True)
     nombres=models.CharField('Nombres',max_length=50)
     apellido_paterno=models.CharField('A.Paterno',max_length=30,blank=True,null=True)

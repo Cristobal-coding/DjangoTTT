@@ -127,9 +127,9 @@ def profesor_create(request):
 
     return HttpResponseRedirect(reverse('asignaturas_app:profesores'))
 def profesor_edit(request):
+    #validar
     if request.method == 'POST':
         profesor = Profesor.objects.get(rut=request.POST['profesor'])
-
         profesor.nombres=request.POST['nombre']
         profesor.apellido_paterno=request.POST['paterno']
         profesor.apellido_materno=request.POST['materno']
