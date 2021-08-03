@@ -100,12 +100,12 @@ def keep_filters_cursos(path):
         id=path[path.index('id')+3:path.index('year')-1]
         year=path[path.index('year')+5:path.index('semestre')-1]
         semestre=path[path.index('semestre')+9:path.index('jefe')-1]
-        jefe=path[len(path)-1:len(path)]
+        jefe=path[path.index('jefe')+5:len(path)]
     if year != '':
         year = int(year)
 
     if jefe != '' and jefe != '=' and id == '':
-        jefe = int(jefe)
+        # jefe = int(jefe)
         year = ''
         semestre = ''
 

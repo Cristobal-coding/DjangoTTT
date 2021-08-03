@@ -85,10 +85,10 @@ Todos los Cursos del Establecimiento Manheim
                                 <select name="jefe" class="form-select">
                                     <option value="" >-----</option>
                                     {% for profe in profes  %}
-                                        {% if params.jefe == profe.id %}
-                                        <option value="{{profe.id}}" selected >{{profe}}</option>
+                                        {% if params.jefe == profe.rut %}
+                                        <option value="{{profe.rut}}" selected >{{profe}}</option>
                                         {%else%}
-                                        <option value="{{profe.id}}" >{{profe}}</option>
+                                        <option value="{{profe.rut}}" >{{profe}}</option>
                                         {% endif %}
                                     {% endfor %}
                                 </select>
