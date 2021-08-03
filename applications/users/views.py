@@ -80,62 +80,6 @@ class CreateUser(LoginRequiredMixin,CreateView):
             
         return HttpResponseRedirect(reverse('user_app:registrar'),)
         
-class CreateRol(LoginRequiredMixin,CreateView):
-    form_class= RolRegisterForm
-    success_url = '.'
-    login_url = reverse_lazy('home_app:login')
-    def render_to_response(self, context, **response_kwargs):
-        context['users'] = User.objects.all()
-        context['roles'] = Rol.objects.all()
-        context['userform'] = UserRegisterForm
-        response_kwargs.setdefault('content_type', self.content_type)
-        return self.response_class(
-            request=self.request,
-            template='usuarios/inicio.html',
-            context=context,
-            using=self.template_engine,
-            **response_kwargs
-        )
-    def form_invalid(self, form):
-        print('========')
-        print(form)
-        print('========')
-        return self.render_to_response(self.get_context_data(rolform=form))
-
-    def form_valid(self, form):
-        Rol.objects.create(nombre=form.cleaned_data['nombre'])
-        return HttpResponseRedirect(reverse('user_app:registrar'),)
-
-class EditRol(LoginRequiredMixin,UpdateView):
-    form_class = RolRegisterForm
-    model = Rol
-    success_url = reverse_lazy('user_app:registrar')
-    login_url = reverse_lazy('home_app:login')
-    def form_invalid(self, form):
-        self.object = self.get_object()
-        rol_id=self.object.id
-        formulario=str(form)
-        if 'nombre invalido' in formulario:
-            print('ERROES TITLE')
-
-            messages.error(self.request,str(rol_id)+'*')
-        else:
-            print('ERROR UNIQUE')
-
-            messages.error(self.request,rol_id)
-        return HttpResponseRedirect(reverse('user_app:registrar'),)
-    def form_valid(self, form):
-        messages.success(self.request,'Rol actualizado Correctamente.')
-        return HttpResponseRedirect(self.get_success_url())
-    login_url = reverse_lazy('home_app:login')
-
-
-def DeleteRol(request, pk):
-    query = Rol.objects.get(pk=pk)
-    query.delete()
-    messages.add_message(request, messages.INFO, 'Rol elminado Satisfactoriamente.')
-    return HttpResponseRedirect(reverse('user_app:registrar'))
-
 def edit_profile(request):
     if request.method == 'POST':
         user = User.objects.get(rut=request.user.rut)

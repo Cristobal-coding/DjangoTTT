@@ -24,8 +24,8 @@ Filtrar Alumnos por Parametros
                         <th scope="col">Estado</th>
                         <th scope="col" class="text-center">Perfil</th>      
                       </tr>
-                      <tbody>                        
-                        {% if  alumnos.count == 0 %}
+                      <tbody>                      
+                        {% if  alumnos.count == 0 or not alumnos %}
                             <tr class="text-center">
                                 <td colspan="6">Sin resultados en la Búsqueda...</td>
                             </tr>
@@ -108,22 +108,22 @@ Filtrar Alumnos por Parametros
                                     <label for="curso" class="form-label fw-bold">Curso:</label>
                                     <select  class="form-select rounded-pill form-control-sm" id="curso" name="curso">
                                         <option value="">------------------</option>
-                                        <option value="1.0">Primero Basico</option>
-                                        <option value="2.0">Segundo Basico</option>
-                                        <option value="3.0">Tercero Basico</option>
-                                        <option value="4.0">Cuarto Basico</option>
-                                        <option value="5.0">Quinto Basico</option>
-                                        <option value="6.0">Sexto Basico</option>
-                                        <option value="7.0">Septimo Basico</option>
-                                        <option value="8.0">Octavo Basico</option>
-                                        <option value="9.0">Primero Medio</option>
-                                        <option value="10.0">Segundo Medio</option>
-                                        <option value="11.0">Tercero Medio Construccion</option>
-                                        <option value="11.1">Tercero Medio Electricidad</option>
-                                        <option value="11.2">Tercero Medio Construcciones Metalicas</option>
-                                        <option value="12.0">Cuarto Medio Construccion</option>
-                                        <option value="12.1">Cuarto Medio Electricidad</option>
-                                        <option value="12.2">Cuarto Medio Construcciones Metalicas</option>
+                                        <option value="1.0" {% if '1.0' in filters.curso %}selected{%endif%}>Primero Basico</option>
+                                        <option value="2.0" {% if '2.0' in filters.curso %}selected{%endif%}>Segundo Basico</option>
+                                        <option value="3.0" {% if '3.0' in filters.curso %}selected{%endif%}>Tercero Basico</option>
+                                        <option value="4.0" {% if '4.0' in filters.curso %}selected{%endif%}>Cuarto Basico</option>
+                                        <option value="5.0" {% if '5.0' in filters.curso %}selected{%endif%}>Quinto Basico</option>
+                                        <option value="6.0" {% if '6.0' in filters.curso %}selected{%endif%}>Sexto Basico</option>
+                                        <option value="7.0" {% if '7.0' in filters.curso %}selected{%endif%}>Septimo Basico</option>
+                                        <option value="8.0" {% if '8.0' in filters.curso %}selected{%endif%}>Octavo Basico</option>
+                                        <option value="9.0" {% if '9.0' in filters.curso %}selected{%endif%}>Primero Medio</option>
+                                        <option value="10.0" {% if '10.0' in filters.curso %}selected{%endif%}>Segundo Medio</option>
+                                        <option value="11.0" {% if '11.0' in filters.curso %}selected{%endif%}>Tercero Medio Construccion</option>
+                                        <option value="11.1" {% if '11.1' in filters.curso %}selected{%endif%}>Tercero Medio Electricidad</option>
+                                        <option value="11.2" {% if '11.2' in filters.curso %}selected{%endif%}>Tercero Medio Construcciones Metalicas</option>
+                                        <option value="12.0" {% if '12.0' in filters.curso %}selected{%endif%}>Cuarto Medio Construccion</option>
+                                        <option value="12.1" {% if '12.1' in filters.curso %}selected{%endif%}>Cuarto Medio Electricidad</option>
+                                        <option value="12.2" {% if '12.2' in filters.curso %}selected{%endif%}>Cuarto Medio Construcciones Metalicas</option>
                                     </select>
                                 </div>
                                 <div class="col-12 py-2">

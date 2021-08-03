@@ -45,7 +45,7 @@ class CursoManager(models.Manager):
             #end
         elif values[3] != '':
             result = cursos.filter(
-                Q(id_prof_jefe__id = values[3]) 
+                Q(id_prof_jefe__rut = values[3]) 
             )
         elif values[1] != '' and values[2] != '':
             result = cursos.filter(

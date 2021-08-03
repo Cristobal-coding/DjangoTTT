@@ -8,6 +8,7 @@ from applications.antecedentes.models import Antecedente
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic.list import ListView
+from applications.cursos.models import Curso
 
 # Create your views here.
 class AntecedentesView(PsicologosPermisoMixin,ListView):
@@ -15,10 +16,13 @@ class AntecedentesView(PsicologosPermisoMixin,ListView):
     model = Antecedente
     context_object_name = 'antecedentes'
     login_url = reverse_lazy('home_app:login')   
-    paginate_by=11
+    paginate_by=8
     def get_context_data(self, **kwargs):
         context = super(AntecedentesView, self).get_context_data(**kwargs)
         context['alumno_antecedente'] = Alumno_antecedente.objects.all()[:20]
+        año,semestre = Curso.objects.get_año_semestre()
+        context['year'] = año
+        context['semestre'] = semestre
         return context
 
 def antecedente_create(request):
