@@ -135,33 +135,24 @@ Administracion de Usuarios
                         <thead class="text-primary" style="border-bottom: 1px solid #dee2e6 !important;;">
                             <tr>
                                 <td>Nombre</td>
-                                <td>Usuarios</td>
-                                <td colspan="2" class="text-center">Acciones</td>
+                                <td class="text-center">Cantidad de Usuarios</td>
                             </tr>
                         </thead>
                         <tbody>  
                             {% for r in roles %}
                             <tr>
                                 <td>{{r.nombre}}</td>
-                                <td class="text-primary px-5">{{r.usuarios.count}}</td>
-                                <td class="py-3 h-100 text-end">
-                                    <button type="button"
-                                    {% if messages %}                         
-                                        {% for message in messages %}
-                                            {% id_compare r.id message as result %}
-                                            {% if result.unique or result.title %}
-                                            id="autoclickroledit"
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% endif %} class="btn p-0" data-bs-toggle="modal" data-bs-target="#addRol{{r.id}}">
-                                        <i class="far fa-comment-alt-edit fs-5 text-success"></i>
-                                    </button> 
-                                </td>
-                                <td class="py-3 h-100 text-start">
-                                    <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#deleteRol{{r.id}}"><i class="fal fa-times hover-ico text-danger"></i></button> 
+                                <td class="text-primary px-5 text-center">
                                     
-                                </td>   
-                               
+                                    {% if r.usuarios.count == 0 %}
+                                        Rol Sin usuarios
+                                    {% elif r.usuarios.count == 1 %}
+                                        {{r.usuarios.count}} usuario
+                                    {% else %}
+                                        {{r.usuarios.count}} usuarios
+                                    {% endif %}
+                                        
+                                </td>
                             </tr>
 
                             {% endfor %}      
