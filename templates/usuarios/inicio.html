@@ -48,8 +48,8 @@ Administracion de Usuarios
                                 <td>{{u.username}}</td>
                                 <td>{{u.rol}}</td>
                                 <td>{{u.rut}}</td>
-                                <td class="text-center">{% if u.activo%}<span class="badge rounded-pill bg-success">Conectado</span>{%else%}<span class="badge rounded-pill bg-danger">Desconectado</span>{% endif %}</td>      
-                                <td class="px-0 text-center"><i class="fas fa-trash-alt hover-ico"></i></td>
+                                <td class="text-center">{% if u.activo%}<span class="badge rounded-pill bg-success">Activo</span>{%else%}<span class="badge rounded-pill bg-danger">Bloqueado</span>{% endif %}</td>      
+                                <td class="px-0 text-center"><i class="far fa-user-lock hover-ico"></i></td>
                             </tr>
                             {% endfor %}      
                         </tbody>
@@ -87,15 +87,10 @@ Administracion de Usuarios
     </div>
     <div class="col-5  h-100 d-flex flex-column align-items-center py-5">
         <div class="card shadow-sm w-100">
-            <div class="card-header bg-white border-0">
+            <div class="card-header bg-white border-0" style="padding-top: 28px !important;">
                 <div class="row mx-0 w-100">
                     <div class="col-7">
                         <h5 class="title d-inline fw-bold">Roles Disponibles</h5>
-                    </div>
-                    <div class="col-5 text-center">
-                        <button type="button" id="clickautorol" class="btn btn-primary rounded-pill my-btn" data-bs-toggle="modal" data-bs-target="#addRol">
-                            Nuevo Rol <i class="fas fa-plus mx-1"></i>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -133,62 +128,7 @@ Administracion de Usuarios
                                 </td>   
                                
                             </tr>
-                            <!-- Modal Delete Rol -->
-                            <div class="modal fade" id="deleteRol{{r.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title fs-4 fw-bold" id="staticBackdropLabel"><i class="fas fa-exclamation-triangle mx-1 text-danger fs-4"></i>!Cuidado!</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h6>¿Estas de acuerdo con eliminar el Rol <span class="fw-bold">{{r.nombre}}</span>?</h6>      
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                        <a href="{% url 'user_app:roldelete' r.id %}" type="submit" class="btn btn-primary">Si, de acuerdo</a>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            <!-- Modal edit Rol -->
-                            <div class="modal fade" id="addRol{{r.id}}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addRol{{r.id}}" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content bg-light">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Registrar Rol</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="POST" class="w-100" action="{% url 'user_app:roledit' r.id%}">
-                                                {% csrf_token %}
-                                                <label for="nombre">Nombre:
-                                                    {% if messages %}                         
-                                                        {% for message in messages %}
-                                                        {% id_compare r.id message as result %}
-                                                        {% if result.unique and not result.title %}
-                                                        <small class="text-danger d-inline">*Este Nombre ya está en uso*</small>
-                                                        {% endif %}
-                                                        {% if result.title %}
-                                                        <small class="text-danger d-inline">*Formato de nombre invalido*</small>
-                                                        {% endif %}
-                                                        {% endfor %}
-                                                    {% endif %} 
-                                                </label> 
-                                                <input type="text" value="{{r.nombre}}" class="form-control" name="nombre" id="nombre" required>
-                                                <div class="row mx-0 w-100" style="border-top:1px solid #dee2e6 !important;">
-                                                    <div class="col-6 p-3">
-                                                        <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Cancelar</button>
-                                                    </div>
-                                                    <div class="col-6 p-3">
-                                                        <button class="btn btn-primary w-100" type="submit">Actualizar</button>
-                                                    </div>
-                                                </div>   
-                                            </form>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
+
                             {% endfor %}      
                         </tbody>
             
@@ -196,32 +136,7 @@ Administracion de Usuarios
                 </div>
             </div>
         </div>
-         
-        <!-- Modal nuevo rol -->
-        <div class="modal fade" id="addRol" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addRol" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content bg-light">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Registrar Rol</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="POST" class="w-100" action="{% url 'user_app:rolcreate'%}">
-                            {% csrf_token %}
-                            {{rolform}}
-                            <div class="row mx-0 w-100" style="border-top:1px solid #dee2e6 !important;">
-                                <div class="col-6 p-3">
-                                    <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Cancelar</button>
-                                </div>
-                                <div class="col-6 p-3">
-                                    <button class="btn btn-primary w-100" type="submit">Registrar</button>
-                                </div>
-                            </div>   
-                        </form>
-                    </div> 
-                </div>
-            </div>
-        </div>  
+          
     </div>
 </div>
 {% if messages %}
