@@ -1,4 +1,4 @@
 <ul class="list-group list-group-horizontal list-group-flush shadow-sm ">
-    <a href="{% url 'psicologos_app:inicio'%}" class=" {% if 'psicologos' in request.path %}active{% endif %} list-group-item px-4  py-1 list-group-item-action rounded text-start "><i class="far fa-users px-3"></i>Psicologos Menu</a>        
-        <a href="{% url 'psicologos_app:addinforme'%}"   class=" {% if 'addinforme' in request.path %}active{% endif %} list-group-item px-4  py-1 list-group-item-action rounded text-start "><i class="fas fa-people-arrows px-3"></i>Redactar Informe</a>     
+    <a href="{% url 'psicologos_app:inicio'%}" class=" {% if not 'addinforme' in request.path %}active{% endif %} list-group-item px-4  py-1 list-group-item-action rounded text-start "><i class="far fa-users px-3"></i>Psicologos Menu</a>        
+        <a href="{% url 'psicologos_app:addinforme'%}"   class=" {% if 'psicologos/addinforme' in request.path %}active{% endif %} list-group-item px-4  py-1 list-group-item-action rounded text-start "><i class="fas fa-people-arrows px-3"></i>Redactar Informe</a>     
 </ul>

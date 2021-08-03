@@ -100,17 +100,17 @@ Administrar profesores del colegio Manheim
                                     </div>
                                     <div class="modal-body">
                                         <h5>Rut: <span style="font-weight: bold;">{{prof.rut}}</span></h5>
-                                        <form action="{% url 'asignaturas_app:editProfesor' %}"  method="POST">
+                                        <form action="{% url 'asignaturas_app:editProfesor' %}"  id="formedit{{prof.rut}}" method="POST">
                                             {% csrf_token %}
-                                            <input type="hidden" name="profesor" value="{{prof.rut}}">
+                                            <input type="hidden" name="profesor" id="rutedit{{prof.rut}}" value="{{prof.rut}}">
                                             <label for="">Nombre del Profesor:</label>
-                                            <input type="text" name="nombre" value="{{prof.nombres}}" class="form-control rounded-pill">
+                                            <input type="text" name="nombre" id="nombredit{{prof.rut}}" value="{{prof.nombres}}" class="form-control rounded-pill">
                                             <label for="">Apellido Paterno:</label>
-                                            <input type="text" name="paterno" value="{{prof.apellido_paterno}}" class="form-control rounded-pill">
+                                            <input type="text" name="paterno" id="paternoedit{{prof.rut}}" value="{{prof.apellido_paterno}}" class="form-control rounded-pill">
                                             <label for="">Apellido Materno:</label>
-                                            <input type="text" name="materno" value="{{prof.apellido_materno}}" class="form-control rounded-pill">
+                                            <input type="text" name="materno" id="maternoedit{{prof.rut}}" value="{{prof.apellido_materno}}" class="form-control rounded-pill">
                                             <label for="">Asignatura que imparte:</label>
-                                            <select name="asignatura"  class="form-select" >
+                                            <select name="asignatura"  id="asignedit{{prof.rut}}" class="form-select" >
                                                 <option value="">Sin asignatura</option>                                               
                                                 {% for asign in asignaturas  %}
                                                 <option value="{{asign.cod_asign}}"
@@ -122,7 +122,10 @@ Administrar profesores del colegio Manheim
                                             </select>
                                             <div class="modal-footer" style="padding-bottom: 0;margin-top:20px">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                <button type="submit" class="btn btn-primary">Actualizar</button>
+                                                <button type="submit" class="btn btn-primary" id="{{prof.rut}}" >Actualizar</button>
+                                            </div>
+                                            <div class="w-100 text-center d-none" id="errorCampoEdit" style="padding-top: 20px;">
+                                                <h6 style="color: red;">Debe completar los campos</h6>
                                             </div>
                                         </form>
                                     </div>
@@ -268,7 +271,8 @@ Administrar profesores del colegio Manheim
         }else{      
             erroresdiv.classList.add('d-none');
         }       
-    }     
+    }  
+     
 </script>
 <script>
     $(document).ready(function() {
