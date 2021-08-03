@@ -121,5 +121,6 @@ class Curso_Alumno(models.Model):
     #atributo si es curso actual
     is_current = models.BooleanField(default=False)
     abandono =models.BooleanField(default=False)
+    dias_asistencia= models.IntegerField(null=True, blank=True)
 
 

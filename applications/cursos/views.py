@@ -7,9 +7,10 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
-from .models import Curso , Fecha, PlanEstudio, Profesor
+from .models import Curso, Curso_Alumno , Fecha, PlanEstudio, Profesor
 from .logicas import cursos_base , get_curso_anterior_pk, check_cursos
 from datetime import datetime
+import math
 # Create your views here.
 class CursosHome(LoginRequiredMixin,TemplateView):
     template_name = 'cursos/cursos.html'
@@ -32,6 +33,13 @@ class CursosDetalle(LoginRequiredMixin,DetailView):
     def get_context_data(self, **kwargs):
         context = super(CursosDetalle, self).get_context_data(**kwargs)
         cursos, current_año, current_semestre = Curso.objects.get_all_data()
+        current_curso = Curso.objects.get(id_curso= self.kwargs['pk'])
+        if current_curso.cod_fecha.fecha_termino != None:
+            result = current_curso.cod_fecha.fecha_inicio - current_curso.cod_fecha.fecha_termino
+            result= str(result)
+            result = result.split(" ",1)
+            days = result[0]        
+            context['total_dias'] =math.floor(int(days))
         context['semestre'] =current_semestre
         context['year'] =current_año
         context['alumnos'] =Alumno.objects.get_alumno_sin_curso()
@@ -71,6 +79,13 @@ class CursosAll(LoginRequiredMixin,ListView):
         context['profes'] =Profesor.objects.get_jefes()
         return context
 
+def set_asistencia(request):
+    if request.method == 'POST':
+        alumno_curso = Curso_Alumno.objects.get(id=request.POST['alumno'])
+        alumno_curso.dias_asistencia = request.POST['asistencia']
+        alumno_curso.save()
+        messages.success(request,'!!Asistencia ingresada correctamente!!.')
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 def init_cursos(request):
     if request.method == 'POST':
@@ -154,6 +169,7 @@ def remove_alumno(request,):
                     al.save()
         elif data[0] == 'error':
             curso.alumnos.remove(data[1])
+        messages.success(request,'!!La accion ha sido ejecutada sin problemas!!.')
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 def finalizar_semestre(request):

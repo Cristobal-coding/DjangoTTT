@@ -12,4 +12,5 @@ urlpatterns = [
     path('cursos/init/', views.init_cursos, name='initCursos'),
     path('cursos/linked/profe_jefe', views.profe_to_curso, name='addProfeJefe'),
     path('cursos/all/', views.CursosAll.as_view(), name='allCursos'),
+    path('cursos/asistencia/', views.set_asistencia, name='setAsistencia'),
 ]

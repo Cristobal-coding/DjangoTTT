@@ -27,6 +27,7 @@ Todos los Cursos del Establecimiento Manheim
                         <th scope="col">Año</th>
                         <th scope="col">Semestre</th>
                         <th scope="col">Prof.Jefe</th>
+                        <th scope="col">Alumnos</th>
                         <th scope="col">Detalle</th>
                       </tr>
                     </thead>
@@ -47,6 +48,7 @@ Todos los Cursos del Establecimiento Manheim
                               {% endif %}
                                   
                           </td>
+                          <td>{{curso.alumnos.count}}</td>
                           <td class="text-center"><a href="{% url 'cursos_app:detalleCurso' curso.id_curso %}"><i class="far fa-search fs-5"></i></a></td>
                         </tr>
                         {% endfor %}

@@ -114,7 +114,7 @@ Cursos del Establecimiento Manheim
                                         <th scope="col">A. Paterno</th>
                                         <th scope="col">Nombre</th>
                                         <th scope="col">Rut</th>
-                                        <th scope="col" colspan="2"></th>
+                                        <th scope="col" {% if total_dias %}colspan="3" {% else %}colspan="2"{% endif%}></th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -127,6 +127,14 @@ Cursos del Establecimiento Manheim
                                         <td class="fw-light {% if a.abandono %}text-decoration-line-through text-danger{% endif%}">{{a.alumno.nombre}}</td>
                                         <td class="fw-light {% if a.abandono %}text-decoration-line-through text-danger{% endif%}">{{a.alumno.rut}}</td>
                                         
+                                        {% if total_dias %}
+                                        <td>
+                                            <button class="btn p-0" style="margin-bottom: 2px !important;" data-bs-toggle="modal" data-bs-target="#asistencia{{a.alumno.rut}}">
+                                                <i class="far fa-clipboard-list-check text-success"></i>
+                                            </button>
+                                        </td>
+                                        {% endif %}
+                                            
                                         {% if a.abandono %}
                                         <td class="fw-light ">
                                             <button class="btn p-0" disabled>
@@ -200,7 +208,48 @@ Cursos del Establecimiento Manheim
                                                     </div>
                                                 </div>
                                             </div>
+
                                             {% endif %}
+
+                                            
+                                            {% if total_dias %}
+                                            <input type="hidden" id="diasTotal" value="{{total_dias}}">
+                                            <!-- Modal Asistencia alumno -->
+                                            <div class="modal fade" id="asistencia{{a.alumno.rut}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="staticBackdropLabel">Definir asistencia del alumno {{a.alumno.nombre}}</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body" style="padding-bottom: 0 !important;">
+                                                            <h6>Dias totales que tuvo este periodo: <strong>{{total_dias}} dias</strong></h6>
+                                                            <form action="{% url 'cursos_app:setAsistencia' %}" method="POST" class="w-100 h-100">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" value="{{a.id}}" name="alumno">
+                                                                <label for="" class="float-left">Asistencia:</label>
+                                                                <input value="{{a.dias_asistencia}}" type="number" id="asistenciaInput{{a.alumno.rut}}" name="asistencia" class="form-control">
+                                                                <div class="modal-footer" style="margin-top: 20px !important;">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                                    <button type="submit" class="btn btn-primary">Registrar asistencia</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% if total_dias %}
+                                            <script>
+                                                myInput = document.getElementById('asistenciaInput{{a.alumno.rut}}');
+                                                myInput.oninput = function () {
+                                                if (this.value.length > 3) {
+                                                    this.value = this.value.slice(0,3); 
+                                                }
+                                            }
+                                            </script>
+                                            {% endif %}
+                                            {% endif %}
+                                                
                                         {% endif %}
                                             
                                         <td class="fw-light"><a href="{% url 'alumnos_app:detailAlumn' a.alumno.rut %}" class="p-0"><i class="fad fa-address-card"></i></a></td>
@@ -479,6 +528,9 @@ Cursos del Establecimiento Manheim
 </div>
 {% endblock 'content' %}
 {% block 'js-select2' %}
+
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <script src="{% static 'js/jquery.quicksearch.js' %}"></script> 
 <script src="{% static 'js/jquery.multi-select.js' %}"></script> 
