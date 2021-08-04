@@ -90,7 +90,8 @@ def set_asistencia(request):
 def init_cursos(request):
     if request.method == 'POST':
         check_exists_cursos = Curso.objects.all()
-        if check_exists_cursos.count() ==0:
+        check_exists_planes = PlanEstudio.objects.all()
+        if check_exists_cursos.count() ==0 and check_exists_planes >0:
             semestre = request.POST['semestre']
             año = request.POST['año']
             inicio = request.POST['inicio']
@@ -125,6 +126,8 @@ def init_cursos(request):
                 this_curso = Curso.objects.get(id_curso = key_curso)
                 linked_asignaturas_to_curso(this_curso)
             messages.success(request,'!!Cursos generados con exito!!.')
+        else:
+            messages.error(request,'No hay planes de estudio disponibles.')
     return HttpResponseRedirect(reverse('cursos_app:all'))
     # return HttpResponseRedirect(reverse('cursos_app:all'))
 
