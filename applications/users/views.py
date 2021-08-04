@@ -70,13 +70,19 @@ class CreateUser(LoginRequiredMixin,CreateView):
             fecha_ingreso=date.today()
             )
         elif str(form.cleaned_data['rol']).strip() == 'Profesor':
-            Profesor.objects.create(
-            rut=form.cleaned_data['rut'],
-            nombres=form.cleaned_data['username'],
-            apellido_paterno="",
-            apellido_materno="",
-            asig_impartir=None,
-            )
+            profesores = Profesor.objects.all()
+            existe = False
+            for profe in profesores:
+                if profe.rut ==  form.cleaned_data['rut']:
+                    existe=True
+            if not existe:
+                Profesor.objects.create(
+                    rut=form.cleaned_data['rut'],
+                    nombres=form.cleaned_data['username'],
+                    apellido_paterno="",
+                    apellido_materno="",
+                    asig_impartir=None,
+                )
             
         return HttpResponseRedirect(reverse('user_app:registrar'),)
         
