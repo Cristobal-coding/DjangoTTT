@@ -72,6 +72,8 @@ def keep_filters(path):
         maximo=path[path.index('fecha2')+7:path.index('curso')-1]
         curso=path[path.index('curso')+6:path.index('sexo')-1]
         gender=path[len(path)-1:len(path)]
+    if '+' in key:
+        key.replace('+', ' ')
     return {
         'key': key,
         'minimo': minimo,
