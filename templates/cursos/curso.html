@@ -224,7 +224,7 @@ Cursos del Establecimiento Manheim
                                                         </div>
                                                         <div class="modal-body" style="padding-bottom: 0 !important;">
                                                             <h6>Dias totales que tuvo este periodo: <strong>{{total_dias}} dias</strong></h6>
-                                                            <form action="{% url 'cursos_app:setAsistencia' %}" method="POST" class="w-100 h-100">
+                                                            <form action="{% url 'cursos_app:setAsistencia' %}"  method="POST" class="w-100 h-100">
                                                                 {% csrf_token %}
                                                                 <input type="hidden" value="{{a.id}}" name="alumno">
                                                                 <label for="" class="float-left">Asistencia:</label>
@@ -247,6 +247,7 @@ Cursos del Establecimiento Manheim
                                                 }
                                             }
                                             </script>
+                         
                                             {% endif %}
                                             {% endif %}
                                                 
