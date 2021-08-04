@@ -12,7 +12,7 @@ from applications.alumnos.models import Alumno, Apoderado
 from applications.cursos.models import Profesor
 from datetime import datetime
 from django.contrib import messages
-
+from applications.psicologos.models import Informe
 class LoginPage(FormView):
     model = User
     template_name = "home/login.html"
@@ -64,6 +64,8 @@ class HomePage(LoginRequiredMixin,TemplateView):
         context['apoderados'] = Apoderado.objects.all().count()
         context['usuarios'] = User.objects.all().count()
         context['ingresos'] = Ingresos.objects.all()
+        context['informes'] = Informe.objects.all().count()  
+
 
         return context
 
