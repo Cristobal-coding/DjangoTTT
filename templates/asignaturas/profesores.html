@@ -50,7 +50,15 @@ Administrar profesores del colegio Manheim
                                 <td>{{prof.nombres}}</td>
                                 <td>{{prof.apellido_paterno}}</td>
                                 <td>{{prof.apellido_materno}}</td>
-                                <td>{{prof.asig_impartir.nombre}}</td>
+                                <td>
+                                    
+                                    {% if prof.asig_impartir %}
+                                        {{prof.asig_impartir.nombre}}
+                                    {% else %}
+                                        No imparte.
+                                    {% endif %}
+                                        
+                                </td>
                                 <td class="text-center">
                                     
                                     <!-- Button trigger modal -->
