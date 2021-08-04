@@ -90,7 +90,7 @@ def set_asistencia(request):
 def init_cursos(request):
     if request.method == 'POST':
         check_exists_cursos = Curso.objects.all()
-        check_exists_planes = PlanEstudio.objects.all()
+        check_exists_planes = PlanEstudio.objects.all().count()
         if check_exists_cursos.count() ==0 and check_exists_planes >0:
             semestre = request.POST['semestre']
             año = request.POST['año']
