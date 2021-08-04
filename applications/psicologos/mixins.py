@@ -11,10 +11,11 @@ class PsicologosPermisoMixin(LoginRequiredMixin):
     login_url = reverse_lazy('home_app:login')
     
     def dispatch(self,request,*arg,**kwargs):
-        print(request.user.rol)
+        # print(request.user.rol)
         if not request.user.is_authenticated:
+            
             return self.handle_no_permission()
-        if not(request.user.rol.nombre == 'Psicologo' or (request.user.rol.nombre == 'Administrador')):
+        elif not(request.user.rol.nombre == 'Psicologo' or (request.user.rol.nombre == 'Administrador')):
             messages.error(self.request,"No tienes permiso para entrar a esta pestaña.")
             return HttpResponseRedirect(
                 reverse('home_app:home')
