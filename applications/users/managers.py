@@ -9,7 +9,7 @@ class UserManager(BaseUserManager, models.Manager):
             rut=rut,
             is_staff=is_staff,
             is_superuser=is_superuser,
-            activo=False,
+            activo=True,
             **extra_fields
         )
         user.set_password(password)
