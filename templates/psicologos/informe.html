@@ -1,10 +1,10 @@
 
-<h1 style="text-align:center ;"> Informe Psicologico</h1>
+<h1 style="text-align:center ; font-size: xx-large;"> Informe Psicologico</h1>
 <img src="/static/imgs/MANNHEIM.png" alt="Liceo Mannheim">
 
 <div class="row mx-0 h-100 w-100">
     <div class="col-12 h-100">
-        <h2>Antecedentes Generales:</h2>
+        <h1>Antecedentes Generales:</h1>
         <ul>
             <li><h3> Nombre del Alumno: {{informes.rut_alumno.nombre}} {{informes.rut_alumno.apellido_paterno}} {{informes.rut_alumno.apellido_materno}}  </h3></li>
             <li><h3> Rut: {{informes.rut_alumno.rut}}</h3></li>
@@ -12,19 +12,19 @@
             <li><h3> Curso actual: {{informes.rut_alumno.get_current_curso}}</h3></li>
 
         </ul>
-        <h2> Motivo:  </h2>
-        <div class="col-12 " style="font-size: 25px;padding-left: 20px;padding-right: 20px;padding-bottom: 5px;">
+        <h1> Motivo:  </h1>
+        <div class="col-12 " style="font-size: 20px;padding-left: 20px;padding-right: 20px;padding-bottom: 5px;">
             {{informes.motivo|safe}}
 
         </div>
 
-        <h2> Instrumentos de evaluacion:  </h2>
-        <div class="col-12 " style="font-size: 25px;padding-left: 20px;padding-right: 20px;padding-bottom: 5px;">
+        <h1> Instrumentos de evaluacion:  </h1>
+        <div class="col-12 " style="font-size: 20px;padding-left: 20px;padding-right: 20px;padding-bottom: 5px;">
         {{informes.pruebas_aplicadas|safe}}
 
         </div>
-        <h2> Resultados:  </h2>
-        <div class="col-12 " style="font-size: 25px;padding-left: 20px;padding-right: 20px;padding-bottom: 5px;">
+        <h1> Resultados:  </h1>
+        <div class="col-12 " style="font-size: 20px;padding-left: 20px;padding-right: 20px;padding-bottom: 5px;">
          {{informes.comentario|safe}}
 
         </div>

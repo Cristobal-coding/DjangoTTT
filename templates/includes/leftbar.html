@@ -1,6 +1,6 @@
 <div class="wrapper vh-100">
     <div class="sidebar">
-        <h2>leftbar</h2>
+        <h2>Menú</h2>
         <ul>
             <li class="{% if request.resolver_match.app_name == 'home_app'%}active-now{% endif %}"><a class="text-decoration-none" href="{% url 'home_app:home' %}"><i class="fas fa-home"></i>Home</a></li>
             <li class="{% if 'profile' in request.path  %}active-now{% endif %}"><a class="text-decoration-none" href="{% url 'user_app:profile' %}"><i class="fas fa-id-card"></i>Mi Perfil</a></li>

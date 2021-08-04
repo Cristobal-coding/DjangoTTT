@@ -146,5 +146,36 @@
 
     });
  </script>
+
+ {% if messages %}
+     {% for m in messages %}
+     
+     {% if m.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+       <script>
+         Swal.fire({
+             'timer':'2000',
+             title: 'Operación exitosa',
+             text: '{{m}}',
+             icon: 'success',
+             showConfirmButton: false,
+           })
+     </script>
+     {% endif %}
+     
+     {% if m.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+       <script>
+         Swal.fire({
+           icon: 'error',
+           title: 'Oops...',
+           text: '{{m}}',
+         })
+     </script>
+     {% endif %}
+ 
+     {% endfor %}
+ {% endif %}
+ 
+ 
+ 
 {% endblock 'js-select2' %}
 

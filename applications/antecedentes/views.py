@@ -16,7 +16,7 @@ class AntecedentesView(PsicologosPermisoMixin,ListView):
     model = Antecedente
     context_object_name = 'antecedentes'
     login_url = reverse_lazy('home_app:login')   
-    paginate_by=8
+    paginate_by=9
     def get_context_data(self, **kwargs):
         context = super(AntecedentesView, self).get_context_data(**kwargs)
         context['alumno_antecedente'] = Alumno_antecedente.objects.all()[:20]
