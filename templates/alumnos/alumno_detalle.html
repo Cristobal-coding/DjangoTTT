@@ -256,7 +256,7 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                                     <td>#</td>
                                     <td>Antecedente</td>
                                     <td>Fecha</td>
-                                    <td colspan="2">Gestión</td>
+                                    <td >Gestión</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -273,15 +273,15 @@ Informacion del Alumno {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.ap
                                     <td>{{ant.antecedente.nombre_antecedente}}</td>
                                     <td>{{ant.fecha}}</td>
                                     <td>
-                                        <button class="btn p-0" data-bs-toggle="modal" data-bs-target="#verAnt{{ant.id}}">
+                                        <button class="btn py-0" data-bs-toggle="modal" data-bs-target="#verAnt{{ant.id}}">
                                             <i class="fas fa-folder-open  text-warning fs-5"></i>
                                         </button>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <button class="btn p-0">
                                             <i class="fas fa-file-edit fs-5 text-success"></i>
                                         </button>
-                                    </td>
+                                    </td> -->
                                     <!-- Modal Visualizar Antecedente -->
                                     <div class="modal fade" id="verAnt{{ant.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">

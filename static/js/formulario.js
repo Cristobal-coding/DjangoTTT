@@ -68,7 +68,6 @@ function validateForm1() {
     var curso =inputss[6];
     var apod =inputss[7];
     var cel =inputss[9];
-    var fecha =inputss[10];
     console.log(inputss);    
 
     var errores = 0 ;
@@ -140,13 +139,6 @@ function validateForm1() {
         }
         
     }
-    if (fecha.value == ""|| fecha.value==null) {
-        console.log("fecha vacio");
-        fecha.classList.add('is-invalid');
-        errores= errores+1;
-    }else{
-        fecha.classList.remove('is-invalid');
-    }
     if(errores!=0){   
         console.log("Error lol");
         erroresdiv.classList.remove('d-none');
@@ -166,7 +158,6 @@ function validateForm2() {
     var apod =inputss[5];
     var estado =inputss[6];
     var cel =inputss[8];
-    var fecha =inputss[9];
     var errores = 0 ;
     
     if (nombre.value == ""|| nombre.value==null) {
@@ -222,13 +213,7 @@ function validateForm2() {
             errores= errores+1;
         }
     }
-    if (fecha.value == ""|| fecha.value==null) {
-        console.log("fecha vacio");
-        fecha.classList.add('is-invalid');
-        errores= errores+1;
-    }else{
-        fecha.classList.remove('is-invalid');
-    }
+   
     
     if(errores!=0){   
         console.log("Error lol");

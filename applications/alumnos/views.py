@@ -43,7 +43,7 @@ class AlumnosFiltros(LoginRequiredMixin,ListView):
         f2=self.request.GET.get("fecha2",'')
         sexo=self.request.GET.get("sexo",'')
         curso=self.request.GET.get("curso",'')
-        #print("Palabra a comparar: " + palabra_clave)
+        print("Palabra a comparar: " + palabra_clave)
         if curso:
             if sexo:
                 if f1 and f2 and sexo:
